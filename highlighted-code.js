@@ -238,7 +238,11 @@
             const pre = targets.get(target);
             const {border, font, letterSpacing, lineHeight, padding, wordSpacing} = getComputedStyle(target);
             const {top, left, width, height} = target.getBoundingClientRect();
-            const p = target.parentElement.getBoundingClientRect();
+            var parent = target.parentElement;
+            while (parent.tagName != 'SECTION') {
+                parent = parent.parentElement;
+            }
+            const p = parent.getBoundingClientRect();
             // scale is not available in PDF mode
             const s = getComputedStyle(document.body).getPropertyValue('--slide-scale') || 1;
             pre.style.cssText = `
@@ -282,7 +286,11 @@
         const paddingDiff = (parseFloat(paddingTop) || 0) + (parseFloat(paddingBottom) || 0);
         const borderDiff = (parseFloat(borderTop) || 0) + (parseFloat(borderBottom) || 0);
         const diff = boxSizing === 'border-box' ? -borderDiff : paddingDiff;
-        this.style.height = `${this.scrollHeight - diff}px`;
+        this.style.height = `${Math.floor(this.scrollHeight - diff + 1)}px`;
+        if (Reveal.layout) {
+            // so that highlights move with their textareas
+            Reveal.dispatchEvent({type: 'resize', data: {}})
+        }
         }
 
         function _backgroundColor() {

@@ -31,8 +31,11 @@
 			a.runCode { padding-left: 0.5em; padding-right: 0.5em; color: black; }
 			a.runCode:hover { color: red; }
 			.runCode::before { content: '➧' }
-			span[data-output] code.hljs { padding-left: 0.2em; padding-right: 0.2em; }
+			span[data-output] { padding-left: 0.2em; padding-right: 0.2em; }
 			span[data-output] { font-family: monospace; background-color: #eee; }
+			.reveal pre { box-shadow: .05em .05em 0.1em rgba(0, 0, 0, 0.15); }
+			li { margin-top: .1em; margin-bottom: .1em }
+			textarea[is='highlighted-code'] { position:relative; top: .3em; }
 		</style>
 	</head>
 
@@ -47,22 +50,46 @@
 
 					<h3>Einheit 05: Funktionen</h3>
 				</section>
-				<section>
+				<section style="font-size: 30px">
 					<h1>Interaktive Slides</h1>
-					<ul>
-						<li>Sie können diese Slides auch interaktiv öffnen INSERT URL HERE</li>
-						<li>Das Laden kann dann etwas dauern, da wir Python <em>im Browser</em> starten.</li>
-						<li>Ausgaben von Python Code werden dann live berechnet.</li>
-					</ul>
+					Schauen Sie mal, was ich jetzt kann: <br>
 					<textarea data-ns="kjldsa" is="highlighted-code" cols="20" rows="2" language="python" tab-size="2" auto-height spellcheck="false">l = [ 1, 2, 3, 4 ]
 l[1]</textarea>
-					<span class="fragment"> <span data-ns="kjldsa" data-output></span></span>
-					<br>
-					<ul>
-						<li>Das Spannende: Sie können den Inhalt von umrandeten Boxen ändern.
-							Klicke Sie danach auf den Pfeil um die Ausgabe neu zu berechnen!
+					<span data-ns="kjldsa" data-output></span>
+					
+					<ul class="fragment">
+						<li>Das Beste: Sie können das auch!</li>
+						<li>Öffnen Sie dazu <a href="https://tillerino.github.io/ws2023-python/05-Funktionen.html">die interaktive Version</a> der Slides.</li>
+						<li>Das Laden kann dann etwas dauern, da wir Python <em>im Browser</em> starten und viel dazu heruntergeladen werden muss.</li>
+					</ul>
+					<ul class="fragment">
+						<li class="fragment">Sie können den Inhalt von <em>umrandeten</em> Boxen ändern.
+							Klicken Sie danach auf den kleinen Pfeil um die Ausgabe neu zu berechnen!
 						</li>
 					</ul>
+				</section>
+				<section style="font-size: 30px">
+					<h1>Interaktive Slides</h1>
+					<textarea data-ns="5uj4rt" is="highlighted-code" cols="20" rows="2" language="python" tab-size="2" auto-height spellcheck="false">l = [ 1, 2, 3, 4 ]
+l[1]</textarea>
+					<span data-ns="5uj4rt" data-output></span>
+
+					<ul>
+						<li>Der context wird beibehalten:
+							<textarea data-ns="5uj4rt" is="highlighted-code" cols="10" rows="1" language="python" tab-size="2" auto-height spellcheck="false">l[2]</textarea>
+							<span data-ns="5uj4rt" data-output></span></li>
+						<li class="fragment">Print funktioniert:
+							<textarea data-ns="5uj4rt" is="highlighted-code" cols="20" rows="1" language="python" tab-size="2" auto-height spellcheck="false">print('Hallo Welt!')</textarea>
+							<span data-ns="5uj4rt" data-output></span></li>
+						<li class="fragment">Fehler funktionieren so naja:
+							<textarea data-ns="5uj4rt" is="highlighted-code" cols="20" rows="1" language="python" tab-size="2" auto-height spellcheck="false">print(fsdg)</textarea>
+							<span data-ns="5uj4rt" data-output></span></li>
+						<li class="fragment">Achtung! <python>print</python> funktioniert nicht.</li>
+						<li class="fragment">Achtung! Das Arbeiten mit Dateien funktioniert auch nicht.</li>
+						<li class="fragment">Alles funktioniert erst halb gut, auch die PDF-Version ist nicht hübsch.<br>
+							Dies möchte ich nach und nach verfeinern.</li>
+					</ul>
+					</div>
 				</section>
 			</div>
 
@@ -126,7 +153,7 @@ l[1]</textarea>
 						result = p.p.runPython(c, { globals: pythonNamespaces[namespace] })
 					} catch (e) {
 						if (e.constructor.name === "PythonError") {
-							lines = e.message.split('\n')
+							lines = e.message.trim().split('\n')
 							for(l in lines) {
 								if(lines[l].startsWith('  File "<exec>", ')) {
 									lines[l] = "  " + lines[l].substr(17);
@@ -154,9 +181,15 @@ l[1]</textarea>
 				console.log('result:', html)
 
 				elem.innerHTML = html
-				if (Reveal.getPlugin && elem.lastChild) {
+				elem.style.display = elem.innerHTML.indexOf("<br") >= 0 ? "block" : "inline";
+
+				if (Reveal.getPlugin && elem.lastChild && elem.lastChild.nodeType != Node.TEXT_NODE) {
 					// cheap way of preventing crashes before initialized
 					Reveal.getPlugin('highlight').highlightBlock(elem.lastChild)
+				}
+				if (Reveal.layout) {
+					// so that highlights move with their textareas
+					Reveal.dispatchEvent({type: 'resize', data: {}})
 				}
 			}
 
@@ -202,7 +235,7 @@ l[1]</textarea>
 							// this is for print stuff
 							return
 						}
-						document.querySelectorAll('section').forEach(elem => {
+						document.querySelectorAll('section[data-autoscale]').forEach(elem => {
 							for(i = 0; i < 10 && elem.getBoundingClientRect().height > 720; i++) {
 								let fs = getComputedStyle(elem).fontSize
 								if (!fs.endsWith('px')) {
