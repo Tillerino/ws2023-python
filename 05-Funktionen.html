@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js – The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="thonny.css">
+
+		<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+
+		<style>
+			.reveal textarea, .reveal pre { font-size: 1em; }
+			.reveal .slides { text-align: left; }
+			:root { --r-heading-text-transform: none; }
+			html.reveal-print .reveal .slides section.title, section.title { padding-top: 200px!important; }
+			a.runCode { padding-left: 0.5em; padding-right: 0.5em; color: black; }
+			a.runCode:hover { color: red; }
+			.runCode::before { content: '➧' }
+			span[data-output] code.hljs { padding-left: 0.2em; padding-right: 0.2em; }
+			span[data-output] { font-family: monospace; background-color: #eee; }
+		</style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section data-background-image="titleslide.svg" data-background-size="contain" class="title">
+					<h1 class="r-fit-text">Pythonkurs für Anfänger</h1>
+
+					<h3>Einheit 05: Funktionen</h3>
+				</section>
+				<section>
+					<h1>Interaktive Slides</h1>
+					<ul>
+						<li>Sie können diese Slides auch interaktiv öffnen INSERT URL HERE</li>
+						<li>Das Laden kann dann etwas dauern, da wir Python <em>im Browser</em> starten.</li>
+						<li>Ausgaben von Python Code werden dann live berechnet.</li>
+					</ul>
+					<textarea data-ns="kjldsa" is="highlighted-code" cols="20" rows="2" language="python" tab-size="2" auto-height spellcheck="false">l = [ 1, 2, 3, 4 ]
+l[1]</textarea>
+					<span class="fragment"> <span data-ns="kjldsa" data-output></span></span>
+					<br>
+					<ul>
+						<li>Das Spannende: Sie können den Inhalt von umrandeten Boxen ändern.
+							Klicke Sie danach auf den Pfeil um die Ausgabe neu zu berechnen!
+						</li>
+					</ul>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/search/search.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script src="highlighted-code.js"></script>
+		<script>
+
+			let out = [ ]
+			let pythonNamespaces = { }
+			let skipPython = false
+			async function init() {
+				if (skipPython) {
+					return
+				}
+				console.log('loading Pyodide')
+				let p = await loadPyodide({
+					stdout: x => out.push(x),
+					stderr: x => out.push(x)
+				});
+				console.log('importing repr_shorten')
+				let namespace = p.globals.get("dict")();
+				p.runPython('from pyodide.console import repr_shorten', { globals: namespace })
+				return { p: p, repr_shorten: namespace.get("repr_shorten") }
+			}
+			let pyodide = init()
+
+			async function fillOutput(elem) {
+				let ns = elem.dataset.ns
+				var code = [ ]
+				for(e of document.querySelectorAll(`*[data-ns='${ns}']`)) {
+					if (e == elem) {
+						break
+					}
+					if (e.dataset.output === undefined) {
+						code.push(c = e.value || e.innerText.trim())
+					}
+				}
+				console.log('running code', code, 'in', ns)
+				await runCode(elem.dataset.ns, code, elem)
+			}
+
+			async function runCode(namespace, code, elem) {
+				// see here: https://github.com/pyodide/pyodide/blob/main/src/templates/console.html
+
+				elem.innerText = "..."
+				p = (await pyodide)
+				if(!(namespace in pythonNamespaces)) {
+					pythonNamespaces[namespace] = p.p.globals.get("dict")();
+				}
+				result = undefined
+				for (c of code) {
+					out.length = 0
+					try {
+						result = p.p.runPython(c, { globals: pythonNamespaces[namespace] })
+					} catch (e) {
+		              if (e.constructor.name === "PythonError") {
+		                out.push(e.message);
+		                break;
+		              } else {
+		                throw e;
+		              }
+					}
+				}
+				
+				elem.innerText = out.join("\n")
+				html = elem.innerHTML
+				if (result !== undefined) {
+					elem.innerText = p.repr_shorten.callKwargs(result, {
+						separator: "\n<long output truncated>\n",
+					});
+					html = (html ? html + "\n" : "") + `<code class="language-python">${elem.innerHTML}</code>`
+				}
+				console.log('result:', html)
+
+				elem.innerHTML = html
+				if (Reveal.getPlugin && elem.lastChild) {
+					// cheap way of preventing crashes before initialized
+					Reveal.getPlugin('highlight').highlightBlock(elem.lastChild)
+				}
+			}
+
+			async function runAllCode() {
+				if (skipPython) {
+					return
+				}
+				for (const elem of document.querySelectorAll('*[data-output]')) {
+					// put the little arrow before
+					a = document.createElement("a")
+					a.className = "runCode"
+					a.onclick = () => fillOutput(elem);
+					elem.parentElement.insertBefore(a, elem)
+					await fillOutput(elem)
+				}
+			}
+			
+			let allCodeInserted = pyodide.then(runAllCode).then(() => {
+				console.log('initializing Reveal')
+				Reveal.initialize({
+					width: 960,
+  					height: 720,
+
+					controls: true,
+					progress: true,
+					center: false,
+					hash: true,
+					pdfSeparateFragments: false,
+
+					// Learn about plugins: https://revealjs.com/plugins/
+					plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+				});
+
+				Reveal.on('ready', event => {
+					document.querySelectorAll('span code').forEach(elem => {
+						Reveal.getPlugin('highlight').highlightBlock(elem)
+					});
+					// this will automatically scale down all slides until they fit the target height
+					let downScalerId = window.setInterval(() => {
+						console.log('scaling')
+						var scaled = false
+						if (document.querySelectorAll('section').length == 0) {
+							// this is for print stuff
+							return
+						}
+						document.querySelectorAll('section').forEach(elem => {
+							for(i = 0; i < 10 && elem.getBoundingClientRect().height > 720; i++) {
+								let fs = getComputedStyle(elem).fontSize
+								if (!fs.endsWith('px')) {
+									break;
+								}
+								elem.style.fontSize = (parseInt(fs) - 1) + 'px';
+								scaled = true
+							}
+						});
+						if (!scaled) {
+							window.clearInterval(downScalerId)
+							// workaround from hell to make highlighted textareas work after this kind of resize 0_o
+							window.setTimeout(() => Reveal.dispatchEvent({type: 'resize', data: {}}), 1000)
+						}
+					}, 1);
+				})
+			})
+		</script>
+
+	</body>
+</html>

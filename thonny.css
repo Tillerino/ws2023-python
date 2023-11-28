@@ -1,0 +1,71 @@
+.hljs {
+  display: inline;
+  overflow-x: auto;
+  background: #eee;
+  color: black;
+}
+
+pre code.hljs {
+  padding: 0.5em;
+}
+
+.hljs-keyword, .hljs-literal { color: #810055; font-weight: bold; }
+
+.hljs-number { color: #AF4600 }
+.hljs-built_in { color: #810055 }
+
+.hljs-class, .hljs-title {
+  color: #00008b;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-selector-tag,
+.hljs-strong,
+.hljs-name {
+  color: black;
+}
+
+.hljs-code {
+  color: #66d9ef;
+}
+
+.hljs-attribute,
+.hljs-symbol,
+.hljs-regexp,
+.hljs-link {
+  color: #bf79db;
+}
+
+.hljs-string { color: #0e5d00 }
+.hljs-bullet,
+.hljs-subst,
+.hljs-section,
+.hljs-emphasis,
+.hljs-type,
+.hljs-builtin-name,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-tag,
+.hljs-template-variable {
+  color: #a6e22e;
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-deletion,
+.hljs-meta {
+  color: #75715e;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-doctag,
+.hljs-section,
+.hljs-type,
+.hljs-selector-id {
+  font-weight: bold;
+}
