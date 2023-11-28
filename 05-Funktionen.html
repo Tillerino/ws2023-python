@@ -125,12 +125,21 @@ l[1]</textarea>
 					try {
 						result = p.p.runPython(c, { globals: pythonNamespaces[namespace] })
 					} catch (e) {
-		              if (e.constructor.name === "PythonError") {
-		                out.push(e.message);
-		                break;
-		              } else {
-		                throw e;
-		              }
+						if (e.constructor.name === "PythonError") {
+							lines = e.message.split('\n')
+							for(l in lines) {
+								if(lines[l].startsWith('  File "<exec>", ')) {
+									lines[l] = "  " + lines[l].substr(17);
+								}
+								if(lines[l].endsWith(', in <module>')) {
+									lines[l] = lines[l].substr(0, lines[l].indexOf(', in <module>'));
+								}
+							}
+							out.push(lines[0] + "\n" + lines.slice(7).join("\n"));
+							break;
+						} else {
+							throw e;
+						}
 					}
 				}
 				
