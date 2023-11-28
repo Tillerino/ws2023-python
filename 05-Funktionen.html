@@ -31,8 +31,8 @@
 			a.runCode { padding-left: 0.5em; padding-right: 0.5em; color: black; }
 			a.runCode:hover { color: red; }
 			.runCode::before { content: '➧' }
-			span[data-output] { padding-left: 0.2em; padding-right: 0.2em; }
-			span[data-output] { font-family: monospace; background-color: #eee; }
+			span[data-output] { padding-left: 0.2em; padding-right: 0.2em; font-family: monospace; background-color: #eee; }
+			span[data-inline-python] { padding-left: 0.1em; padding-right: 0.1em; font-family: monospace; background-color: #eee; }
 			.reveal pre { box-shadow: .05em .05em 0.1em rgba(0, 0, 0, 0.15); }
 			li { margin-top: .1em; margin-bottom: .1em }
 			textarea[is='highlighted-code'] { position:relative; top: .3em; }
@@ -59,7 +59,7 @@ l[1]</textarea>
 					
 					<ul class="fragment">
 						<li>Das Beste: Sie können das auch!</li>
-						<li>Öffnen Sie dazu <a href="https://tillerino.github.io/ws2023-python/05-Funktionen.html">die interaktive Version</a> der Slides.</li>
+						<li>Öffnen Sie dazu <a href="https://tillerino.github.io/ws2023-python/05-Funktionen.html?noFragments">die interaktive Version</a> der Slides.</li>
 						<li>Das Laden kann dann etwas dauern, da wir Python <em>im Browser</em> starten und viel dazu heruntergeladen werden muss.</li>
 					</ul>
 					<ul class="fragment">
@@ -84,7 +84,7 @@ l[1]</textarea>
 						<li class="fragment">Fehler funktionieren so naja:
 							<textarea data-ns="5uj4rt" is="highlighted-code" cols="20" rows="1" language="python" tab-size="2" auto-height spellcheck="false">print(fsdg)</textarea>
 							<span data-ns="5uj4rt" data-output></span></li>
-						<li class="fragment">Achtung! <python>print</python> funktioniert nicht.</li>
+						<li class="fragment">Achtung! <p-il>print</p-il> funktioniert nicht.</li>
 						<li class="fragment">Achtung! Das Arbeiten mit Dateien funktioniert auch nicht.</li>
 						<li class="fragment">Alles funktioniert erst halb gut, auch die PDF-Version ist nicht hübsch.<br>
 							Dies möchte ich nach und nach verfeinern.</li>
@@ -103,6 +103,14 @@ l[1]</textarea>
 		<script src="plugin/highlight/highlight.js"></script>
 		<script src="highlighted-code.js"></script>
 		<script>
+			class PythonInline extends HTMLElement {
+				constructor() {
+					super(); 
+					let code = this.innerText
+					this.innerHTML = `<span data-inline-python><code class="language-python hljs">${RevealHighlight().hljs.highlight(code, { language: 'python' }).value}</code></span>`
+				}
+			}
+			customElements.define("p-il", PythonInline);
 
 			let out = [ ]
 			let pythonNamespaces = { }
@@ -217,6 +225,7 @@ l[1]</textarea>
 					progress: true,
 					center: false,
 					hash: true,
+					fragments: new URLSearchParams(window.location.search).get('noFragments') === null,
 					pdfSeparateFragments: false,
 
 					// Learn about plugins: https://revealjs.com/plugins/
