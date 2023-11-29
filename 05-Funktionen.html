@@ -428,9 +428,9 @@ print(ret())</textarea><br>
 				<section style="font-size: 29px;">
 					<h1>Übung II: Summe/Differenz</h1>
 					
-					<div data-ns="U0502-ex" style="visibility: hidden; position: absolute;"
+					<textarea data-ns="U0502-ex" style="display: none;"
 >def sumdiff(x, y):
-	return max(x + y, x - y)</div>
+	return max(x + y, x - y)</textarea>
 	
 					<div style="display: grid; column-gap: 1em; grid-template-columns: 40% 58%">
 						<ul>
@@ -446,9 +446,9 @@ print(ret())</textarea><br>
 						</ul>
 						<div>
 							Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:<br>
-							<textarea data-ns="U0502-test" is="highlighted-code" cols="40" rows="6" language="python" tab-size="2" auto-height spellcheck="false"
+							<textarea data-ns="U0502-test" is="highlighted-code" cols="40" rows="6" language="python" tab-size="2" spellcheck="false"
 ></textarea><br>
-<div data-ns="U0502-test" style="visibility: hidden; position: absolute;"
+<textarea data-ns="U0502-test" style="display: none;"
 >def test():
 	d = [ 0, 1, -1, 2, -2, 5, -5 ]
 	for x in d:
@@ -460,8 +460,245 @@ print(ret())</textarea><br>
 				print('Ist aber', a)
 				return
 	print('Sieht gut aus!')
-test()</div>
+test()</textarea>
 <span data-ns="U0502-test" data-output></span><br>
+						</div>
+					</div>
+				</section>
+
+				<section style="font-size: 28px;">
+					<h1>Übung III: Schere, Stein, Papier</h1>
+					
+					<textarea data-ns="U0503-ex" style="display: none;"
+>def rps(me, you):
+	if me == you:
+		return 'unentschieden'
+	if (me, you) in (('r', 's'), ('s', 'p'), ('p', 'r')):
+		return 'ich'
+	if (you, me) in (('r', 's'), ('s', 'p'), ('p', 'r')):
+		return 'du'
+	return 'Was soll das rumgefummel hier'
+	</textarea>
+	
+					<div style="display: grid; column-gap: 1em; grid-template-columns: 50% 48%">
+						<ul>
+							<li>Wir implementieren Schere, Stein, Papier auf englisch, da Schere und Stein mit dem gleichen Buchstaben beginnen 😒
+								<ul>
+									<li>Stein = rock = r</li>
+									<li>Papier = paper = p</li>
+									<li>Schere = scissors = s</li>
+								</ul>
+							</li>
+							<li>Implementieren Sie eine Funktion <p-il>rps</p-il>, die zwei Argumente hat.
+								<ul>Als erstes "meine" Wahl: <p-il>'r'</p-il>, <p-il>'p'</p-il> oder <p-il>'s'</p-il>.</ul>
+								<ul>Als zweites "deine" Wahl: <p-il>'r'</p-il>, <p-il>'p'</p-il> oder <p-il>'s'</p-il>.</ul>
+							</li>
+							<li>Zurückgeben soll die Funktion, wer gewonnen hat. Beispiele:<br>
+								<textarea data-ns="U0503-ex" is="highlighted-code" cols="15" rows="1" language="python" tab-size="2" auto-height spellcheck="false"
+	>rps('s', 'p')</textarea> <span data-ns="U0503-ex" data-output></span><br>
+	<textarea data-ns="U0503-ex" is="highlighted-code" cols="15" rows="1" language="python" tab-size="2" auto-height spellcheck="false"
+	>rps('r', 'p')</textarea> <span data-ns="U0503-ex" data-output></span><br>
+	<textarea data-ns="U0503-ex" is="highlighted-code" cols="15" rows="1" language="python" tab-size="2" auto-height spellcheck="false"
+	>rps('r', 'r')</textarea> <span data-ns="U0503-ex" data-output></span><br>
+							</li>
+						</ul>
+						<div>
+							Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:<br>
+							<textarea data-ns="U0503-test" is="highlighted-code" cols="35" rows="8" language="python" tab-size="2" spellcheck="false"
+></textarea><br>
+<textarea data-ns="U0503-test" style="display: none;"
+>def test():
+	d = [
+	('r', 'r', 'unentschieden'),
+	('s', 's', 'unentschieden'),
+	('p', 'p', 'unentschieden'),
+	('r', 's', 'ich'),
+	('s', 'p', 'ich'),
+	('p', 'r', 'ich'),
+	('s', 'r', 'du'),
+	('p', 's', 'du'),
+	('r', 'p', 'du'),
+	]
+	for (x, y, r) in d:
+		a = rps(x, y)
+		e = r
+		if a != e:
+			print(f'Erwartet rps({x}, {y}) == {e}')
+			print('Ist aber', a)
+			return
+	print('Sieht gut aus!')
+test()</textarea>
+<span data-ns="U0503-test" data-output></span><br>
+						</div>
+					</div>
+				</section>
+
+				<section style="font-size: 28px;">
+					<h1>Übung IV: Römische Zahlen (aber besser)</h1>
+					
+					<textarea data-ns="U050R-ex" style="display: none;"
+>def roman(x):
+	if x <= 0:
+		return
+
+	s = ''
+
+	while x >= 1000:
+		s += 'M'
+		x -= 1000
+
+	if x >= 900:
+		s += 'CM'
+		x -= 900
+
+	if x >= 500:
+		s += 'D'
+		x -= 500
+
+	if x >= 400:
+		s += 'CD'
+		x -= 400
+
+	while x >= 100:
+		s += 'C'
+		x -= 100
+
+	if x >= 90:
+		s += 'XC'
+		x -= 90
+
+	if x >= 50:
+		s += 'L'
+		x -= 50
+
+	if x >= 40:
+		s += 'XL'
+		x -= 40
+
+	while x >= 10:
+		s += 'X'
+		x -= 10
+
+	if x == 9:
+		s += 'IX'
+		x = 0
+
+	if x >= 5:
+		s += 'V'
+		x -= 5
+
+	if x == 4:
+		s += 'IV'
+		x = 0
+
+	while x > 0:
+		s += 'I'
+		x -= 1
+
+	return s</textarea>
+					<div style="display: grid; column-gap: 1em; grid-template-columns: 48% 50%">
+						<ul>
+							<li>Implementieren Sie erneut die Umwandlung einer Dezimalzahl in eine römische Zahl.</li>
+							<li>Implementieren dazu eine Funktion <p-il>roman</p-il>, die ein ganzzahliges Argumente hat und einen String zurückgibt. Beispiel:<br>
+								<textarea data-ns="U050R-ex" is="highlighted-code" cols="12" rows="1" language="python" tab-size="2" auto-height spellcheck="false"
+	>roman(1234)</textarea> <span data-ns="U050R-ex" data-output></span><br>
+							</li>
+							<li>Falls Sie die Umwandlung in der damaligen Übung 3-VII nicht geschafft haben, schauen Sie sich die Musterlösung an.</li>
+							<li>Wichtig: In der Musterlösung sehen Sie viele Schleifen und Verzweigungen.
+								Diese sehen eigentlich immer gleich aus.
+								Dies können wir mit weiteren Funktionen beheben - also mindestens einer weiteren Funktion, die aus <code>roman</code> aufgerufen wird.</li>
+							<li>Rechts ist ein Vorschlag für ein Grundgerüst.</li>
+						</ul>
+						<div>
+							Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:<br>
+							<textarea data-ns="U050R-test" style="display:none;"
+>def rrrrrrrrr(x):
+	if x <= 0:
+		return
+
+	s = ''
+
+	while x >= 1000:
+		s += 'M'
+		x -= 1000
+
+	if x >= 900:
+		s += 'CM'
+		x -= 900
+
+	if x >= 500:
+		s += 'D'
+		x -= 500
+
+	if x >= 400:
+		s += 'CD'
+		x -= 400
+
+	while x >= 100:
+		s += 'C'
+		x -= 100
+
+	if x >= 90:
+		s += 'XC'
+		x -= 90
+
+	if x >= 50:
+		s += 'L'
+		x -= 50
+
+	if x >= 40:
+		s += 'XL'
+		x -= 40
+
+	while x >= 10:
+		s += 'X'
+		x -= 10
+
+	if x == 9:
+		s += 'IX'
+		x = 0
+
+	if x >= 5:
+		s += 'V'
+		x -= 5
+
+	if x == 4:
+		s += 'IV'
+		x = 0
+
+	while x > 0:
+		s += 'I'
+		x -= 1
+
+	return s</textarea>
+							<textarea data-ns="U050R-test" is="highlighted-code" cols="33" rows="8" language="python" tab-size="2" spellcheck="false"
+>def add(x, s, c, v):
+	# Passt x und s an
+	return x, s
+
+def roman(x):
+	s = ''
+	# Nutzt mehrmals add
+	return s</textarea><br>
+<textarea data-ns="U050R-test" style="display: none;"
+>def test():
+	for x in range(1, 10000):
+			a = roman(x)
+			e = rrrrrrrrr(x)
+			if a != e:
+				print(f'Erwartet roman({x}) == {e}')
+				print('Ist aber', a)
+				return
+	print('Sieht gut aus!')
+test()</textarea>
+<span data-ns="U050R-test" data-output></span><br>
+							<ul>
+								<li>Hier können wir nur die Korrektheit prüfen.
+									Ob Sie die Aufgabe tatsächlich erfüllt haben, sehen sie daran, ob sie viele Schleifen und Verzweigungen nutzen oder nur sehr wenige.
+									Sie können die Aufgabe mit einer einzigen Schleife und ohne einfache Verzweigungen lösen.
+									Fragen Sie im Zweifel nach.
+								</li>
+							</ul>
 						</div>
 					</div>
 				</section>
