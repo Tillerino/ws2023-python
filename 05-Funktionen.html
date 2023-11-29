@@ -21,21 +21,33 @@
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="thonny.css">
 
+		<!-- Font awesome is required for the chalkboard plugin -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+		<!-- Custom controls plugin is used to for opening and closing annotation modes. -->
+		<script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@4.2.5/customcontrols/plugin.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins@4.2.5/customcontrols/style.css">
+		<!-- Chalkboard plugin -->
+		<script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@4.2.5/chalkboard/plugin.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins@4.2.5/chalkboard/style.css">
+
 		<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
 
 		<style>
 			.reveal textarea, .reveal pre { font-size: 1em; }
 			.reveal .slides { text-align: left; }
-			:root { --r-heading-text-transform: none; }
+			:root { --r-heading-text-transform: none; --r-heading-font-weight: 200; }
 			html.reveal-print .reveal .slides section.title, section.title { padding-top: 200px!important; }
 			a.runCode { padding-left: 0.5em; padding-right: 0.5em; color: black; }
 			a.runCode:hover { color: red; }
 			.runCode::before { content: '➧' }
 			span[data-output] { padding-left: 0.2em; padding-right: 0.2em; font-family: monospace; background-color: #eee; }
 			span[data-inline-python] { padding-left: 0.1em; padding-right: 0.1em; font-family: monospace; background-color: #eee; }
+			.no-background span[data-inline-python], .no-background .hljs { background: none; }
 			.reveal pre { box-shadow: .05em .05em 0.1em rgba(0, 0, 0, 0.15); }
 			li { margin-top: .1em; margin-bottom: .1em }
 			textarea[is='highlighted-code'] { position:relative; top: .3em; }
+			ul ul, ul ol, ol ul, ol ol { font-size: .85em; }
 		</style>
 	</head>
 
@@ -45,12 +57,16 @@
 
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
-				<section data-background-image="titleslide.svg" data-background-size="contain" class="title">
-					<h1 class="r-fit-text">Pythonkurs für Anfänger</h1>
+				<section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title" style="font-size: 35px;">
+					<h1 style="font-size: 100px;">Pythonkurs für Anfänger</h1>
 
-					<h3>Einheit 05: Funktionen</h3>
+					<h2 style="padding-top: 40px;">Einheit 05: Funktionen</h2>
+
+					<div style="padding-top: 100px;">Tillmann Gaida</div>
+					<div style="padding-top: 20px;">Software and Computational System Lab</div>
 				</section>
-				<section style="font-size: 30px">
+
+				<section style="font-size: 35px" data-transition="slide-in fade-out">
 					<h1>Interaktive Slides</h1>
 					Schauen Sie mal, was ich jetzt kann: <br>
 					<textarea data-ns="kjldsa" is="highlighted-code" cols="20" rows="2" language="python" tab-size="2" auto-height spellcheck="false">l = [ 1, 2, 3, 4 ]
@@ -61,6 +77,7 @@ l[1]</textarea>
 						<li>Das Beste: Sie können das auch!</li>
 						<li>Öffnen Sie dazu <a href="https://tillerino.github.io/ws2023-python/05-Funktionen.html?noFragments">die interaktive Version</a> der Slides.</li>
 						<li>Das Laden kann dann etwas dauern, da wir Python <em>im Browser</em> starten und viel dazu heruntergeladen werden muss.</li>
+						<li>Navigieren Sie mit der Leertaste (Umstelltaste-Leertaste ist zurück).</li>
 					</ul>
 					<ul class="fragment">
 						<li class="fragment">Sie können den Inhalt von <em>umrandeten</em> Boxen ändern.
@@ -68,7 +85,8 @@ l[1]</textarea>
 						</li>
 					</ul>
 				</section>
-				<section style="font-size: 30px">
+
+				<section style="font-size: 30px" data-transition="fade-in slide-out">
 					<h1>Interaktive Slides</h1>
 					<textarea data-ns="5uj4rt" is="highlighted-code" cols="20" rows="2" language="python" tab-size="2" auto-height spellcheck="false">l = [ 1, 2, 3, 4 ]
 l[1]</textarea>
@@ -84,11 +102,367 @@ l[1]</textarea>
 						<li class="fragment">Fehler funktionieren so naja:
 							<textarea data-ns="5uj4rt" is="highlighted-code" cols="20" rows="1" language="python" tab-size="2" auto-height spellcheck="false">print(fsdg)</textarea>
 							<span data-ns="5uj4rt" data-output></span></li>
-						<li class="fragment">Achtung! <p-il>print</p-il> funktioniert nicht.</li>
+						<li class="fragment">Achtung! <p-il>input</p-il> funktioniert nicht.</li>
 						<li class="fragment">Achtung! Das Arbeiten mit Dateien funktioniert auch nicht.</li>
 						<li class="fragment">Alles funktioniert erst halb gut, auch die PDF-Version ist nicht hübsch.<br>
-							Dies möchte ich nach und nach verfeinern.</li>
+							Dies wird nach und nach verfeinert.</li>
+						<li class="fragment">Falls etwas schiefgeht, können Sie die Seite einfach neu laden.</li>
 					</ul>
+				</section>
+
+				<section style="font-size: 35px;">
+					<h1>Advent of code</h1>
+					<ul>
+						<li>Jedes Jahr gibt es den <a href="https://adventofcode.com" target="_blank">Advent of Code</a>: einen Adventskalender an Programmieraufgaben.</li>
+						<li>Die erste Aufgabe gibt es am 1. Dezember und die letzte am 25. Dezember.</li>
+						<li>Die Aufgaben fangen einfach an und werden immer schwieriger.</li>
+						<li>Leaderboard: <p-il>2278782-ab82d160</p-il><br>
+						    (Sign in, [Leaderboard], [Private Leaderboard], code eingeben)</li>
+					</ul>
+					<br><br>
+					<iframe src="https://adventofcode.com" width="100%" height="200"></iframe>
+				</section>
+
+				<section style="font-size: 28px;">
+					<h1 class="r-fit-text">(letzte) Übung I: Wiederholen (aber besser)</h1>
+					<div style="display: grid; column-gap: 1em; grid-template-columns: 45% 55%">
+						<div><ul>
+							<li>Schreiben sie ein Programm, welches das Wort 'Hallo' fünfmal ausgibt.
+								Implementieren sie dieses nacheinander auf unterschiedliche Weisen:
+								<ol>
+									<li>Mit fünf einzelnen <p-il>print</p-il>-Anweisungen</li>
+									<li>Mit einer <p-il>while</p-il>-Schleife (siehe letzte Übung)</li>
+									<li>Mit einer <p-il>for</p-il>-Schleife und <p-il>range</p-il></li>
+									<li>Mit einer <p-il>for</p-il>-Schleife, die über die folgende Liste iteriert:<br>
+										<p-il>[ 'Hallo', 'Hallo', 'Hallo', 'Hallo', 'Hallo' ]</p-il></li>
+									<li>Mit einer <p-il>for</p-il>-Schleife, die über eine Liste iteriert,
+										die gleich ist wie die Liste eben.
+										Erstellen Sie diese Liste aber mit dem Multiplikations-Operator <p-il>*</p-il></li>
+								</ol>
+							</li>
+						</ul></div>
+						<div>
+							<textarea data-ns="u0401" is="highlighted-code" cols="35" rows="10" language="python" tab-size="2" spellcheck="false"></textarea>
+							<br>
+							<span data-ns="u0401" data-output></span>
+						</div>
+					</div>
+				</section>
+				<section style="font-size: 28px;">
+					<h1 style="font-size: 60px">(letzte) Übung III: Listenspielertricks</h1>
+					<!-- <div style="display: grid; column-gap: 1em; grid-template-columns: 60% 40%"> -->
+						<ul>
+							<li>Machen Sie sich klar, was folgendes Programm tut:<br>
+								<textarea data-ns="u0403" is="highlighted-code" cols="30" rows="10" language="python" tab-size="2" spellcheck="false">l = [ 1, 2, 3 ]
+l.extend([ l[-1] ] * l[1] )
+while l[1] < l[-1]:
+	l.pop(0)
+	l.pop(1)
+l.append(5)
+l[-2] = 4</textarea><br>
+<span data-ns="u0403" data-output></span>
+							</li>
+							<li>Versuchen Sie zunächst das Programm <em>im Kopf</em> auszuführen. Notieren Sie sich Zwischenergebnisse.</li>
+							<li>Führen Sie dann das Programm tatsächlich aus (Download von Moodle) und überprüfen Sie Ihre Vorhersage.</li>
+							<li>Sie können den kompletten Inhalt einer Liste jederzeit einfach mit <p-il>print</p-il> ausgeben, also hier <p-il>print(l)</p-il>.</li>
+						</ul>
+					<!-- </div> -->
+				</section>
+
+				<section style="font-size: 45px;" class="no-background">
+					<h1>Werkzeuge</h1>
+					<ul>
+						<li>Syntax:
+							<p-il>fun(x)</p-il>,
+							<p-il>x</p-il>,
+							<p-il>'abc'</p-il>,
+							<p-il>123</p-il>,
+							<p-il>=</p-il>,
+							<p-il>if</p-il>,
+							<p-il>elif</p-il>,
+							<p-il>else</p-il>,
+							<p-il>while</p-il>,
+							<p-il>continue</p-il>,
+							<p-il>break</p-il>,
+							<p-il>in</p-il>,
+							<p-il>for i in l</p-il>,
+							<p-il>[ a, b, c ]</p-il>,
+							<p-il>l[i]</p-il>,
+							Einrückung
+							<ul>
+								<li>Operatoren: 
+									<p-il>+</p-il>,
+									<p-il>-</p-il>,
+									<p-il>*</p-il>,
+									<p-il>/</p-il>,
+									<p-il>//</p-il>,
+									<p-il>%</p-il>,
+									<p-il>**</p-il>,
+									<p-il>!=</p-il>,
+									<p-il>==</p-il>,
+									<p-il>&lt;</p-il>,
+									<p-il>&gt;</p-il>,
+									<p-il>&lt;=</p-il>,
+									<p-il>&gt;=</p-il>,
+									<p-il>and</p-il>,
+									<p-il>or</p-il>,
+									<p-il>not</p-il>
+								</li>
+							</ul>
+						</li>
+						<li>Vokabular:
+							<p-il>print</p-il>,
+							<p-il>input</p-il>,
+							<p-il>int</p-il>,
+							<p-il>str</p-il>,
+							<p-il>list</p-il>,
+							<p-il>len</p-il>,
+							<p-il>split</p-il>,
+							<p-il>open</p-il>,
+							<p-il>rstrip</p-il>,
+							<p-il>min</p-il>
+							<p-il>max</p-il>,
+							<p-il>sum</p-il>,
+							<p-il>append</p-il>,
+							<p-il>extend</p-il>,
+							<p-il>pop</p-il>,
+							<p-il>range</p-il>
+						</li>
+						<li>Algorithmik:
+							Fallunterscheidung,
+							Laufvariable,
+							Iterieren (über Zeilen einer Datei)
+						</li>
+					</ul>
+				</section>
+
+				<section class="center" style="text-align: center;">Platz für Fragen</section>
+
+				<!--  SECTION: FUNKTIONEN -->
+
+				<section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
+					<h3 style="margin-top: 200px">Funktionen</h3>
+				</section>
+
+				<section style="font-size: 38px;">
+					<h1>Motivation</h1>
+					<ul>
+						<li>Wir kennen bereits einige Funktionen: <p-il>print</p-il>, <p-il>input</p-il>, <p-il>int</p-il>, <p-il>max</p-il>, ...</li>
+						<li>Dies sind bisher ausschließlich <em>eingebaute</em> Funktionen.</li>
+						<li class="fragment" data-fragment-index="2">Eingebaute Funktionen stellen entweder Funktionalitäten bereit, die wir <em>selber nicht implementieren</em> könnten, z.B. Input/Output,</li>
+						<li class="fragment" data-fragment-index="2">oder bieten eine <em>allgemeine Grundlage</em>, auf der man Aufbauen kann, z.B. Sortierung, Formattierer und Parser (Reguläre Ausdrücke)...</li>
+						<li class="fragment" data-fragment-index="3">Funktionen können wir aber auch selber implementieren. Dies hilft dabei:
+							<ul>
+								<li>Wiederholung zu vermeiden.</li>
+								<li>Code zu strukturieren.</li>
+							</ul>
+						</li>
+						<li class="fragment" data-fragment-index="3">Beides hilft beim Schreiben von Code, vor allem aber beim Lesen und Warten.</li>
+					</ul>
+				</section>
+
+				<section style="font-size: 35px;">
+					<h1>Funktionsdefinition</h1>
+					<div style="display: grid; column-gap: 1em; grid-template-columns: 40% 56%">
+						<div>
+							Die Minimumsfunktion würde z.B. so definiert:<br>
+							<textarea data-ns="min" is="highlighted-code" cols="25" rows="7" language="python" tab-size="2" auto-height spellcheck="false"
+>def mini(x, y):
+	if x <= y:
+		return x
+	else:
+		return y
+
+mini(1, 2)</textarea>
+							<br>
+							<span data-ns="min" data-output></span>
+						</div>
+						<div class="fragment"><ul>
+							<li>Der <em>Funktionskopf</em> (oder die <em>Signatur</em>) beginnt mit dem Schlüsselwort <p-il>def</p-il>.</li>
+							<li>Es folgt ein wählbarer Funktionsname, hier <code class="hljs hljs-title">mini</code>.</li>
+							<li>In Klammern folgen die Funktionsargumente kommagetrennt, hier <p-il>x</p-il> und <p-il>y</p-il>.</li>
+							<li>Vorsicht: Doppelpunkt.</li>
+							<li>Es folgt eingerückt der <em>Funktionsrumpf</em>.</li>
+							<li>Im Funktionsrumpf kann das Schlüsselwort <p-il>return</p-il> genutzt werden um einen Wert zurückzugeben.</li>
+						</ul></div>
+					</div>
+				</section>
+
+				<section style="font-size: 35px;">
+					<h1>Sichtbarkeitsbereich</h1>
+					<div style="display: grid; column-gap: 1em; grid-template-columns: 40% 56%">
+						<div>
+							<textarea data-ns="mutator" is="highlighted-code" cols="25" rows="10" language="python" tab-size="2" auto-height spellcheck="false"
+>def mutator(x):
+	x += 2
+	y = 5 * x
+	print('in', x, y)
+	return x
+
+x = 1
+print(mutator(x))
+print('out', x)
+print(y)</textarea>
+						</div>
+						<div>
+							<ul class="fragment" data-fragment-index="3">
+								<li>Alle Variablen, die in der Funktion zugewiesen werden (dies schließt die Funktionsargumente ein), sind nur innerhalb der Funktion sichtbar.</li>
+							</ul>
+							<span class="fragment" data-fragment-index="2" data-ns="mutator" data-output></span>
+						</div>
+					</div>
+				</section>
+
+				<section style="font-size: 35px;">
+					<h1>Seiteneffekte</h1>
+					<div style="display: grid; column-gap: 1em; grid-template-columns: 35% 63%">
+						<div>
+							<textarea data-ns="side" is="highlighted-code" cols="23" rows="8" language="python" tab-size="2" auto-height spellcheck="false"
+>def side(l):
+	l[0] = 5
+	return l[-1]
+
+my_list = [ 1, 2, 3 ]
+print(side(my_list))
+my_list</textarea><br>
+							<span class="fragment" data-fragment-index="2" data-ns="side" data-output></span>
+						</div>
+						<div><ul>
+							<li class="fragment" data-fragment-index="3">Funktionen können trotzdem den Zustand des Programms auch auf anderen Wegen als durch den Rückgabewert beeinflussen.</li>
+							<li class="fragment" data-fragment-index="3">Dies nennt man einen <em>Seiteneffekt</em>.</li>
+							<li class="fragment" data-fragment-index="4">Gekonnt eingesetzt sind Seiteneffekte sehr nützlich. An unerwarteten Stellen können sie Programme aber auch sehr unübersichtlich machen.</li>
+							<li class="fragment" data-fragment-index="4">Es gibt eine ganze Kategorie von Programmiersprachen, die keine Seiteneffekte zulassen: die <em>funktionalen</em> Programmiersprachen.</li>
+						</ul></div>
+					</div>
+				</section>
+
+				<section style="font-size: 35px;">
+					<h1>Rückgabewerte</h1>
+					<div style="display: grid; column-gap: 1em; grid-template-columns: 35% 63%">
+						<div>
+							<textarea data-ns="ret" is="highlighted-code" cols="23" rows="8" language="python" tab-size="2" auto-height spellcheck="false"
+>def ret():
+	print('immer')
+	return 1
+	print('nie')
+	return 2
+
+print(ret())</textarea><br>
+							<span class="fragment" data-ns="ret" data-output></span>
+						</div>
+						<div><ul>
+							<li class="fragment">Unmittelbar nachdem <p-il>return</p-il> ausgeführt wurde, wird die Ausführung einer Funktion abgebrochen.</li>
+							<li class="fragment">Wird kein <p-il>return</p-il> oder ein <p-il>return</p-il> ohne Argument ausgeführt, gibt die Funktion den speziellen Wert <p-il>None</p-il> zurück.</li>
+							<li class="fragment">Man kann auch mehrere Werte aus einer Funktion zurückgeben, indem man sie mit Kommas trennt, z.B. mit <p-il>return x, y</p-il>.
+								Diese müssen dann auch kommagetrennt zugewiesen werten, z.B. <p-il>a, b = ret()</p-il>. Kleingedrucktes später.</li>
+						</ul></div>
+					</div>
+				</section>
+
+				<section style="font-size: 35px;">
+					<h1>Optionale/Benannte Argumente</h1>
+					<ul>
+						<li>Sie haben bereits <p-il>print('bla', sep=' ')</p-il> benutzt.</li>
+						<li class="fragment"><p-il>sep</p-il> ist ein optionales Argument von <p-il>print</p-il>. Dies bedeutet, dass es beim Aufruf nicht angegeben werden muss und es einen Standardwert gibt, hier <p-il>'\n'</p-il>.</li>
+						<li class="fragment">Ein Argument wird optional gemacht, indem man im Funktionskopf einen Standardwert zuweist:<br>
+							<textarea data-ns="opts1" is="highlighted-code" cols="50" rows="2" language="python" tab-size="2" auto-height spellcheck="false"
+>def greet(first_name, last_name='Unbekannt'):
+	print('Hallo', first_name, last_name)</textarea></li>
+						<li class="fragment">Danach kann es beim Aufruf wegelassen werden:<br>
+							<textarea data-ns="opts1" is="highlighted-code" cols="50" rows="1" language="python" tab-size="2" auto-height spellcheck="false"
+>greet('Ulrike')</textarea><br>
+							<span data-ns="opts1" data-output>
+					</ul>
+				</section>
+
+				<section style="font-size: 30px;">
+					<h1>Optionale/Benannte Argumente</h1>
+						<textarea data-ns="opts2" is="highlighted-code" cols="63" rows="2" language="python" tab-size="2" auto-height spellcheck="false" style="margin-bottom: 20px"
+>def greet(first_name, last_name='Unbekannt', greeting='Hallo'):
+	print(greeting, first_name, last_name)</textarea>
+					<ul>
+						<li class="fragment">Bei mehreren optionalen Argumenten können einzelne beim Aufruf durch Bennennen gesetzt werden:<br>
+							<textarea data-ns="opts2" is="highlighted-code" cols="50" rows="1" language="python" tab-size="2" auto-height spellcheck="false"
+>greet('Ulrike', greeting='Ave')</textarea><br>
+							<span data-ns="opts2" data-output></li>
+						<li class="fragment">Achtung: Nach einem benannten Argument können keine positionalen Argumente mehr folgen.<br>
+							<textarea data-ns="opts2" is="highlighted-code" cols="50" rows="1" language="python" tab-size="2" auto-height spellcheck="false"
+>greet('Ulrike', last_name='Schmidt', 'Salve')</textarea><br>
+							<span data-ns="opts2" data-output>
+					</ul>
+				</section>
+
+				<section class="center" style="text-align: center;">Platz für Fragen</section>
+
+				<!-- UEBUNG -->
+
+				<section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
+					<h3 style="margin-top: 200px">Übung</h3>
+				</section>
+
+				<section style="font-size: 29px;">
+					<h1>Übung I: Advent of Code</h1>
+					Der <a href="https://adventofcode.com" target="_blank">Advent of Code 2023</a> beginnt erst übermorgen,
+					aber wir sehen die <a href="https://adventofcode.com/2022" target="_blank">Probleme des letzten Jahres</a>.
+					<ul>
+						<li>Lösen Sie die <strong>erste Hälfte</strong> des <a href="https://adventofcode.com/2022/day/1" target="_blank">ersten Problems</a> des Advent of Code 2022.</li>
+						<li>Ihr Input sowie die Lösung sind personalisiert. Um den Input zu bekommen und die Lösung zu kontrollieren, müssen Sie sich einloggen.</li>
+						<li>Falls Sie sich nicht einloggen (bzw. registrieren) möchten, können Sie meinen Input verwenden.
+						Sie können ihn aus Moodle herunterladen (<code>01-1-input.txt</code>).
+						Zur Kontrolle: die Lösung für diesen Input ist <code>70720</code>.</li>
+						<li>Um den Input zeilenweise aus der Datei zu lesen, können Sie diese Konstruktion verwenden:<br>
+							<textarea is="highlighted-code" cols="40" rows="2" language="python" tab-size="2" auto-height spellcheck="false"
+>for line_lf in open('01-1-input.txt'):
+	line = line_lf.rstrip()</textarea><br>
+							<a href="https://docs.python.org/3/library/stdtypes.html#str.rstrip" target="_blank"><code>rstrip</code></a> entfernt den Zeilenumbruch am Ende der Zeile.
+						</li>
+						<li>In den späteren Problemen werden sie häufig Strings nach Trennzeichen trennen. Zur Erinnerung: dies geht mit
+							<textarea data-ns="aoc20221" is="highlighted-code" cols="20" rows="1" language="python" tab-size="2" auto-height spellcheck="false"
+>'a-b-c'.split('-')</textarea> <span data-ns="aoc20221" data-output></span>
+						</li>
+						<li>Tipp: probieren Sie zunächst, das Problem anhand des <em>Beispiels</em> zu lösen.
+							Speichern Sie sich dessen Eingabe in einer separaten Datei.</li>
+					</ul>
+				</section>
+
+				<section style="font-size: 29px;">
+					<h1>Übung II: Summe/Differenz</h1>
+					
+					<div data-ns="U0502-ex" style="visibility: hidden; position: absolute;"
+>def sumdiff(x, y):
+	return max(x + y, x - y)</div>
+	
+					<div style="display: grid; column-gap: 1em; grid-template-columns: 40% 58%">
+						<ul>
+							<li>Implementieren Sie eine Funktion <p-il>sumdiff</p-il>, die zwei Argumente hat.</li>
+							<li>Zurückgeben soll die Funktion das Maximum aus der Summe und der Differenz der beiden Argumente. Beispiele:<br>
+								<textarea data-ns="U0502-ex" is="highlighted-code" cols="20" rows="1" language="python" tab-size="2" auto-height spellcheck="false"
+	>sumdiff(-1, 3)</textarea> <span data-ns="U0502-ex" data-output></span><br>
+	<textarea data-ns="U0502-ex" is="highlighted-code" cols="20" rows="1" language="python" tab-size="2" auto-height spellcheck="false"
+	>sumdiff(1, -2)</textarea> <span data-ns="U0502-ex" data-output></span><br>
+	<textarea data-ns="U0502-ex" is="highlighted-code" cols="20" rows="1" language="python" tab-size="2" auto-height spellcheck="false"
+	>sumdiff(-1, -2)</textarea> <span data-ns="U0502-ex" data-output></span><br>
+							</li>
+						</ul>
+						<div>
+							Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:<br>
+							<textarea data-ns="U0502-test" is="highlighted-code" cols="40" rows="6" language="python" tab-size="2" auto-height spellcheck="false"
+></textarea><br>
+<div data-ns="U0502-test" style="visibility: hidden; position: absolute;"
+>def test():
+	d = [ 0, 1, -1, 2, -2, 5, -5 ]
+	for x in d:
+		for y in d:
+			a = sumdiff(x, y)
+			e = max(x + y, x - y)
+			if a != e:
+				print(f'Erwartet sumdiff({x}, {y}) == {e}')
+				print('Ist aber', a)
+				return
+	print('Sieht gut aus!')
+test()</div>
+<span data-ns="U0502-test" data-output></span><br>
+						</div>
 					</div>
 				</section>
 			</div>
@@ -139,7 +513,7 @@ l[1]</textarea>
 						break
 					}
 					if (e.dataset.output === undefined) {
-						code.push(c = e.value || e.innerText.trim())
+						code.push(c = e.value || e.innerText.trim() || e.innerHTML.trim())
 					}
 				}
 				console.log('running code', code, 'in', ns)
@@ -162,15 +536,17 @@ l[1]</textarea>
 					} catch (e) {
 						if (e.constructor.name === "PythonError") {
 							lines = e.message.trim().split('\n')
+							ours = 1
 							for(l in lines) {
 								if(lines[l].startsWith('  File "<exec>", ')) {
+									ours = l
 									lines[l] = "  " + lines[l].substr(17);
 								}
 								if(lines[l].endsWith(', in <module>')) {
 									lines[l] = lines[l].substr(0, lines[l].indexOf(', in <module>'));
 								}
 							}
-							out.push(lines[0] + "\n" + lines.slice(7).join("\n"));
+							out.push(lines[0] + "\n" + lines.slice(ours).join("\n"));
 							break;
 						} else {
 							throw e;
@@ -184,12 +560,13 @@ l[1]</textarea>
 					elem.innerText = p.repr_shorten.callKwargs(result, {
 						separator: "\n<long output truncated>\n",
 					});
-					html = (html ? html + "\n" : "") + `<code class="language-python">${elem.innerHTML}</code>`
+					html = (html ? html + "<br>" : "") + `<code class="language-python">${elem.innerHTML}</code>`
 				}
 				console.log('result:', html)
 
 				elem.innerHTML = html
-				elem.style.display = elem.innerHTML.indexOf("<br") >= 0 ? "block" : "inline";
+				elem.style.display = elem.innerHTML.indexOf("<br") >= 0 ? "inline-block" : "inline";
+				elem.style.whiteSpace = 'pre-wrap'
 
 				if (Reveal.getPlugin && elem.lastChild && elem.lastChild.nodeType != Node.TEXT_NODE) {
 					// cheap way of preventing crashes before initialized
@@ -215,21 +592,39 @@ l[1]</textarea>
 				}
 			}
 			
+			let cbPath = 'https://cdn.jsdelivr.net/npm/reveal.js-plugins@4.2.5/chalkboard/'
 			let allCodeInserted = pyodide.then(runAllCode).then(() => {
 				console.log('initializing Reveal')
 				Reveal.initialize({
-					width: 960,
+					// width: 960,
+					width: 1280,
   					height: 720,
+					margin: 0.07,
 
-					controls: true,
-					progress: true,
+					controls: false,
+					progress: false,
 					center: false,
 					hash: true,
 					fragments: new URLSearchParams(window.location.search).get('noFragments') === null,
 					pdfSeparateFragments: false,
+					backgroundTransition: 'slide',
+					slideNumber: true,
 
 					// Learn about plugins: https://revealjs.com/plugins/
-					plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+					plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight, RevealChalkboard, RevealCustomControls ],
+
+					chalkboard: {
+						background: [ 'rgba(127,127,127,0)' , path + 'img/blackboard.png' ],
+						boardmarkers : [
+								{ color: 'rgba(180,20,60,1)', cursor: 'url(' + cbPath + 'img/boardmarker-red.png), auto'},
+								{ color: 'rgba(100,100,100,1)', cursor: 'url(' + cbPath + 'img/boardmarker-black.png), auto'},
+								{ color: 'rgba(30,144,255, 1)', cursor: 'url(' + cbPath + 'img/boardmarker-blue.png), auto'},
+								{ color: 'rgba(50,205,50,1)', cursor: 'url(' + cbPath + 'img/boardmarker-green.png), auto'},
+								{ color: 'rgba(255,140,0,1)', cursor: 'url(' + cbPath + 'img/boardmarker-orange.png), auto'},
+								{ color: 'rgba(150,0,20150,1)', cursor: 'url(' + cbPath + 'img/boardmarker-purple.png), auto'},
+								{ color: 'rgba(255,220,0,1)', cursor: 'url(' + cbPath + 'img/boardmarker-yellow.png), auto'},
+						],
+					},
 				});
 
 				Reveal.on('ready', event => {
@@ -244,22 +639,26 @@ l[1]</textarea>
 							// this is for print stuff
 							return
 						}
+						const s = getComputedStyle(document.body).getPropertyValue('--slide-scale') || 1;
+						const h = parseInt(getComputedStyle(document.body).getPropertyValue('--slide-height')) * s
 						document.querySelectorAll('section[data-autoscale]').forEach(elem => {
-							for(i = 0; i < 10 && elem.getBoundingClientRect().height > 720; i++) {
+							if(elem.getBoundingClientRect().height > h) {
 								let fs = getComputedStyle(elem).fontSize
 								if (!fs.endsWith('px')) {
-									break;
+									return;
 								}
 								elem.style.fontSize = (parseInt(fs) - 1) + 'px';
 								scaled = true
 							}
 						});
-						if (!scaled) {
+						if (scaled) {
+							Reveal.layout()
+						} else {
 							window.clearInterval(downScalerId)
 							// workaround from hell to make highlighted textareas work after this kind of resize 0_o
 							window.setTimeout(() => Reveal.dispatchEvent({type: 'resize', data: {}}), 1000)
 						}
-					}, 1);
+					}, 100);
 				})
 			})
 		</script>
