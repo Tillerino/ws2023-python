@@ -29,6 +29,8 @@
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins@4.2.5/chalkboard/style.css">
 
 		<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+		<script src="reconnecting-websocket.js"></script>
+		<script src="ws.js"></script>
 
 		<style>
 			.reveal textarea, .reveal pre { font-size: 1em; }
@@ -893,6 +895,10 @@ test()</textarea>
 							window.setTimeout(() => Reveal.dispatchEvent({type: 'resize', data: {}}), 1000)
 						}
 					}, 100);
+				})
+
+				Reveal.on('slidechanged', event => {
+					sendSlideChange(event.indexh, event.indexv)
 				})
 			})
 		</script>
