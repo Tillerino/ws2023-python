@@ -32,8 +32,8 @@ var iws = undefined
 	}
 }
 
-function sendSlideChange(indexh, indexv) {
+function sendSlideChange(slide) {
 	if (iws) {
-		iws.send(JSON.stringify({ '@type': 'Slide', uuid, deck, indexh, indexv }))
+		iws.send(JSON.stringify({ '@type': 'Slide', uuid, deck, slide }))
 	}
 }

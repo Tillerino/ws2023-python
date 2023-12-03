@@ -898,7 +898,8 @@ test()</textarea>
 				})
 
 				Reveal.on('slidechanged', event => {
-					sendSlideChange(event.indexh, event.indexv)
+					let s = Reveal.getSlidePastCount() + 1
+					sendSlideChange(s)
 				})
 			})
 		</script>
