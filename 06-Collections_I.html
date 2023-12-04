@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>06 - Collections I (Pythonkurs für Anfänger WS2023)</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="thonny.css">
+
+		<!-- Font awesome is required for the chalkboard plugin -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+		<!-- Custom controls plugin is used to for opening and closing annotation modes. -->
+		<script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@4.2.5/customcontrols/plugin.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins@4.2.5/customcontrols/style.css">
+		<!-- Chalkboard plugin -->
+		<script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@4.2.5/chalkboard/plugin.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins@4.2.5/chalkboard/style.css">
+
+		<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+
+		<script src="reconnecting-websocket.js"></script>
+		<script src="ws.js"></script>
+
+		<style>
+			.reveal textarea, .reveal pre { font-size: 1em; }
+			.reveal .slides { text-align: left; }
+			:root { --r-heading-text-transform: none; --r-heading-font-weight: 200; }
+			html.reveal-print .reveal .slides section.title, section.title { padding-top: 200px!important; }
+
+			a.runCode { padding-left: 0.5em; padding-right: 0.5em; color: black; }
+			a.runCode:hover { color: red; }
+			.runCode::before { content: '➧' }
+
+			p-out { padding-left: 0.2em; padding-right: 0.2em; font-family: monospace; background-color: #eee; white-space: pre-wrap; }
+			p-out .error { color: #cc0000; }
+			p-il { padding-left: 0.1em; padding-right: 0.1em; font-family: monospace; background-color: #eee; }
+			.no-background span[data-inline-python], .no-background .hljs { background: none; }
+			
+			textarea[is='highlighted-code'] { position:relative; top: .3em; }
+			.reveal pre { box-shadow: .05em .05em 0.1em rgba(0, 0, 0, 0.15); }
+
+			li { margin-top: .1em; margin-bottom: .1em }
+			ul ul, ul ol, ol ul, ol ol { font-size: .85em; }
+		</style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+				<section>
+					<section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title" style="font-size: 35px;">
+						<h1 style="font-size: 100px;">Pythonkurs für Anfänger</h1>
+	
+						<h2 style="padding-top: 40px;">Einheit 06: Collections I</h2>
+	
+						<a id="switch-to-interactive" style="visibility: hidden">Zu den interaktiven Folien</a>
+						<script>
+							let elem = document.getElementById("switch-to-interactive")
+							let file = window.location.pathname.substr(window.location.pathname.lastIndexOf('/'))
+							elem.href = "https://tillerino.github.io/ws2023-python" + file + "?noFragments&withControls"
+							if (new URLSearchParams(window.location.search).get('print-pdf') !== null) {
+								elem.style.visibility = "visible"
+							}
+						</script>
+	
+						<div style="padding-top: 65px;">Tillmann Gaida</div>
+						<div style="padding-top: 20px;">Software and Computational System Lab</div>
+					</section>
+	
+					<section class="center" style="text-align: center;">Platz für Fragen</section>
+				</section>
+
+				<!--  SECTION: SLICES -->
+				<section>
+					<section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
+						<h3 style="margin-top: 200px">Slices</h3>
+					</section>
+	
+					<section class="center" style="text-align: center;">Platz für Fragen</section>
+				</section>
+
+				<!-- UEBUNG -->
+
+				<section>
+					<section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
+						<h3 style="margin-top: 200px">Übung</h3>
+					</section>
+
+					<section style="font-size: 25px;">
+						<h1>Warm-up 1</h1>
+						<div style="display: grid; column-gap: 1em; grid-template-columns: 48% 48%">
+							<ul>
+								<li>Schreiben Sie eine Funktion <p-il>is_digit</p-il>, die ueberprueft, ob ein Zeichen (also ein einstelliger string) eine Ziffer ist. Beispiele:<br>
+									<textarea style="display: none"
+>def is_digit(c):
+	return len(c) == 1 and c >= '0' and c <= '9'</textarea>
+									<p-ex cols="20">is_digit('0')</p-ex><br>
+									<p-ex cols="20">is_digit('1')</p-ex><br>
+									<p-ex cols="20">is_digit('9')</p-ex><br>
+									<p-ex cols="20">is_digit('a')</p-ex><br>
+									<p-ex cols="20">is_digit('123')</p-ex><br>
+								</li>
+							</ul>
+							<div>
+								Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:
+								<p-in data-ns="test" cols=35 rows=6></p-in><br>
+								<textarea data-ns="test" style="display: none"
+>def test_input_expected_pairs(pairs, function):
+	function_name = repr(function).split(" ")[1]
+	for *i, e in d:
+		a = function(*i) 
+		if a != e:
+			print(function_name, '(', sep="", end="")
+			print(*[repr(x) for x in i], sep=", ", end=")\n")
+			print("Erwartet:", repr(e))
+			print("Ist aber:", repr(a))
+			return
+	print('Sieht gut aus!')
+
+d = [
+	('0', True),
+	('1', True),
+	('2', True),
+	('3', True),
+	('4', True),
+	('5', True),
+	('6', True),
+	('7', True),
+	('8', True),
+	('9', True),
+	('', False),
+	('a', False),
+	('z', False),
+	('A', False),
+	('Z', False),
+	('123', False),
+	(' ', False),
+]
+
+test_input_expected_pairs(d, is_digit)		
+</textarea>
+								<p-out data-ns="test"></p-out>
+							</div>
+						</div>
+					</section>
+
+					<section style="font-size: 25px;">
+						<h1>Warm-up 2</h1>
+						<div style="display: grid; column-gap: 1em; grid-template-columns: 48% 48%">
+							<ul>
+								<li>Schreiben Sie eine Funktion <p-il>outer_digits</p-il>, die die erste und die letzte Ziffer in einem String verkettet zurueckgibt. Beispiele:<br>
+									<textarea style="display: none"
+>def is_digit(c):
+	return len(c) == 1 and c >= '0' and c <= '9'
+
+def outer_digits(s):
+	first = None
+	last = None
+	for c in s:
+		if is_digit(c):
+			if first == None:
+				first = c
+			last = c
+	return first + last
+</textarea>
+									<p-ex cols="25">outer_digits('a1b2c')</p-ex><br>
+									<p-ex cols="25">outer_digits('a1b')</p-ex><br>
+									<p-ex cols="25">outer_digits('8x9')</p-ex><br>
+									<p-ex cols="25">outer_digits('5')</p-ex>
+								</li>
+								<li>Nutzen Sie die Funktion aus von eben gerade!</li>
+							</ul>
+							<div>
+								Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:
+								<p-in data-ns="test" cols=35 rows=6></p-in><br>
+								<textarea data-ns="test" style="display: none"
+>def test_input_expected_pairs(pairs, function):
+	function_name = repr(function).split(" ")[1]
+	for *i, e in d:
+		a = function(*i) 
+		if a != e:
+			print(function_name, '(', sep="", end="")
+			print(*[repr(x) for x in i], sep=", ", end=")\n")
+			print("Erwartet:", repr(e))
+			print("Ist aber:", repr(a))
+			return
+	print('Sieht gut aus!')
+
+d = [
+	('a1b2c', '12'),
+	('a1b', '11'),
+	('8x9', '89'),
+	('5', '55'),
+	('a3b1b5x98y', '38'),
+]
+
+test_input_expected_pairs(d, outer_digits)		
+</textarea>
+								<p-out data-ns="test"></p-out>
+							</div>
+						</div>
+					</section>
+	
+					<section style="font-size: 29px;">
+						<h1>Übung I: Advent of Code 2023</h1>
+						Der <a href="https://adventofcode.com" target="_blank">Advent of Code 2023</a> hat begonnen!
+						<ul>
+							<li>Lösen Sie die <strong>erste Hälfte</strong> des <a href="https://adventofcode.com/2023/day/1" target="_blank">ersten Problems</a> des Advent of Code 2023.</li>
+							<li>Ihr Input sowie die Lösung sind personalisiert. Um den Input zu bekommen und die Lösung zu kontrollieren, müssen Sie sich einloggen.</li>
+							<li>Falls Sie sich nicht einloggen (bzw. registrieren) möchten, können Sie meinen Input verwenden.
+							Sie können ihn aus Moodle herunterladen (<code>2023-01-1-input.txt</code>).
+							Zur Kontrolle: die Lösung für diesen Input ist <code>57346</code>.</li>
+							<li>Um den Input zeilenweise aus der Datei zu lesen, können Sie diese Konstruktion verwenden:<br>
+								<textarea is="highlighted-code" cols="50" rows="2" language="python" tab-size="2" auto-height
+>for line_lf in open('2023-01-1-input.txt'):
+	line = line_lf.rstrip()</textarea><br>
+							</li>
+						</ul>
+					</section>
+	
+
+				</section>
+			</div>
+
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/search/search.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script src="highlighted-code.js"></script>
+		<script>
+			// <p-il> tag for quick inline Python highlighting
+			class PythonInline extends HTMLElement {
+				constructor() {
+					super();
+					let code = this.innerText
+					this.innerHTML = `<code class="language-python hljs">${RevealHighlight().hljs.highlight(code, { language: 'python' }).value}</code>`
+				}
+			}
+			customElements.define("p-il", PythonInline);
+
+			// <p-in> tag for quick python input
+			class PythonInput extends HTMLElement {
+				constructor() {
+					super();
+					let code = this.innerText
+					let autoHeight = this.getAttribute("auto-height") !== null ? "auto-height" : ""
+					let rows = this.getAttribute("rows") !== null ? `rows="${this.getAttribute("rows")}"` : `rows="${code.split('\n').length}"`
+					let cols = this.getAttribute("cols") !== null ? `cols="${this.getAttribute("cols")}"` : ""
+					let ns = this.getAttribute("data-ns") !== null ? `data-ns="${this.getAttribute("data-ns")}"` : "data-ns"
+					this.innerHTML = `<textarea is="highlighted-code" language="python" tab-size="2" ${autoHeight} ${rows} ${cols} ${ns}>${code}</textarea>`
+				}
+			}
+			customElements.define("p-in", PythonInput);
+
+			// <p-out> tag for quick python output
+			class PythonOutput extends HTMLElement {
+				constructor() {
+					super();
+				}
+			}
+			customElements.define("p-out", PythonOutput);
+
+			// <p-ex> tag for quick python example (combined input-output)
+			class PythonExample extends HTMLElement {
+				constructor() {
+					super();
+					let code = this.innerText
+					let cols = this.getAttribute("cols") !== null ? `cols="${this.getAttribute("cols")}"` : ""
+					let ns = this.getAttribute("data-ns") !== null ? `data-ns="${this.getAttribute("data-ns")}"` : "data-ns"
+					let rows = `rows="${code.split('\n').length}"`
+					this.innerHTML = `<textarea is="highlighted-code" language="python" tab-size="2" auto-height ${rows} ${cols} ${ns}>${code}</textarea>`
+						+ `<p-out ${ns}></p-out>`
+				}
+			}
+			customElements.define("p-ex", PythonExample);
+
+			// disable spellcheck in textareas
+			for (const elem of document.querySelectorAll('textarea')) {
+				elem.spellcheck = false
+			}
+
+			let out = [ ]
+			let skipPython = false
+			async function init() {
+				if (skipPython) {
+					return
+				}
+				console.log('loading Pyodide')
+				let p = await loadPyodide({
+					stdout: x => out.push(x),
+					stderr: x => out.push(x)
+				});
+				
+				console.log('importing repr_shorten')
+				let namespace = p.globals.get("dict")();
+				p.runPython('from pyodide.console import repr_shorten', { globals: namespace })
+				return { p: p, repr_shorten: namespace.get("repr_shorten"), n: p.globals.get("dict")() }
+			}
+			let pyodide = init()
+
+			function getParentSlide(elem) {
+				while (elem && elem.tagName != "SECTION") {
+					elem = elem.parentElement
+				}
+				return elem
+			}
+
+			async function fillOutput(elem) {
+				// we only take code on current slide
+				slide = getParentSlide(elem)
+				// namespace can be undefined or empty!
+				let ns = elem.dataset.ns
+
+				// we separate by outputs so that we can isolate the print/return for exactly the last box
+				var code = [ [ ] ]
+				for(e of slide.querySelectorAll(`textarea, p-out`)) {
+					if (e == elem) {
+						break
+					}
+					// ignore namespace entirely if either element's namespace is empty or undefined
+					if ((ns || e.dataset.ns) && e.dataset.ns != ns) {
+						continue
+					}
+					if (e.tagName == "P-OUT") {
+						// introduce new code group to make sure that outputs are neatly separated
+						code.push([ ])
+					} else {
+						code.slice(-1)[0].push(c = e.value || e.innerText.trim() || e.innerHTML.trim())
+					}
+				}
+				// console.log('running code', code, 'in', ns)
+				await runCode(code, elem)
+			}
+
+			async function runCode(code, elem) {
+				// see here: https://github.com/pyodide/pyodide/blob/main/src/templates/console.html
+
+				elem.innerText = "..."
+				p = (await pyodide)
+				p.n.clear() // clear the namespace
+				var result = undefined
+				let error = [ ]
+				for (cs of code) {
+					out.length = 0
+					for (c of cs) {
+						try {
+							result = p.p.runPython(c, { globals: p.n })
+						} catch (e) {
+							if (e.constructor.name === "PythonError") {
+								lines = e.message.trim().split('\n')
+								ours = 1
+								for(l in lines) {
+									if(lines[l].startsWith('  File "<exec>", ')) {
+										ours = l
+										lines[l] = "  " + lines[l].substr(17);
+									}
+									if(lines[l].endsWith(', in <module>')) {
+										lines[l] = lines[l].substr(0, lines[l].indexOf(', in <module>'));
+									}
+								}
+								error.push(lines[0] + "\n" + lines.slice(ours).join("\n"));
+								break;
+							} else {
+								throw e;
+							}
+						}
+					}
+				}
+				
+				elem.innerText = out.join("\n")
+				html = elem.innerHTML
+				if (error.length > 0) {
+					elem.innerText = error.join("\n")
+					elem.innerHTML = (html ? html + "<br>" : "") + `<span class="error">${elem.innerHTML}</code>`
+				} else if (result !== undefined) {
+					elem.innerText = p.repr_shorten.callKwargs(result, {
+						separator: "\n<long output truncated>\n",
+					});
+					elem.innerHTML = (html ? html + "<br>" : "") + `<code class="language-python">${elem.innerHTML}</code>`
+				}
+				// console.log('result:', elem.innerHTML)
+
+				elem.style.display = elem.innerHTML.indexOf("<br") >= 0 ? "inline-block" : "inline";
+
+				if (Reveal.getPlugin && elem.lastChild && elem.lastChild.tagName == "CODE") {
+					// cheap way of preventing crashes before initialized
+					Reveal.getPlugin('highlight').highlightBlock(elem.lastChild)
+				}
+				if (Reveal.layout) {
+					// so that highlights move with their textareas
+					Reveal.dispatchEvent({type: 'resize', data: {}})
+				}
+			}
+
+			async function runAllCode() {
+				if (skipPython) {
+					return
+				}
+				for (const elem of document.querySelectorAll('p-out')) {
+					// put the little arrow before
+					a = document.createElement("a")
+					a.className = "runCode"
+					a.onclick = () => fillOutput(elem);
+					elem.parentElement.insertBefore(a, elem)
+					await fillOutput(elem)
+				}
+			}
+			
+			let cbPath = 'https://cdn.jsdelivr.net/npm/reveal.js-plugins@4.2.5/chalkboard/'
+			let allCodeInserted = pyodide.then(runAllCode).then(() => {
+				console.log('initializing Reveal')
+				Reveal.initialize({
+					// width: 960,
+					width: 1280,
+  					height: 720,
+					margin: 0.07,
+
+					controls: new URLSearchParams(window.location.search).get('withControls') !== null,
+					progress: false,
+					center: false,
+					hash: true,
+					fragments: new URLSearchParams(window.location.search).get('noFragments') === null,
+					pdfSeparateFragments: false,
+					backgroundTransition: 'slide',
+					slideNumber: 'c',
+
+					// Learn about plugins: https://revealjs.com/plugins/
+					plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight, RevealChalkboard, RevealCustomControls ],
+
+					chalkboard: {
+						background: [ 'rgba(127,127,127,0)' , path + 'img/blackboard.png' ],
+						boardmarkers : [
+								{ color: 'rgba(180,20,60,1)', cursor: 'url(' + cbPath + 'img/boardmarker-red.png), auto'},
+								{ color: 'rgba(100,100,100,1)', cursor: 'url(' + cbPath + 'img/boardmarker-black.png), auto'},
+								{ color: 'rgba(30,144,255, 1)', cursor: 'url(' + cbPath + 'img/boardmarker-blue.png), auto'},
+								{ color: 'rgba(50,205,50,1)', cursor: 'url(' + cbPath + 'img/boardmarker-green.png), auto'},
+								{ color: 'rgba(255,140,0,1)', cursor: 'url(' + cbPath + 'img/boardmarker-orange.png), auto'},
+								{ color: 'rgba(150,0,20150,1)', cursor: 'url(' + cbPath + 'img/boardmarker-purple.png), auto'},
+								{ color: 'rgba(255,220,0,1)', cursor: 'url(' + cbPath + 'img/boardmarker-yellow.png), auto'},
+						],
+					},
+				});
+
+				var ready = false
+				let autoscale = () => {
+					if (Reveal.isOverview()) {
+						return;
+					}
+					var scaled = false
+					if (document.querySelectorAll('section').length == 0) {
+						// this is for print stuff
+						return
+					}
+					const s = getComputedStyle(document.body).getPropertyValue('--slide-scale') || 1;
+					const h = parseInt(getComputedStyle(document.body).getPropertyValue('--slide-height')) * s
+					document.querySelectorAll('section[data-autoscale]').forEach(elem => {
+						if(elem.dataset.autoscale == "done" || elem.getBoundingClientRect().height == 0) {
+							return
+						}
+						if(elem.getBoundingClientRect().height > h) {
+							let fs = getComputedStyle(elem).fontSize
+							if (!fs.endsWith('px')) {
+								return;
+							}
+							elem.style.fontSize = (parseInt(fs) - 1) + 'px';
+							scaled = true
+						} else {
+							elem.dataset.autoscale = "done"
+						}
+					});
+					if (scaled) {
+						Reveal.dispatchEvent({type: 'resize', data: {}})
+					}
+				}
+
+				Reveal.on('ready', event => {
+					console.log('reveal.js ready')
+					document.querySelectorAll('p-out code').forEach(elem => {
+						Reveal.getPlugin('highlight').highlightBlock(elem)
+					});
+					autoscale()
+				})
+
+				Reveal.on('resize', event => {
+					console.log('reveal.js resize')
+					autoscale()
+				})
+
+				Reveal.on('slidechanged', event => {
+					let s = Reveal.getSlidePastCount() + 1
+					sendSlideChange(s)
+					autoscale()
+					Reveal.dispatchEvent({type: 'resize', data: {}})
+				})
+
+				Reveal.on('overviewshown', event => {
+					Reveal.dispatchEvent({type: 'resize', data: {}})
+				})
+
+				Reveal.on('overviewhidden', event => {
+					Reveal.dispatchEvent({type: 'resize', data: {}})
+				})
+			})
+		</script>
+
+	</body>
+</html>
