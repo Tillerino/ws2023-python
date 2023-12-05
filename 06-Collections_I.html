@@ -45,7 +45,7 @@
 
 			p-out { padding-left: 0.2em; padding-right: 0.2em; font-family: monospace; background-color: #eee; white-space: pre-wrap; }
 			p-out .error { color: #cc0000; }
-			p-il { padding-left: 0.1em; padding-right: 0.1em; font-family: monospace; background-color: #eee; }
+			p-il { padding-left: 0.1em; padding-right: 0.1em; font-family: monospace; background-color: #eee; text-wrap: nowrap; }
 			.no-background span[data-inline-python], .no-background .hljs { background: none; }
 			
 			textarea[is='highlighted-code'] { position:relative; top: .3em; }
@@ -81,6 +81,165 @@
 						<div style="padding-top: 20px;">Software and Computational System Lab</div>
 					</section>
 	
+					<section data-autoscale>
+						<h1>Advent of Code</h1>
+						<ul>
+							<li>Jedes Jahr gibt es den <a href="https://adventofcode.com" target="_blank">Advent of Code</a>: einen Adventskalender an Programmieraufgaben.</li>
+							<li>Die erste Aufgabe gibt es am 1. Dezember und die letzte am 25. Dezember.</li>
+							<li>Die Aufgaben fangen einfach an und werden immer schwieriger.</li>
+							<li><a href="https://adventofcode.com/2023/leaderboard/private/view/2278782">Leaderboard</a>: <code>2278782-ab82d160</code><br>
+							    ([Log in], [Leaderboard], [Private Leaderboard], code eingeben)</li>
+						</ul>
+						<br><br>
+						<iframe src="https://adventofcode.com" width="100%" height="200"></iframe>
+					</section>
+
+					<section style="font-size: 28px;">
+						<h1>(letzte) Übung III: Schere, Stein, Papier</h1>
+						
+						<textarea style="display: none;"
+>def rps(me, you):
+	if me == you:
+		return 'unentschieden'
+	if (me, you) in (('r', 's'), ('s', 'p'), ('p', 'r')):
+		return 'ich'
+	if (you, me) in (('r', 's'), ('s', 'p'), ('p', 'r')):
+		return 'du'
+	return 'Was soll das rumgefummel hier'</textarea>
+		
+						<div style="display: grid; column-gap: 1em; grid-template-columns: 50% 48%">
+							<ul>
+								<li>Wir implementieren Schere, Stein, Papier auf englisch, da Schere und Stein mit dem gleichen Buchstaben beginnen 😒
+									<ul>
+										<li>Stein = rock = r</li>
+										<li>Papier = paper = p</li>
+										<li>Schere = scissors = s</li>
+									</ul>
+								</li>
+								<li>Implementieren Sie eine Funktion <p-il>rps</p-il>, die zwei Argumente hat.
+									<ul>Als erstes "meine" Wahl: <p-il>'r'</p-il>, <p-il>'p'</p-il> oder <p-il>'s'</p-il>.</ul>
+									<ul>Als zweites "deine" Wahl: <p-il>'r'</p-il>, <p-il>'p'</p-il> oder <p-il>'s'</p-il>.</ul>
+								</li>
+								<li>Zurückgeben soll die Funktion, wer gewonnen hat. Beispiele:<br>
+									<p-ex cols="15">rps('s', 'p')</p-ex> <br>
+									<p-ex cols="15">rps('r', 'p')</p-ex> <br>
+									<p-ex cols="15">rps('r', 'r')</p-ex> <br>
+								</li>
+							</ul>
+							<div>
+								Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:<br>
+								<p-in data-ns="test" cols="35" rows="8"></p-in><br>
+								<textarea data-ns="test" style="display: none;"
+>def test_input_expected_pairs(pairs, function):
+	function_name = repr(function).split(" ")[1]
+	for *i, e in d:
+		a = function(*i) 
+		if a != e:
+			print(function_name, '(', sep="", end="")
+			print(*[repr(x) for x in i], sep=", ", end=")\n")
+			print("Erwartet:", repr(e))
+			print("Ist aber:", repr(a))
+			return
+	print('Sieht gut aus!')
+	
+d = [
+	('r', 'r', 'unentschieden'),
+	('s', 's', 'unentschieden'),
+	('p', 'p', 'unentschieden'),
+	('r', 's', 'ich'),
+	('s', 'p', 'ich'),
+	('p', 'r', 'ich'),
+	('s', 'r', 'du'),
+	('p', 's', 'du'),
+	('r', 'p', 'du'),
+	]
+	
+test_input_expected_pairs(d, rps)</textarea>
+	<p-out data-ns="test"></p-out><br>
+							</div>
+						</div>
+					</section>
+
+					
+					<section data-autoscale>
+						<h1>Werkzeuge</h1>
+						<div style="display: grid; column-gap: .5em; grid-template-columns: 60% 40%;">
+							<div style="border-right: solid 1px black; padding-bottom: .5em; padding-right: .5em;">
+								<h3>Syntax</h3>
+								`fun(x)`,
+								`x`,
+								`'abc'`,
+								`123`,
+								`=`,
+								`if`,
+								`elif`,
+								`else`,
+								`while`,
+								`continue`,
+								`break`,
+								`in`,
+								`for i in l`,
+								`[ a, b, c ]`,
+								`l[i]`,
+								Einrückung
+								<ul>
+									<li>Operatoren: 
+										`+`,
+										`-`,
+										`*`,
+										`/`,
+										`//`,
+										`%`,
+										`**`,
+										`==`,
+										`!=`,
+										`&lt;`,
+										`&gt;`,
+										`&lt;=`,
+										`&gt;=`,
+										`and`,
+										`or`,
+										`not`
+									</li>
+								</ul>
+								`def`,
+								`return`,
+								`fun(..., k=v)`
+							</div>
+							<div style="padding-bottom: .5em;">
+								<h3>Algorithmik:</h3>
+								Fallunterscheidung,
+								Laufvariable,
+								Iterieren (über Zeilen einer Datei)
+							</div>
+						</div>
+						<div style="display: grid; column-gap: .5em; grid-template-columns: 60% 40%; border-top: solid black 1px">
+							<div style="border-right: solid 1px black; padding-top: .5em; padding-right: .5em;">
+								<h3>Vokabular</h3>
+								`print`,
+								`input`,
+								`int`,
+								`str`,
+								`list`,
+								`len`,
+								`split`,
+								`open`,
+								`rstrip`,
+								`min`
+								`max`,
+								`sum`,
+								`append`,
+								`extend`,
+								`pop`,
+								`range`
+							</div>
+							<div style="padding-top: .5em;">
+								<h3>Architektur</h3>
+								Funktionen
+							</div>
+						</div>
+					</section>
+	
 					<section class="center" style="text-align: center;">Platz für Fragen</section>
 				</section>
 
@@ -88,6 +247,78 @@
 				<section>
 					<section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
 						<h3 style="margin-top: 200px">Slices</h3>
+					</section>
+	
+					<section data-autoscale>
+						<h1>Slices</h1>
+						<div style="display: grid; column-gap: 1em; grid-template-columns: 48% 48%">
+							<ul><li>Bereits bekannt: Setzt man einen Index in eckige Klammern hinter eine Liste, greift man auf ein Element der Liste zu.<br>
+								```
+l = [5, 6, 7, 8, 9]
+l[1]
+							```</li></ul>
+							<ul><li class="fragment">Setzt man ein Index-Paar getrennt durch einen Doppelpunkt in eckige Klammern hinter eine Liste, greift man auf eine Teilliste zu.<br>
+								```
+l[1:3]
+							```<br>
+							So einen Ausdruck nennt man ein <em>Slice</em>.</ul>
+						</div>
+					</section>
+	
+					<section data-autoscale>
+						<h1>Indizierung</h1>
+						<ul>
+							<li>Der linke Index ist inklusiv, der rechte exklusiv. Dies ist analog zu `range`.<br>```
+l = [5, 6, 7, 8, 9]
+l[1:1]						
+							```</li>
+							<li class="fragment">Soll sich die Teilliste jeweils maximal ausdehnen, koennen beide Indizes auch weggelassen werden:<br>```
+l[:2]
+							```<br>```
+l[2:]
+							```</li>
+							<li class="fragment">Negative Indizes funktionieren ebenso wie beim Elementzugriff:<br>```
+l[1:-1]						
+							```<br>```
+l[-2:]						
+							```</li>
+							<li class="fragment">Im Gegensatz zum Elementzugriff gibt es keine Indexfehler:<br>```
+l[10:1]						
+							```</li>
+						</ul>
+					</section>
+
+					<section data-autoscale>
+						<h1>Zuweisung</h1>
+						<ul>
+							<li>Ein Slice kann insbesondere links von einer Zuweisung stehen. Damit veraendert man die Liste:<br>```
+l = [5, 6, 7, 8, 9]
+l[1:4] = [ 1, 2, 3 ]
+l
+							```</li>
+							<li class="fragment">Bei einer Zuweisung kann auch die Laenge der Liste veraendert werden:<br>```
+l = [5, 6, 7, 8, 9]
+l[1:4] = [ 1 ]
+l
+							```</li>
+						</ul>
+					</section>
+
+					<section data-autoscale>
+						<h1>String-Slices</h1>
+						<ul>
+							<li>Mit der gleichen Notation kann man auch Strings slicen:<br>```
+s = 'abcde'
+s[:1]
+							```<br>```
+s[1:2]
+							```<br>```
+s[2:]
+							```</li>
+							<li class="fragment">Da Strings nicht veraendert werden koennen, gehen Zuweisungen nicht:<br>```
+s[1:2] = ''
+							```</li>
+						</ul>
 					</section>
 	
 					<section class="center" style="text-align: center;">Platz für Fragen</section>
@@ -250,7 +481,11 @@ test_input_expected_pairs(d, outer_digits)
 			class PythonInline extends HTMLElement {
 				constructor() {
 					super();
-					let code = this.innerText
+					this.go();
+				}
+
+				go() {
+					let code = this.code ? this.code : this.innerText
 					this.innerHTML = `<code class="language-python hljs">${RevealHighlight().hljs.highlight(code, { language: 'python' }).value}</code>`
 				}
 			}
@@ -265,7 +500,7 @@ test_input_expected_pairs(d, outer_digits)
 					let rows = this.getAttribute("rows") !== null ? `rows="${this.getAttribute("rows")}"` : `rows="${code.split('\n').length}"`
 					let cols = this.getAttribute("cols") !== null ? `cols="${this.getAttribute("cols")}"` : ""
 					let ns = this.getAttribute("data-ns") !== null ? `data-ns="${this.getAttribute("data-ns")}"` : "data-ns"
-					this.innerHTML = `<textarea is="highlighted-code" language="python" tab-size="2" ${autoHeight} ${rows} ${cols} ${ns}>${code}</textarea>`
+					this.innerHTML = `<textarea is="highlighted-code" language="python" tab-size="2" ${autoHeight} ${rows} ${cols} ${ns} spellcheck="false">${code}</textarea>`
 				}
 			}
 			customElements.define("p-in", PythonInput);
@@ -279,23 +514,88 @@ test_input_expected_pairs(d, outer_digits)
 			customElements.define("p-out", PythonOutput);
 
 			// <p-ex> tag for quick python example (combined input-output)
+			// ``` is a shortcut for this tag. You can put attributes after, ex:
+			// ```cols=15
+			// print('123')
+			// ```
 			class PythonExample extends HTMLElement {
 				constructor() {
 					super();
-					let code = this.innerText
+					this.go();
+				}
+
+				go() {
+					let code = this.code ? this.code : this.innerText
 					let cols = this.getAttribute("cols") !== null ? `cols="${this.getAttribute("cols")}"` : ""
 					let ns = this.getAttribute("data-ns") !== null ? `data-ns="${this.getAttribute("data-ns")}"` : "data-ns"
 					let rows = `rows="${code.split('\n').length}"`
-					this.innerHTML = `<textarea is="highlighted-code" language="python" tab-size="2" auto-height ${rows} ${cols} ${ns}>${code}</textarea>`
+					this.innerHTML = `<textarea is="highlighted-code" language="python" tab-size="2" auto-height ${rows} ${cols} ${ns} spellcheck="false">${code}</textarea>`
 						+ `<p-out ${ns}></p-out>`
 				}
 			}
 			customElements.define("p-ex", PythonExample);
 
-			// disable spellcheck in textareas
-			for (const elem of document.querySelectorAll('textarea')) {
-				elem.spellcheck = false
+			function replaceBackticks() {
+				for (n of document.body.querySelectorAll(`section *`)) {
+					if (n.tagName == "TEXTAREA" || n.tagName.startsWith("P-")) {
+						continue
+					}
+					do {
+						replaced = false
+						for (e of n.childNodes) {
+							if (e.nodeType == Node.TEXT_NODE) {
+								if (replaceBackticksInText(e)) {
+									n.removeChild(e)
+									replaced = true
+									break
+								}
+							}
+						}
+					} while(replaced)
+				}
 			}
+			function replaceBackticksInText(textNode) {
+				if (textNode.textContent.indexOf("`") < 0) {
+					return
+				}
+				let chunks = textNode.textContent.split("```");
+				for (i in chunks) {
+					if (parseInt(i) % 2 == 0) {
+						replaceSingleBackticksInText(textNode, chunks[i])
+					} else {
+						let ex = new PythonExample()
+						let lines = chunks[i].trimEnd().split("\n")
+						setAttributes(ex, lines[0])
+						ex.code = lines.splice(1).join("\n")
+						ex.go()
+						textNode.parentElement.insertBefore(ex, textNode)
+					}
+				}
+				return true
+			}
+			function replaceSingleBackticksInText(textNode, text) {
+				let chunks = text.split("`");
+				for (i in chunks) {
+					if (parseInt(i) % 2 == 0) {
+						textNode.parentElement.insertBefore(document.createTextNode(chunks[i]), textNode);
+					} else {
+						let ex = new PythonInline()
+						ex.code = chunks[i]
+						ex.go()
+						textNode.parentElement.insertBefore(ex, textNode)
+					}
+				}
+			}
+			function setAttributes(elem, s) {
+				if (!s.trim()) {
+					return
+				}
+				for (c of s.split(" ")) {
+					let p = c.split("=", 2)
+					elem.setAttribute(p[0], p[1])
+				}
+			}
+			replaceBackticks()
 
 			let out = [ ]
 			let skipPython = false
