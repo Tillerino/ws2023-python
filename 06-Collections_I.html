@@ -265,14 +265,14 @@ l[1:3]
 						</div>
 					</section>
 	
-					<section data-autoscale>
+					<section style="font-size: 32px;">
 						<h1>Indizierung</h1>
 						<ul>
 							<li>Der linke Index ist inklusiv, der rechte exklusiv. Dies ist analog zu `range`.<br>```
 l = [5, 6, 7, 8, 9]
 l[1:1]						
 							```</li>
-							<li class="fragment">Soll sich die Teilliste jeweils maximal ausdehnen, koennen beide Indizes auch weggelassen werden:<br>```
+							<li class="fragment">Soll sich die Teilliste jeweils maximal ausdehnen, können beide Indizes auch weggelassen werden:<br>```
 l[:2]
 							```<br>```
 l[2:]
@@ -291,12 +291,12 @@ l[10:1]
 					<section data-autoscale>
 						<h1>Zuweisung</h1>
 						<ul>
-							<li>Ein Slice kann insbesondere links von einer Zuweisung stehen. Damit veraendert man die Liste:<br>```
+							<li>Ein Slice kann insbesondere links von einer Zuweisung stehen. Damit verändert man die Liste:<br>```
 l = [5, 6, 7, 8, 9]
 l[1:4] = [ 1, 2, 3 ]
 l
 							```</li>
-							<li class="fragment">Bei einer Zuweisung kann auch die Laenge der Liste veraendert werden:<br>```
+							<li class="fragment">Bei einer Zuweisung kann auch die Länge der Liste verändert werden:<br>```
 l = [5, 6, 7, 8, 9]
 l[1:4] = [ 1 ]
 l
@@ -304,24 +304,113 @@ l
 						</ul>
 					</section>
 
-					<section data-autoscale>
+					<section style="font-size: 32px">
 						<h1>String-Slices</h1>
-						<ul>
-							<li>Mit der gleichen Notation kann man auch Strings slicen:<br>```
+						<div style="display: grid; column-gap: 1em; grid-template-columns: 48% 48%">
+							<ul>
+								<li>Mit der gleichen Notation kann man auch Strings slicen:<br>```cols=15
 s = 'abcde'
 s[:1]
-							```<br>```
+								```<br>```cols=15
 s[1:2]
-							```<br>```
+								```<br>```cols=15
 s[2:]
+								```</li>
+								<li class="fragment">Mit einem einzelnen Index greift man auf ein einzelnes Zeichen zu:<br>```cols=15
+s[1]
+								```</li>
+							</ul>
+							<ul>
+								<li class="fragment">Da Strings nicht verändert werden können, funktionieren Zuweisungen nicht.</li>
+								<li class="fragment">Es gibt eine weitere Aehnlichkeit zu Listen. Sie können über die Zeichen in einem String iterieren:<br>```
+for i in s:
+	print('hallo', i)
+								```</li>
+							</ul>
+						</div>
+					</section>
+	
+					<section class="center" style="text-align: center;">Platz für Fragen</section>
+				</section>
+
+				<!-- DICTIONARIES -->
+
+				<section>
+					<section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
+						<h3 style="margin-top: 200px">Dictionaries</h3>
+					</section>
+	
+					<section style="font-size: 35px">
+						<h1>Dictionaries</h1>
+						<ul>
+							<li>Funktionen führen eine Abbildungsvorschrift aus:<br>
+							```
+def f(x):
+	return x * x
+f(2)
 							```</li>
-							<li class="fragment">Da Strings nicht veraendert werden koennen, gehen Zuweisungen nicht:<br>```
-s[1:2] = ''
+							<li class="fragment">Was, wenn wir eine Abbildung brauchen, die keiner Vorschrift folgt, sondern bei der wir konkrete Wertepaare festlegen?</li>
+							<li class="fragment">So eine Abbildung ist in Python ein <em>Dictionary</em><br>```cols=30
+d = { 1: 1, 2: 4, 3: 69 }
+d[2]
+							```</li>
+						</ul>
+					</section>
+	
+					<section style="font-size: 32px">
+						<h1>Modifikation</h1>
+						<ul>
+							<li>Ein Dictionary weist jeweils einem <em>Schlüssel</em> einen <em>Wert</em> zu.
+								Die Notation ist wie bei einer Liste, aber in den eckigen Klammern steht kein Index, sondern der Schlüssel.
+								So funktionieren auch Zuweisungen:<br>
+							```
+d = { 5: 123 }
+d[5] = 456
+d
+							```</li>
+							<li class="fragment">Zuweisungen funktionieren auch, wenn der Schlüssel noch nicht im Dictionary vorkommt:<br>```
+d[6] = 789
+d
+							```</li>
+							<li class="fragment">Element entfernen mit `pop`:<br>```
+print(d.pop(6))
+d
+							```</li>
+						</ul>
+					</section>
+
+					<section style="font-size: 35px">
+						<h1>Dictionaries</h1>
+						<ul>
+							<li>Die Typen von Schlüssel und Wert sind unabhängig voneinander. Insbesondere muss der Schlüssel nicht zwingend eine Zahl sein:<br>```cols=30
+d = { 'a': [ ], 'b': [1, 2] }
+d['b']
+							```</li>
+							<li class="fragment">Ob ein Schlüssel in einem Dictionary vorkommt, kann man mit `in` überprüfen:<br>```cols=10
+'a' in d
+							```<br>```cols=10
+'c' in d
+							```</li>
+						</ul>
+					</section>
+
+					<section style="font-size: 35px">
+						<h1>Iterieren</h1>
+						<ul>
+							<li>Mit `for ... in` kann man über die Schlüssel iterieren:<br>```cols=30
+d = { 'a': [ ], 'b': [1, 2] }
+for k in d:
+	print(k)
+							```</li>
+							<li class="fragment">Um über die Schlüssel-Wert-Paare zu itererieren, kann man die Methode `items` nutzen:<br>```cols=30
+for k, v in d.items():
+	print(k, v)
 							```</li>
 						</ul>
 					</section>
 	
 					<section class="center" style="text-align: center;">Platz für Fragen</section>
+
 				</section>
 
 				<!-- UEBUNG -->
@@ -335,7 +424,7 @@ s[1:2] = ''
 						<h1>Warm-up 1</h1>
 						<div style="display: grid; column-gap: 1em; grid-template-columns: 48% 48%">
 							<ul>
-								<li>Schreiben Sie eine Funktion <p-il>is_digit</p-il>, die ueberprueft, ob ein Zeichen (also ein einstelliger string) eine Ziffer ist. Beispiele:<br>
+								<li>Schreiben Sie eine Funktion <p-il>is_digit</p-il>, die überprüft, ob ein Zeichen (also ein einstelliger string) eine Ziffer ist. Beispiele:<br>
 									<textarea style="display: none"
 >def is_digit(c):
 	return len(c) == 1 and c >= '0' and c <= '9'</textarea>
@@ -393,7 +482,7 @@ test_input_expected_pairs(d, is_digit)
 						<h1>Warm-up 2</h1>
 						<div style="display: grid; column-gap: 1em; grid-template-columns: 48% 48%">
 							<ul>
-								<li>Schreiben Sie eine Funktion <p-il>outer_digits</p-il>, die die erste und die letzte Ziffer in einem String verkettet zurueckgibt. Beispiele:<br>
+								<li>Schreiben Sie eine Funktion <p-il>outer_digits</p-il>, die die erste und die letzte Ziffer in einem String verkettet zurückgibt. Beispiele:<br>
 									<textarea style="display: none"
 >def is_digit(c):
 	return len(c) == 1 and c >= '0' and c <= '9'
@@ -658,7 +747,7 @@ test_input_expected_pairs(d, outer_digits)
 				p.n.clear() // clear the namespace
 				var result = undefined
 				let error = [ ]
-				for (cs of code) {
+				areas: for (cs of code) {
 					out.length = 0
 					for (c of cs) {
 						try {
@@ -677,7 +766,7 @@ test_input_expected_pairs(d, outer_digits)
 									}
 								}
 								error.push(lines[0] + "\n" + lines.slice(ours).join("\n"));
-								break;
+								break areas;
 							} else {
 								throw e;
 							}
