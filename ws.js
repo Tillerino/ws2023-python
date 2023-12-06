@@ -37,3 +37,9 @@ function sendSlideChange(slide) {
 		iws.send(JSON.stringify({ '@type': 'Slide', uuid, deck, slide }))
 	}
 }
+
+function sendExerciseComplete(slide) {
+	if (iws) {
+		iws.send(JSON.stringify({ '@type': 'Done', uuid, deck, slide, done: true }))
+	}
+}

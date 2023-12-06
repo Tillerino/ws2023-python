@@ -130,19 +130,7 @@
 								Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:<br>
 								<p-in data-ns="test" cols="35" rows="8"></p-in><br>
 								<textarea data-ns="test" style="display: none;"
->def test_input_expected_pairs(pairs, function):
-	function_name = repr(function).split(" ")[1]
-	for *i, e in d:
-		a = function(*i) 
-		if a != e:
-			print(function_name, '(', sep="", end="")
-			print(*[repr(x) for x in i], sep=", ", end=")\n")
-			print("Erwartet:", repr(e))
-			print("Ist aber:", repr(a))
-			return
-	print('Sieht gut aus!')
-	
-d = [
+>d = [
 	('r', 'r', 'unentschieden'),
 	('s', 's', 'unentschieden'),
 	('p', 'p', 'unentschieden'),
@@ -322,7 +310,7 @@ s[1]
 							</ul>
 							<ul>
 								<li class="fragment">Da Strings nicht verändert werden können, funktionieren Zuweisungen nicht.</li>
-								<li class="fragment">Es gibt eine weitere Aehnlichkeit zu Listen. Sie können über die Zeichen in einem String iterieren:<br>```
+								<li class="fragment">Es gibt eine weitere Ähnlichkeit zu Listen. Sie können über die Zeichen in einem String iterieren:<br>```
 for i in s:
 	print('hallo', i)
 								```</li>
@@ -439,19 +427,7 @@ for k, v in d.items():
 								Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:
 								<p-in data-ns="test" cols=35 rows=6></p-in><br>
 								<textarea data-ns="test" style="display: none"
->def test_input_expected_pairs(pairs, function):
-	function_name = repr(function).split(" ")[1]
-	for *i, e in d:
-		a = function(*i) 
-		if a != e:
-			print(function_name, '(', sep="", end="")
-			print(*[repr(x) for x in i], sep=", ", end=")\n")
-			print("Erwartet:", repr(e))
-			print("Ist aber:", repr(a))
-			return
-	print('Sieht gut aus!')
-
-d = [
+>d = [
 	('0', True),
 	('1', True),
 	('2', True),
@@ -508,19 +484,7 @@ def outer_digits(s):
 								Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:
 								<p-in data-ns="test" cols=35 rows=6></p-in><br>
 								<textarea data-ns="test" style="display: none"
->def test_input_expected_pairs(pairs, function):
-	function_name = repr(function).split(" ")[1]
-	for *i, e in d:
-		a = function(*i) 
-		if a != e:
-			print(function_name, '(', sep="", end="")
-			print(*[repr(x) for x in i], sep=", ", end=")\n")
-			print("Erwartet:", repr(e))
-			print("Ist aber:", repr(a))
-			return
-	print('Sieht gut aus!')
-
-d = [
+>d = [
 	('a1b2c', '12'),
 	('a1b', '11'),
 	('8x9', '89'),
@@ -552,7 +516,70 @@ test_input_expected_pairs(d, outer_digits)
 						</ul>
 					</section>
 	
+					<section style="font-size: 27px;">
+						<h1>Warm-up 3: Zählen</h1>
+						<div style="display: grid; column-gap: 1em; grid-template-columns: 58% 38%">
+							<ul>
+								<li>Schreiben Sie eine Funktion <p-il>add_count</p-il>, mit zwei Argumenten: das erste ist ein Dictionary, das zweite ein String.</li>
+								<li>In dem Dictionary werden Zähler gepflegt - für jeden Schlüssel ist der dazugehörige Wert die Häufigkeit des Schlüssels.</li>
+								<li>Wird die Funktion aufgerufen, so erhöht sie den Zähler für den gegebenen String.</li>
+								<li>Falls der String noch nicht in dem Dictionary vorhanden war, so wird er hinzugefügt.</li>
+								<li>Die Funktion gibt das Dictionary wieder zurück. Beispiele:<br>
+									<textarea style="display: none"
+>def add_count(d, s):
+	if s not in d:
+		d[s] = 0
+	d[s] += 1
+	return d
+</textarea>
+									<p-ex cols="35">add_count({'a': 3, 'b': 4}, 'a')</p-ex><br>
+									<p-ex cols="35">add_count({'a': 3, 'b': 4}, 'c')</p-ex><br>
+									<p-ex cols="35">add_count({}, 'c')</p-ex>
+								</li>
+							</ul>
+							<div>
+								Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:
+								<p-in data-ns="test" cols=25 rows=6></p-in><br>
+								<textarea data-ns="test" style="display: none"
+>d = [
+	({}, 'c', {'c':1}),
+	({'a': 3, 'b': 4}, 'a', {'a': 4, 'b': 4}),
+	({'a': 3, 'b': 4}, 'c', {'a': 3, 'b': 4, 'c': 1}),
+]
 
+test_input_expected_pairs(d, add_count)		
+</textarea>
+								<p-out data-ns="test"></p-out>
+					</section>
+	
+					<section style="font-size: 27px;">
+						<h1>Übung II: Wörter Zählen</h1>
+						<div style="display: grid; column-gap: 1em; grid-template-columns: 58% 38%">
+							<ul>
+								<li>Laden Sie das Buch Die Frauenfrage von Lily Braun von <a href="https://www.gutenberg.org/cache/epub/14075/pg14075.txt">Project Gutenberg</a> herunter.</li>
+								<li>Vorsicht: die Datei ist UTF-8-kodiert. Übergeben Sie `encoding='utf-8'` an `open` um sie korrekt zu dekodieren.</li>
+								<li>Zählen Sie mit der Funktion von eben gerade, wie häufig jedes Wort vorkommt.</li>
+								<li>Sie können sich die Mühe machen, Satzzeichen, Groß-/Kleinschreibung und Ähnliches zu bereinigen, aber ein einfaches `line.split(' ')` genügt auch.</li>
+								<li>Das häufigste Wort mit zwei Buchstaben ist "in". Welches ist das häufigste Wort mit acht Buchstaben?</li>
+							</ul>
+							<div>
+								Testen Sie hier ihre Antwort:
+								<p-in data-ns="test" cols=25 rows=6>wort = 'antwort'</p-in><br>
+								<textarea data-ns="test" style="display: none"
+>def richtiges_wort(x):
+	return x.lower() == 'arbeiter'
+
+d = [
+	(wort, True),
+]
+
+test_input_expected_pairs(d, richtiges_wort)		
+</textarea>
+								<p-out data-ns="test"></p-out>
+					</section>
+	
+
+					
 				</section>
 			</div>
 
@@ -720,6 +747,22 @@ test_input_expected_pairs(d, outer_digits)
 
 				// we separate by outputs so that we can isolate the print/return for exactly the last box
 				var code = [ [ ] ]
+				if (ns == "test") {
+					code[0].push(
+`def test_input_expected_pairs(pairs, function):
+	function_name = repr(function).split(" ")[1]
+	for *i, e in d:
+		a = function(*i) 
+		if a != e:
+			print(function_name, '(', sep="", end="")
+			print(*[repr(x) for x in i], sep=", ", end=")\\n")
+			print("Erwartet:", repr(e))
+			print("Ist aber:", repr(a))
+			return
+	print('Sieht gut aus!')
+	from pyodide.code import run_js 
+	run_js("report_current_exercise_complete()")`)
+				}
 				for(e of slide.querySelectorAll(`textarea, p-out`)) {
 					if (e == elem) {
 						break
@@ -908,6 +951,11 @@ test_input_expected_pairs(d, outer_digits)
 					Reveal.dispatchEvent({type: 'resize', data: {}})
 				})
 			})
+
+			function report_current_exercise_complete() {
+				let s = Reveal.getSlidePastCount() + 1
+				sendExerciseComplete(s)
+			}
 		</script>
 
 	</body>
