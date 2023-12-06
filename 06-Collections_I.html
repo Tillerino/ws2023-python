@@ -513,6 +513,7 @@ test_input_expected_pairs(d, outer_digits)
 >for line_lf in open('2023-01-1-input.txt'):
 	line = line_lf.rstrip()</textarea><br>
 							</li>
+							<li>Nutzen Sie die Funktionen von eben um das Problem zu lösen 😎</li>
 						</ul>
 					</section>
 	
@@ -578,8 +579,140 @@ test_input_expected_pairs(d, richtiges_wort)
 								<p-out data-ns="test"></p-out>
 					</section>
 	
+					<section style="font-size: 27px;">
+						<h1>Warm-up 4: Teilstring-Test</h1>
+						<div style="display: grid; column-gap: 1em; grid-template-columns: 58% 38%">
+							<ul>
+								<li>Schreiben Sie eine Funktion <p-il>is_at</p-il>, mit drei Argumenten:<ol>
+									<li>Ein String</li>
+									<li>Ein Index (ganze Zahl) in diesen String</li>
+									<li>Ein zweiter String</li>
+								</ol></li>
+								<li>Die Funktion prueft, ob in dem ersten String der zweite String an dem gegebenen Index vorkommt. Beispiele:<br>
+									<textarea style="display: none"
+>def is_at(h, i, n):
+	return h[i:i + len(n)] == n
+</textarea>
+									<p-ex cols="35">is_at('hallo welt', 0, 'hallo')</p-ex><br>
+									<p-ex cols="35">is_at('hallo welt', 4, 'o w')</p-ex><br>
+									<p-ex cols="35">is_at('hallo welt', 5, ' ')</p-ex>
+									<p-ex cols="35">is_at('hallo welt', 0, 'hello')</p-ex>
+								</li>
+							</ul>
+							<div>
+								Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:
+								<p-in data-ns="test" cols=25 rows=6></p-in><br>
+								<textarea data-ns="test" style="display: none"
+>d = [
+	('', 0, '', True),
+	('', 1, '', True),
+	('x', 0, 'x', True),
+	('', 0, 'x', False),
+	('', 1, 'x', False),
+	('xy', 0, 'y', False),
+	('xy', 1, 'y', True),
+	('xy', 2, 'y', False),
+	('xyz', 0, 'yz', False),
+	('xyz', 1, 'yz', True),
+	('xyz', 2, 'yz', False),
+]
 
-					
+test_input_expected_pairs(d, is_at)		
+</textarea>
+								<p-out data-ns="test"></p-out>
+					</section>
+	
+					<section style="font-size: 27px;">
+						<h1>Warm-up 5: Teilstring aus Dictionary</h1>
+						<div style="display: grid; column-gap: 1em; grid-template-columns: 58% 38%">
+							<ul>
+								<li>Schreiben Sie eine Funktion <p-il>key_at</p-il>, mit drei Argumenten:<ol>
+									<li>Ein String</li>
+									<li>Ein Index (ganze Zahl) in diesen String</li>
+									<li>Ein Dictionary mit String Schlüsseln und String Werten.</li>
+								</ol></li>
+								<li>Die Funktion prüft, ob in dem String an dem gegebenen Index ein Schlüssel aus dem Dictionary vorkommt.<ol>
+									<li>Falls ja, gibt sie den zu dem Schlüssel gehörigen Wert zurück.</li>
+									<li>Falls nein, gibt sie `None` (bzw. nie etwas) zurück.</li>
+									<li>Ein Dictionary mit String Schlüsseln und String Werten.</li>
+								</ol>
+									Beispiele:<br>
+									<textarea style="display: none"
+>def is_at(h, i, n):
+	return h[i:i + len(n)] == n
+
+def key_at(h, i, d):
+	for k, v in d.items():
+		if is_at(h, i, k):
+			return v
+</textarea>
+									<p-ex cols="35">key_at('abcd', 0, { 'a': 'x' })</p-ex><br>
+									<p-ex cols="35">key_at('abcd', 1, { 'a': 'x' })</p-ex><br>
+									<p-ex cols="35">key_at('abcd', 0, { 'b': 'x' })</p-ex><br>
+									<p-ex cols="35">key_at('abcd', 2, { 'a': 'x', \
+	'b': 'y', 'cd': 'kek' })</p-ex><br>
+								</li>
+							</ul>
+							<div>
+								Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:
+								<p-in data-ns="test" cols=25 rows=6></p-in><br>
+								<textarea data-ns="test" style="display: none"
+>d = [
+	('', 0, {}, None),
+	('', 0, { 'a': 'x' }, None),
+	('a', 0, { 'a': 'x' }, 'x'),
+	('ab', 0, { 'b': 'x' }, None),
+	('ab', 1, { 'b': 'x' }, 'x'),
+	('ab', 0, { 'a': 'y', 'b': 'x' }, 'y'),
+	('ab', 1, { 'a': 'y', 'b': 'x' }, 'x'),
+	('ab', 1, { }, None),
+	('abcd', 1, { 'bc': 'xyz' }, 'xyz'),
+]
+
+test_input_expected_pairs(d, key_at)		
+</textarea>
+								<p-out data-ns="test"></p-out>
+					</section>
+
+					<section style="font-size: 29px;">
+						<h1>Übung III: Advent of Code 2023</h1>
+						<div style="display: grid; column-gap: 1em; grid-template-columns: 58% 38%">
+							<ul>
+								<li>Lösen Sie die <strong>zweite Hälfte</strong> des <a href="https://adventofcode.com/2023/day/1" target="_blank">ersten Problems</a> des Advent of Code 2023.</li>
+								<li>Ihr Input sowie die Lösung sind personalisiert. Um den Input zu bekommen und die Lösung zu kontrollieren, müssen Sie sich einloggen.</li>
+								<li>Falls Sie sich nicht einloggen (bzw. registrieren) möchten, können Sie meinen Input verwenden.
+								Sie können ihn aus Moodle herunterladen (<code>2023-01-2-input.txt</code>).
+								Zur Kontrolle: die Lösung für diesen Input ist <code>57345</code>.</li>
+								<li>Nutzen Sie die Funktionen von eben um das Problem zu lösen 😎</li>
+							</ul>
+							<div>Falls Sie das hier brauchen, kopieren Sie es bitte:<br>
+								<p-in style="font-size: 20px"
+>digits = {
+    '0': '0',
+    '1': '1',
+    '2': '2',
+    '3': '3',
+    '4': '4',
+    '5': '5',
+    '6': '6',
+    '7': '7',
+    '8': '8',
+    '9': '9',
+    'zero': '0',
+    'one': '1',
+    'two': '2',
+    'three': '3',
+    'four': '4',
+    'five': '5',
+    'six': '6',
+    'seven': '7',
+    'eight': '8',
+    'nine': '9',
+}</p-in>
+							</div>
+						</div>
+					</section>
+
 				</section>
 			</div>
 
@@ -752,7 +885,13 @@ test_input_expected_pairs(d, richtiges_wort)
 `def test_input_expected_pairs(pairs, function):
 	function_name = repr(function).split(" ")[1]
 	for *i, e in d:
-		a = function(*i) 
+		try:
+			a = function(*i) 
+		except Exception as ex:
+			print('Fehler beim Ausführen von')
+			print(function_name, '(', sep="", end="")
+			print(*[repr(x) for x in i], sep=", ", end=")\\n")
+			raise ex
 		if a != e:
 			print(function_name, '(', sep="", end="")
 			print(*[repr(x) for x in i], sep=", ", end=")\\n")
