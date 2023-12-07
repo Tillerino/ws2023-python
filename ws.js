@@ -32,13 +32,13 @@ var iws = undefined
 	}
 }
 
-function sendSlideChange(slide) {
+async function sendSlideChange(slide) {
 	if (iws) {
 		iws.send(JSON.stringify({ '@type': 'Slide', uuid, deck, slide }))
 	}
 }
 
-function sendExerciseComplete(slide) {
+async function sendExerciseComplete(slide) {
 	if (iws) {
 		iws.send(JSON.stringify({ '@type': 'Done', uuid, deck, slide, done: true }))
 	}
