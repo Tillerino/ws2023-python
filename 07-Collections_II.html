@@ -209,7 +209,7 @@
 
                 <section style="font-size: 30px">
                     <h1>Tupel</h1>
-                    <div style="display: grid; column-gap: 1em; grid-template-columns: 53% 43%">
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 53% 43%">
                         <ul><li>Ein <em>Tupel</em> ist eine unveränderbare Liste. Es wird mit Klammern definiert und ist sonst ähnlich verwendbar:<br>```cols=22
                             t = (5, 6, 7, 8, 9)
                             t[1]
@@ -226,7 +226,7 @@
 
                 <section style="font-size: 30px">
                     <h1>Warum Tupel?</h1>
-                    <div style="display: grid; column-gap: 1em; grid-template-columns: 48% 48%">
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 48% 48%">
                         <div>1. Tupel verkörpern eine andere Idee als Listen.
                             <ul>
                                 <li class="fragment">Listen werden üblicherweise für eine <em>variable</em> Anzahl von <em>gleichartigen</em> Elementen verwendet.<ul>
@@ -253,7 +253,7 @@
 
                 <section style="font-size: 29px">
                     <h1>Entpacken</h1>
-                    <div style="display: grid; column-gap: 1em; grid-template-columns: 48% 48%">
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 48% 48%">
                         <ul>
                             <li>Tupel können auch auf der linken Seite einer Zuweisung stehen. In diesem Fall werden die werte <em>entpackt</em><br>```cols=15
                                 t = (1, 2, 3)
@@ -343,7 +343,7 @@
 
                 <section style="font-size: 35px">
                     <h1>Comprehensions</h1>
-                    <div style="display: grid; column-gap: 1em; grid-template-columns: 45% 51%">
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 45% 51%">
                         <ul>
                             <li>
                                 Folgenden Code werden Sie häufig sehen:<br>
@@ -370,7 +370,7 @@
 
                 <section style="font-size: 33px">
                     <h1>Filter</h1>
-                    <div style="display: grid; column-gap: 1em; grid-template-columns: 42% 54%">
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 42% 54%">
                         <ul>
                             <li class="fragment">
                                 Schleife:<br>
@@ -1141,6 +1141,66 @@
                     <h3 style="margin-top: 200px">Übung</h3>
                 </section>
 
+                <section style="font-size: 25px">
+                    <h1>Pickle</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 54% 44%">
+                        <ul>
+                            <li>`pickle` ist ein Python-Modul, das Objekte serialisiert und deserialisiert.
+                                Es schreibt z.B. ganze Datenstrukturen in eine Datei oder liest sie aus.</li>
+                            <li>Dies ist zwar nicht notwendig, aber damit machen die Übungen mehr Spaß.</li>
+                            <li>Rechts ist ein Beispiel über die Verwendung von `pickle`.</li>
+                            <li>Was genau `with`, `try` und `except` tun, besprechen wir später.</li>
+                            <li>Kopieren Sie den Inhalt der oberen Box und verwenden Sie die Funktionen `save` und `load` in Ihren Übungen, wenn Sie möchten.</li>
+                            <li>Das zweite Argument von `load` ist der Standardwert, falls die Datei nicht existiert.</li>
+                            <li>Die untere Box zeigt, wie Sie die Funktionen verwenden können. </li>
+                            <li>Führen Sie die untere Box mehrmals aus um den Effekt des Speicherns zu sehen.</li>
+                        </ul>
+                        <div>
+                            <p-in cols=35>
+                                import pickle
+                                def save(file, data):
+                                    with open(file, 'wb') as f:
+                                        pickle.dump(data, f)
+                                def load(file, default):
+                                    try:
+                                        with open(file, 'rb') as f:
+                                            return pickle.load(f)
+                                    except FileNotFoundError:
+                                        return default
+                            </p-in><br>```cols=35
+                                l = load('meine_datei', [])
+                                print('geladen :', l)
+                                l.append(len(l))
+                                print('speichere:', l)
+                                save('meine_datei', l)
+                            ```
+                        </div>
+                    </div>
+                </section>
+
+                <section style="font-size: 23px">
+                    <h1>Übung I: Personenverzeichnis</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%">
+                    <ul>
+                        <li>Sie müssen das Personenverzeichnis der Republik verwalten.</li>
+                        <li>Das Verzeichnis soll die Namen aller Personen enthalten, die in der Republik leben.</li>
+                        <li>Leider sind die Namen nicht einzigartig, da es z.B. mehrere Personen mit dem Namen "Susanne Müller" gibt.</li>
+                        <li>Mit dem Personenverzeichnisinnovationsgesetz von 2023 wurde allerdings beschlossen, dass jeder eine kleine Zusatznummer bekommt, mit der der Name dann eindeutig wird. Somit kann man nun Susanne Müller #14 und Susanne Müller #39 unterscheiden.</li>
+                        <li>Einmal vergeben, kann die Zusatznummer nicht mehr geändert werden. Als Identifikation für diese Person gilt dann der Name und die Zusatznummer.</li>
+                        <li>Die Zusatznummer muss eine positive ganze Zahl, eher klein (das ist Ermessenssache) - und natürlich noch nicht vergeben sein. Ansonsten ist die Wahl ganz ihnen überlassen und Sie möchten gerne Wünschen entgegenkommen.</li>
+                        <li>Mir wird niemand Tillmann Gaida #1 streitig machen, aber bei anderen Namen gilt es sicher zu gehen. Michael Schmidt #69 kann schließlich nur einer sein.</li>
+                    </ul>
+                    <ul>
+                        <li>Da Sie es können, schreiben Sie ein Programm um Ihre Arbeit zu erleichtern. Das Programm soll folgende Funktionalität bieten:
+                            <ol>
+                                <li>Das gesamte Verzeichnis auflisten. Jeder Name soll zusammen mit der Zusatznummer ausgegeben werden.</li>
+                                <li>Personen hinzufügen. Dabei soll ein Name und eine Zusatznummer angegeben werden. Ist die Kombination bereits vergeben, soll es eine Fehlermeldung geben. Außerdem soll geprüft werden, ob die Zusatznummer positiv ist.</li>
+                                <li>Kombination prüfen. Dabei soll eine Kombination aus Name und Zusatznummer angegeben werden. Das Programm soll ausgeben, ob die Kombination vergeben ist.</li>
+                            </ol>
+                        </li>
+                        <li>Wählen Sie die passenden Collections für die Aufgabe!</li>
+                        <li>Gestalten Sie Ein- und Ausgabe des Programms, wie sie möchten. Sie können sich z.B. an Übung IV aus Einheit 04 orientieren (Merkliste).</li>
+                    </ul>
             </div>
 
         </div>
@@ -1171,7 +1231,7 @@
                 }
 
                 go() {
-                    let code = this.code ? this.code : this.innerText
+                    let code = removeLeadingWhitespace(this.code ? this.code : this.innerText)
                     let ns = this.getAttribute("data-ns") !== null ? `data-ns="${this.getAttribute("data-ns")}"` : "data-ns"
                     if(this.getAttribute("hidden") !== null) {
                         this.innerHTML = `<textarea style="display: none" ${ns}>${code}</textarea>`
@@ -1205,7 +1265,7 @@
                 }
 
                 go() {
-                    let code = this.code ? this.code : this.innerText
+                    let code = removeLeadingWhitespace(this.code ? this.code : this.innerText)
                     let cols = this.getAttribute("cols") !== null ? `cols="${this.getAttribute("cols")}"` : ""
                     let ns = this.getAttribute("data-ns") !== null ? `data-ns="${this.getAttribute("data-ns")}"` : "data-ns"
                     let rows = `rows="${code.split('\n').length}"`
@@ -1215,6 +1275,18 @@
                 }
             }
             customElements.define("p-ex", PythonExample);
+
+            function removeLeadingWhitespace(text) {
+                let lines = text.split("\n")
+                while (lines.length > 1 && !lines[0].trim()) {
+                    lines.shift()
+                }
+                while (lines.length > 1 && !lines[lines.length - 1].trim()) {
+                    lines.pop()
+                }
+                let ws = lines[0].match(/^\s*/)[0]
+                return lines.map(l => l.replace(ws, "")).join("\n")
+            }
 
             function replaceBackticks() {
                 for (n of document.body.querySelectorAll(`section *`)) {
@@ -1252,9 +1324,7 @@
                             ex = new PythonInput()
                         }
                         setAttributes(ex, lines[0])
-                        let ws = lines[1].match(/^\s*/)[0]
-                        // remove equal whitespace at the start of all lines
-                        ex.code = lines.splice(1).map(l => l.replace(ws, "")).join("\n")
+                        ex.code = lines.splice(1).join("\n")
                         ex.go()
                         textNode.parentElement.insertBefore(ex, textNode)
                     }
