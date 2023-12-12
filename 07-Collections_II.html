@@ -53,6 +53,7 @@
             ul ul, ul ol, ol ul, ol ol { font-size: .85em; }
 
             .reveal table { margin: 0px; }
+            td { vertical-align: top; }
         </style>
     </head>
 
@@ -483,6 +484,52 @@
                     </ul>
                 </section>
 
+                <section style="font-size: 30px">
+                    <h1>Vergleich</h1>
+                    <table>
+                        <tr>
+                            <td></td>
+                            <td>veränderbar</td>
+                            <td>geordnet</td>
+                            <td>veränderbar</td>
+                            <td>Elemente einzigartig</td>
+                            <td>Einschränkungen</td>
+                        </tr>
+                        <tr>
+                            <td>`list`</td>
+                            <td>ja</td>
+                            <td>ja</td>
+                            <td>Index</td>
+                            <td>nein</td>
+                            <td>keine</td>
+                        </tr>
+                        <tr>
+                            <td>`tuple`</td>
+                            <td>nein</td>
+                            <td>ja</td>
+                            <td>Index</td>
+                            <td>nein</td>
+                            <td>keine</td>
+                        </tr>
+                        <tr>
+                            <td>`set`</td>
+                            <td>ja</td>
+                            <td>nein</td>
+                            <td>-</td>
+                            <td>ja</td>
+                            <td>Elemente hashbar</td>
+                        </tr>
+                        <tr>
+                            <td>`dict`</td>
+                            <td>ja</td>
+                            <td>nein</td>
+                            <td>Schlüssel</td>
+                            <td>Schlüssel</td>
+                            <td>Schlüssel hashbar</td>
+                        </tr>
+                    </table>
+                </section>
+
                 <section style="font-size: 27px">
                     <h1>Erstellen</h1>
                     <table>
@@ -663,13 +710,14 @@
                     </table>
                 </section>
 
-                <section style="font-size: 28px">
+                <section style="font-size: 27px">
                     <h1>Hinzufügen</h1>
                     <table>
                         <tr>
                             <td></td>
                             <td>einzeln</td>
                             <td>mehrere</td>
+                            <td>an Index</td>
                         </tr>
                         <tr>
                             <td>```cols=19 br
@@ -680,8 +728,12 @@
                                 l.append(2)
                                 l
                             ```</td>
-                            <td>```cols=25 br
+                            <td>```cols=20 br
                                 l.extend([ 3, 4 ])
+                                l
+                            ```</td>
+                            <td>```cols=15 br
+                                l.insert(1, 5)
                                 l
                             ```</td>
                         </tr>
@@ -691,7 +743,7 @@
                                 t
                             ```</td>
                             <td><i class="fa-solid fa-triangle-exclamation"></i> (nicht erlaubt)</td>
-                            <td><i class="fa-solid fa-triangle-exclamation"></i> (nicht erlaubt)</td>
+                            <td colspan=2><i class="fa-solid fa-triangle-exclamation"></i> (nicht erlaubt)</td>
                         </tr>
                         <tr>
                             <td>```cols=19 br
@@ -702,7 +754,7 @@
                                 s.add(2)
                                 s
                             ```</td>
-                            <td>```cols=25 br
+                            <td colspan=2>```cols=25 br
                                 s.update({ 3, 4 })
                                 s
                             ```</td>
@@ -713,7 +765,7 @@
                                 d
                             ```</td>
                             <td><i class="fa-solid fa-triangle-exclamation"></i> (nicht als Methode)</td>
-                            <td>```cols=25 br
+                            <td colspan=2>```cols=25 br
                                 d.update({2:'c', 3:'d'})
                                 d
                             ```</td>
@@ -925,6 +977,161 @@
                                 d
                             ```</td>
                             <td><i class="fa-solid fa-triangle-exclamation"></i> (nicht die Idee)</td>
+                    </table>
+                </section>
+
+                <section style="font-size: 29px">
+                    <h1>Sonstiges</h1>
+                    <table>
+                        <tr>
+                            <td></td>
+                            <td>Größe</td>
+                            <td>Vergleiche</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>```cols=13 br
+                                l = [2, 4]
+                            ```</td>
+                            <td>```cols=7 br
+                                len(l)
+                            ```</td>
+                            <td>lexikografisch<br>
+                            ```cols=14 br
+                                [1, 3, 9] < l
+                            ```</td>
+                            <td><br>
+                            ```cols=14 br
+                                [3] > l
+                            ```</td>
+                        </tr>
+                        <tr>
+                            <td>```cols=13 br
+                                t = (2, 4)
+                            ```</td>
+                            <td>```cols=7 br
+                                len(t)
+                            ```</td>
+                            <td>lexikografisch<br>
+                            ```cols=14 br
+                                (1, 3, 9) < t
+                            ```</td>
+                            <td><br>
+                            ```cols=14 br
+                                (3,) > t
+                            ```</td>
+                        </tr>
+                        <tr>
+                            <td>```cols=13 br
+                                s = {2, 4}
+                            ```</td>
+                            <td>```cols=7 br
+                                len(s)
+                            ```</td>
+                            <td>Teilmenge<br>
+                            ```cols=14 br
+                                {2} < s
+                            ```</td>
+                            <td><br>
+                            ```cols=14 br
+                                {2, 4, 5} > s
+                            ```</td>
+                        </tr>
+                        <tr>
+                            <td>```cols=18 br
+                                d = {'a':1, 'b':4}
+                            ```</td>
+                            <td>```cols=10 br
+                                len(d)
+                            ```</td>
+                            <td><i class="fa-solid fa-triangle-exclamation"></i> (nicht erlaubt)</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section style="font-size: 22px">
+                    <h1>Sonstiges</h1>
+                    <table>
+                        <tr>
+                            <td></td>
+                            <td>Sortieren</td>
+                            <td>Umkehren</td>
+                            <td>Index finden</td>
+                            <td>Entpacken</td>
+                        </tr>
+                        <tr>
+                            <td>```cols=16 br
+                                l = [2, 4, 3, 1]
+                                l
+                            ```</td>
+                            <td>```cols=14 br
+                                l.sort()
+                                l
+                            ```</td>
+                            <td>```cols=14 br
+                                l.reverse()
+                                l
+                            ```</td>
+                            <td>```cols=11 br
+                                l.index(3)
+                            ```</td>
+                            <td>```cols=12
+                                a, b, *c = l
+                                ```<br>```cols=2
+                                a
+                                ```<br>```cols=2
+                                c
+                                ```
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>```cols=16 br
+                                t = (2, 4, 3, 1)
+                                t
+                            ```</td>
+                            <td>Nein, aber: <br>```cols=14 br
+                                sorted(t)
+                            ```</td>
+                            <td>Nein, aber: <br>```cols=18 br
+                                tuple(reversed(t))
+                            ```</td>
+                            <td>```cols=11 br
+                                t.index(3)
+                            ```</td>
+                            <td>```cols=12
+                                a, b, *c = t
+                                ```<br>```cols=2
+                                a
+                                ```<br>```cols=2
+                                c
+                                ```
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>```cols=16 br
+                                s = {2, 4, 3, 1}
+                                s
+                            ```</td>
+                            <td>Nein, aber: <br>```cols=14 br
+                                sorted(s)
+                            ```</td>
+                            <td><i class="fa-solid fa-triangle-exclamation"></i> (ergibt keinen Sinn)</td>
+                            <td><i class="fa-solid fa-triangle-exclamation"></i> (ergibt keinen Sinn)</td>
+                            <td><i class="fa-solid fa-triangle-exclamation"></i> (ergibt keinen Sinn)</td>
+                        </tr>
+                        <tr>
+                            <td>```cols=18 br
+                                d = {'b':1, 'a':4}
+                                d
+                            ```</td>
+                            <td><i class="fa-solid fa-triangle-exclamation"></i>
+                                Nein, aber: <br>```cols=14 br
+                                sorted(d)
+                            ```</td>
+                            <td><i class="fa-solid fa-triangle-exclamation"></i> (ergibt keinen Sinn)</td>
+                            <td><i class="fa-solid fa-triangle-exclamation"></i> (ergibt keinen Sinn)</td>
+                            <td><i class="fa-solid fa-triangle-exclamation"></i> (ergibt keinen Sinn)</td>
+                        </tr>
                     </table>
                 </section>
 
