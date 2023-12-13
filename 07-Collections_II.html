@@ -190,7 +190,7 @@
                             t
                         ```</li>
                         <li class="fragment">Mengen <br>```cols=25
-                            s = { 1, 2, 3, 2 }
+                            s = { 2, 1, 3, 2 }
                             s
                         ```</li>
                         <li class="fragment">Comprehensions <br>```cols=25
@@ -294,23 +294,32 @@
                     <h3 style="margin-top: 200px">Mengen</h3>
                 </section>
 
-                <section style="font-size: 32px">
+                <section style="font-size: 28px">
                     <h1>Mengen</h1>
-                    <ul>
-                        <li>Eine <em>Menge</em> ist eine Sammlung von Elementen, in der jedes Element nur einmal vorkommt.
-                            Sie wird mit geschweiften Klammern definiert:<br>```cols=20
-                            s = { 1, 2, 3, 2 }
-                            s
-                        ```</li>
-                        <li class="fragment">Eine Menge wendet wie ein Dictionary eine Hashfunktion auf ihre Elemente an.
-                            Dies bedeutet, dass das Prüfen, ob ein Element in einer Menge vorkommt, sehr schnell geht:<br>```cols=20
-                            2 in s
-                        ```</li>
-                        <li class="fragment">Dies bedeutet aber auch, dass es die gleichen Einschränkungen wie bei Dictionary-Schlüsseln gibt:<br>```cols=25
-                            s = { [1, 2], ['x'] }
-                        ```</li>
-                        </li>
-                    </ul>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 48% 48%">
+                        <ul>
+                            <li>Eine <em>Menge</em> ist eine ungeordnete Sammlung von Elementen, in der jedes Element nur einmal vorkommt.
+                                Sie wird mit geschweiften Klammern definiert:<br>```cols=20
+                                s = { 2, 1, 3, 2 }
+                                s
+                            ```</li>
+                            <li class="fragment"><em>Ungeordnet</em> bedeutet hier, dass die Elemente in einer Menge nicht unbedingt ihre Reihenfolge behalten.</li>
+                            <li class="fragment">Eine Menge wendet wie ein Dictionary eine Hashfunktion auf ihre Elemente an.
+                                Dies bedeutet, dass das Prüfen, ob ein Element in einer Menge vorkommt, sehr schnell geht:<br>```cols=20
+                                2 in s
+                            ```</li>
+                        </ul>
+                        <ul>
+                            <li class="fragment">Dies bedeutet aber auch, dass es die gleichen Einschränkungen wie bei Dictionary-Schlüsseln gibt:<br>```cols=25
+                                s = { [1, 2], ['x'] }
+                            ```</li>
+                            <li class="fragment">Die Hashfunktion ist auch der Grund, warum die Menge oben <em>sortiert</em> aussieht.
+                                Mengen sind aber grundsätzlich auch nicht sortiert:<br>```data-ns=new br
+                                s = { 41, 12, 9 }
+                                s
+                            ```</li>
+                        </ul>
+                    </div>
                 </section>
 
                 <section style="font-size: 32px">
@@ -1141,6 +1150,93 @@
                     <h3 style="margin-top: 200px">Übung</h3>
                 </section>
 
+                <section style="font-size: 24px">
+                    <h1>Warm-Up: Anagramme</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%">
+                        <ul>
+                            <li>Ein Anagramm ist ein Wort, das aus den Buchstaben eines anderen Wortes durch Umordnen gebildet werden kann.</li>
+                            <li>Beispiel: "Ergbut" ist ein Anagramm von "Betrug".</li>
+                            <li>Die Groß- und Kleinschreibung wird dabei verworfen, also "bEtrug" ist gleich wie "Betrug".</li>
+                            <li>Wichtig: die Häufigkeit der Buchstaben muss dabei erhalten bleiben.</li>
+                            <li>"Saft" und "fasst" sind also keine Anagramme.</li>
+                            <li>Schreiben Sie eine Funktion `anagramm(a, b)`, die `True` zurückgibt, falls `a` und `b` Anagramme sind und `False` sonst. Beispiele:<br>
+                            ```hidden
+                            def anagramm(a, b):
+                                return sorted(a.lower()) == sorted(b.lower())
+                            ```
+                            ```cols=29
+                                anagramm('Erbgut', 'Betrug')
+                            ```<br>
+                            ```cols=29
+                                anagramm('Saft', 'fast')
+                            ```<br>
+                            ```cols=29
+                                anagramm('Saft', 'fasst')
+                            ```</li>
+                            <li>Zur Erinnerung: ```cols=13
+                                'Abc'.lower()
+                            ```</li>
+                            <li>Tipp: Auf der letzten Folie der Übersicht stand etwas von Sortieren 🤔.</li> 
+                        </ul>
+                        <div>
+                            Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:<br>
+                            <p-in cols=35 rows=10 data-ns=test>
+                                def anagramm(a, b):
+                                    return 'ich bin nicht fertig'
+                            </p-in><br>
+                            ```hidden data-ns=test
+                                d = [
+                                    ('Erbgut', 'Betrug', True),
+                                    ('Saft', 'fast', True),
+                                    ('Saft', 'fasst', False),
+                                    ('', '', True),
+                                    ('x', 'X', True),
+                                    ('x', 'xx', False),
+                                ]
+
+                                test_input_expected_pairs(d, anagramm)
+                            ```
+                            <p-out data-ns=test></p-out>
+                        </div>
+                    </div>
+                </section>
+
+                <section style="font-size: 26px">
+                    <h1>Übung I: Anagramme</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%">
+                        <ul>
+                            <li>Laden Sie die Datei <a href="https://codeberg.org/davidak/wortliste/raw/branch/master/wortliste.txt">wortliste.txt</a> herunter.</li>
+                            <li>Quelle: <a href="https://codeberg.org/davidak/wortliste">User davidak auf Codeberg</a></li>
+                            <li>Finden Sie die größten Anagramm-Gruppe in der Liste!</li>
+                            <li>Beispiel: 'urban', 'braun', 'unbar' sind eine Anagramm-Gruppe der Größe 3.</li>
+                            <li>Im Warm-Up haben Sie eine Funktion geschrieben, die prüft, ob zwei Wörter Anagramme voneinanders sind.
+                                Diese Funktion können Sie hier nicht verwenden, da Sie alle Wörter der Liste mit allen anderen vergleichen müssen.
+                                Dies wären etwa 239.000² ~ 57 Milliarden Vergleiche.
+                                Dies würde sehr lange dauern.</li>
+                            <li>Versuchen Sie stattdessen das Prinzip der `anagramm` Funktion mit einer geeigneten Collection zu verbinden.
+                                Ein entsprechendes Programm sollte innerhalb von wenigen Sekunden die Antwort finden können.</li>
+                        </ul>
+                        <div>
+                            Um Ihre Lösung zu testen, setzen Sie die Menge `gruppe` entsprechend und klicken den Pfeil:<br>
+                            <p-in cols=35 rows=5 data-ns=test>
+                                gruppe = {'die', 'gruppe', 'ist', \
+                                          'nicht', 'fertig'}
+                            </p-in><br>
+                            ```hidden data-ns=test
+                                def richtige_gruppe(s):
+                                    return s == {'feiner', 'eifern', 'fieren', 'riefen', 'reifen', 'feiern', 'freien'}
+
+                                d = [
+                                    (gruppe, True),
+                                ]
+
+                                test_input_expected_pairs(d, richtige_gruppe)
+                            ```
+                            <p-out data-ns=test></p-out>
+                        </div>
+                    </div>
+                </section>
+
                 <section style="font-size: 25px">
                     <h1>Pickle</h1>
                     <div style="display: grid; column-gap: 2%; grid-template-columns: 54% 44%">
@@ -1179,7 +1275,7 @@
                 </section>
 
                 <section style="font-size: 23px">
-                    <h1>Übung I: Personenverzeichnis</h1>
+                    <h1>Übung II: Personenverzeichnis</h1>
                     <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%">
                     <ul>
                         <li>Sie müssen das Personenverzeichnis der Republik verwalten.</li>
@@ -1201,6 +1297,7 @@
                         <li>Wählen Sie die passenden Collections für die Aufgabe!</li>
                         <li>Gestalten Sie Ein- und Ausgabe des Programms, wie sie möchten. Sie können sich z.B. an Übung IV aus Einheit 04 orientieren (Merkliste).</li>
                     </ul>
+                </section>
             </div>
 
         </div>
@@ -1350,7 +1447,7 @@
                 }
                 for (c of s.split(" ")) {
                     let p = c.split("=", 2)
-                    elem.setAttribute(p[0], p[1])
+                    elem.setAttribute(p[0], p[1] ? p[1] : "")
                 }
             }
             replaceBackticks()
@@ -1394,6 +1491,7 @@
                     code[0].push(
 `def test_input_expected_pairs(pairs, function):
     function_name = repr(function).split(" ")[1]
+    print('Testergebnis:')
     for *i, e in d:
         try:
             a = function(*i)
@@ -1405,10 +1503,10 @@
         if a != e:
             print(function_name, '(', sep="", end="")
             print(*[repr(x) for x in i], sep=", ", end=")\\n")
-            print("Erwartet:", repr(e))
-            print("Ist aber:", repr(a))
+            print("Gibt zurück:", repr(a))
+            print("Erwartet war aber:", repr(e))
             return
-    print('Sieht gut aus!')
+    print('Alles sieht gut aus!')
     from pyodide.code import run_js
     run_js("report_current_exercise_complete()")`)
                 }
