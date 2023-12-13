@@ -94,8 +94,95 @@
                     <iframe src="https://adventofcode.com" width="100%" height="200"></iframe>
                 </section>
 
-                <section style="font-size: 28px;">
-                    <h1>(letzte) Übung</h1>
+                <section style="font-size: 25px;">
+                    <h1>(letzte) Warm-up 1</h1>
+                    <div style="display: grid; column-gap: 1em; grid-template-columns: 48% 48%">
+                        <ul>
+                            <li>Schreiben Sie eine Funktion <p-il>is_digit</p-il>, die überprüft, ob ein Zeichen (also ein einstelliger string) eine Ziffer ist. Beispiele:<br>
+                                <textarea style="display: none"
+>def is_digit(c):
+    return len(c) == 1 and c >= '0' and c <= '9'</textarea>
+                                <p-ex cols="20">is_digit('0')</p-ex><br>
+                                <p-ex cols="20">is_digit('1')</p-ex><br>
+                                <p-ex cols="20">is_digit('9')</p-ex><br>
+                                <p-ex cols="20">is_digit('a')</p-ex><br>
+                                <p-ex cols="20">is_digit('123')</p-ex><br>
+                            </li>
+                        </ul>
+                        <div>
+                            Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:
+                            <p-in data-ns="test" cols=35 rows=6></p-in><br>
+                            <textarea data-ns="test" style="display: none"
+>d = [
+    ('0', True),
+    ('1', True),
+    ('2', True),
+    ('3', True),
+    ('4', True),
+    ('5', True),
+    ('6', True),
+    ('7', True),
+    ('8', True),
+    ('9', True),
+    ('', False),
+    ('a', False),
+    ('z', False),
+    ('A', False),
+    ('Z', False),
+    ('123', False),
+    (' ', False),
+]
+
+test_input_expected_pairs(d, is_digit)		
+</textarea>
+                            <p-out data-ns="test"></p-out>
+                        </div>
+                    </div>
+                </section>
+
+                <section style="font-size: 25px;">
+                    <h1>(letzte) Warm-up 2</h1>
+                    <div style="display: grid; column-gap: 1em; grid-template-columns: 48% 48%">
+                        <ul>
+                            <li>Schreiben Sie eine Funktion <p-il>outer_digits</p-il>, die die erste und die letzte Ziffer in einem String verkettet zurückgibt. Beispiele:<br>
+                                <textarea style="display: none"
+>def is_digit(c):
+    return len(c) == 1 and c >= '0' and c <= '9'
+
+def outer_digits(s):
+    first = None
+    last = None
+    for c in s:
+        if is_digit(c):
+            if first == None:
+                first = c
+            last = c
+    return first + last
+</textarea>
+                                <p-ex cols="25">outer_digits('a1b2c')</p-ex><br>
+                                <p-ex cols="25">outer_digits('a1b')</p-ex><br>
+                                <p-ex cols="25">outer_digits('8x9')</p-ex><br>
+                                <p-ex cols="25">outer_digits('5')</p-ex>
+                            </li>
+                            <li>Nutzen Sie die Funktion aus von eben gerade!</li>
+                        </ul>
+                        <div>
+                            Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:
+                            <p-in data-ns="test" cols=35 rows=6></p-in><br>
+                            <textarea data-ns="test" style="display: none"
+>d = [
+    ('a1b2c', '12'),
+    ('a1b', '11'),
+    ('8x9', '89'),
+    ('5', '55'),
+    ('a3b1b5x98y', '38'),
+]
+
+test_input_expected_pairs(d, outer_digits)		
+</textarea>
+                            <p-out data-ns="test"></p-out>
+                        </div>
+                    </div>
                 </section>
 
                 <section style="font-size: 32px;">
