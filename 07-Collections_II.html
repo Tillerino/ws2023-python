@@ -67,14 +67,11 @@
 
                     <h2 style="padding-top: 40px;">Einheit 07: Collections II</h2>
 
-                    <a id="switch-to-interactive" style="visibility: hidden">Zu den interaktiven Folien</a>
+                    <a id="switch-to-interactive" class="pdf-only">Zu den interaktiven Folien</a>
                     <script>
                         let elem = document.getElementById("switch-to-interactive")
                         let file = window.location.pathname.substr(window.location.pathname.lastIndexOf('/'))
                         elem.href = "https://tillerino.github.io/ws2023-python" + file + "?noFragments&withControls"
-                        if (new URLSearchParams(window.location.search).get('print-pdf') !== null) {
-                            elem.style.visibility = "visible"
-                        }
                     </script>
 
                     <div style="padding-top: 65px;">Tillmann Gaida</div>
@@ -577,6 +574,7 @@ test_input_expected_pairs(d, outer_digits)
                         <li>Ausnahmen sind mit einem <i class="fa-solid fa-triangle-exclamation"></i> markiert.</li>
                         <li>Achten Sie eher auf Unterschiede als auf Gemeinsamkeiten, dann müssen Sie sich nicht viel merken.</li>
                         <li>Strings sind nicht separat aufgeführt. Stellen Sie sich Strings einfach als Tupel von Zeichen vor.</li>
+                        <li class="pdf-only">In der PDF-Version sind die folgenden Slides etwas kaputt. Der Link zu der HTML-Version ist auf der ersten Folie.</li>
                     </ul>
                 </section>
 
@@ -1394,6 +1392,11 @@ test_input_expected_pairs(d, outer_digits)
         <script src="plugin/highlight/highlight.js"></script>
         <script src="highlighted-code.js"></script>
         <script>
+            let pdf = new URLSearchParams(window.location.search).get('print-pdf') !== null
+            for (e of document.getElementsByClassName("pdf-only")) {
+                e.style.visibility = pdf ? "visible" : "hidden"
+            }
+
             // <p-il> tag for quick inline Python highlighting
             class PythonInline extends HTMLElement {
                 constructor() {
