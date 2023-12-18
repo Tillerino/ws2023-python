@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>08 - Fehler (Pythonkurs für Anfänger WS2023)</title>
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="dist/reset.css">
+        <link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/theme/white.css" id="theme">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="thonny.css">
+
+        <!-- Font awesome is required for the chalkboard plugin -->
+        <link rel="stylesheet" href="ext/font-awesome/css/fontawesome.min.css">
+        <link rel="stylesheet" href="ext/font-awesome/css/solid.min.css">
+        <!-- Custom controls plugin is used to for opening and closing annotation modes. -->
+        <script src="ext/customcontrols/plugin.js"></script>
+        <link rel="stylesheet" href="ext/customcontrols/style.css">
+        <!-- Chalkboard plugin -->
+        <script src="ext/chalkboard/plugin.js"></script>
+        <link rel="stylesheet" href="ext/chalkboard/style.css">
+
+        <script src="reconnecting-websocket.js"></script>
+        <script src="ws.js"></script>
+
+        <style>
+            .reveal textarea, .reveal pre { font-size: 1em; }
+            .reveal .slides { text-align: left; }
+            :root { --r-heading-text-transform: none; --r-heading-font-weight: 200; }
+            html.reveal-print .reveal .slides section.title, section.title { padding-top: 200px!important; }
+
+            a.runCode { padding-left: 0.5em; padding-right: 0.5em; color: black; }
+            a.runCode:hover { color: red; }
+            .runCode::before { content: '➧' }
+
+            p-out { padding-left: 0.2em; padding-right: 0.2em; font-family: monospace; background-color: #eee; white-space: pre-wrap; }
+            p-out .error { color: #cc0000; }
+            p-il { padding-left: 0.1em; padding-right: 0.1em; font-family: monospace; background-color: #eee; text-wrap: nowrap; }
+            .no-background span[data-inline-python], .no-background .hljs { background: none; }
+
+            textarea[is='highlighted-code'] { position:relative; top: .3em; }
+            .reveal pre { box-shadow: .05em .05em 0.1em rgba(0, 0, 0, 0.15); }
+
+            li { margin-top: .1em; margin-bottom: .1em }
+            ul ul, ul ol, ol ul, ol ol { font-size: .85em; }
+
+            .reveal table { margin: 0px; }
+            td { vertical-align: top; }
+        </style>
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <div class="slides">
+                <section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title" style="font-size: 35px;">
+                    <h1 style="font-size: 100px;">Pythonkurs für Anfänger</h1>
+
+                    <h2 style="padding-top: 40px;">Einheit 08: Fehler</h2>
+
+                    <a id="switch-to-interactive" class="pdf-only">Zu den interaktiven Folien</a>
+                    <script>
+                        let elem = document.getElementById("switch-to-interactive")
+                        let file = window.location.pathname.substr(window.location.pathname.lastIndexOf('/'))
+                        elem.href = "https://tillerino.github.io/ws2023-python" + file + "?noFragments&withControls"
+                    </script>
+
+                    <div style="padding-top: 65px;">Tillmann Gaida</div>
+                    <div style="padding-top: 20px;">Software and Computational System Lab</div>
+                </section>
+
+                <section style="font-size: 38px;">
+                    <h1>Advent of Code</h1>
+                    <ul>
+                        <li>Jedes Jahr gibt es den <a href="https://adventofcode.com" target="_blank">Advent of Code</a>: einen Adventskalender an Programmieraufgaben.</li>
+                        <li>Die erste Aufgabe gibt es am 1. Dezember und die letzte am 25. Dezember.</li>
+                        <li>Die Aufgaben fangen einfach an und werden immer schwieriger.</li>
+                        <li><a href="https://adventofcode.com/2023/leaderboard/private/view/2278782">Leaderboard</a>: <code>2278782-ab82d160</code><br>
+                            ([Log in], [Leaderboard], [Private Leaderboard], code eingeben)</li>
+                    </ul>
+                    <br><br>
+                    <iframe src="https://adventofcode.com" width="100%" height="200"></iframe>
+                </section>
+
+                <section style="font-size: 25px;">
+                    <h1>(letzte) Übung</h1>
+                </section>
+
+                <section style="font-size: 28px;">
+                    <h1>Werkzeuge</h1>
+                    <div style="display: grid; column-gap: .5em; grid-template-columns: 60% 40%;">
+                        <div style="border-right: solid 1px black; padding-bottom: .5em; padding-right: .5em;">
+                            <h3>Syntax</h3>
+                            `fun(x)`,
+                            `x`,
+                            `'abc'`,
+                            `123`,
+                            `=`,
+                            `if`,
+                            `elif`,
+                            `else`,
+                            `while`,
+                            `continue`,
+                            `break`,
+                            `in`,
+                            `for i in l`,
+                            `[a, b, c]`,
+                            `l[i]`,
+                            `l[i:j]`,
+                            `{a: b, c: d}`,
+                            `(a, b, c)`,
+                            `{a, b, c}`,
+                            `a, *b = ...`
+                            Einrückung
+                            <ul>
+                                <li>Operatoren:
+                                    `+`,
+                                    `-`,
+                                    `*`,
+                                    `/`,
+                                    `//`,
+                                    `%`,
+                                    `**`,
+                                    `==`,
+                                    `!=`,
+                                    `&lt;`,
+                                    `&gt;`,
+                                    `&lt;=`,
+                                    `&gt;=`,
+                                    `and`,
+                                    `or`,
+                                    `not`
+                                </li>
+                            </ul>
+                            `def`,
+                            `return`,
+                            `fun(..., k=v)`
+                        </div>
+                        <div style="padding-bottom: .5em;">
+                            <h3>Algorithmik:</h3>
+                            Fallunterscheidung,
+                            Laufvariable,
+                            Iterieren (über Zeilen einer Datei),
+                            Deduplizieren,
+                            Sortieren (als Anwendung)
+                        </div>
+                    </div>
+                    <div style="display: grid; column-gap: .5em; grid-template-columns: 60% 40%; border-top: solid black 1px">
+                        <div style="border-right: solid 1px black; padding-top: .5em; padding-right: .5em;">
+                            <h3>Vokabular</h3>
+                            `print`,
+                            `input`,
+                            `int`,
+                            `str`,
+                            `list`,
+                            `tuple`,
+                            `set`,
+                            `dict`,
+                            `len`,
+                            `split`,
+                            `open`,
+                            `rstrip`,
+                            `min`
+                            `max`,
+                            `sum`,
+                            `append`,
+                            `extend`,
+                            `pop`,
+                            `insert`,
+                            `index`,
+                            `range`,
+                            `items`,
+                            `popitem`,
+                            `add`,
+                            `update`,
+                            `remove`,
+                            `sort`,
+                            `sorted`,
+                            `reverse`,
+                            `reversed`
+                        </div>
+                        <div style="padding-top: .5em;">
+                            <h3>Architektur</h3>
+                            Funktionen
+                        </div>
+                    </div>
+                </section>
+
+                <section class="center" style="text-align: center;">Platz für Fragen</section>
+
+                <section style="font-size: 35px;">
+                    <h1>Heute</h1>
+                    <ul>
+                        <li>...</li>
+                    </ul>
+                </section>
+
+                <!--  SECTION: FEHLER -->
+
+                <section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
+                    <h3 style="margin-top: 200px">Fehler</h3>
+                    und Fehlerbehandlung
+                </section>
+
+                <section style="font-size: 31px">
+                    <h1>Fehlerursachen und -behandlung</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 46% 52%">
+                        <div>
+                            <h3>Ursachen</h3>
+                            <ul>
+                                <li>Fehler beim Benutzer
+                                    <ul>
+                                        <li>Der User gibt Daten im falschen Format ein, z.B. "eins" statt "1".</li>
+                                        <li>Der User gibt eine Datei oder Domain an, die nicht existiert.</li>
+                                    </ul>
+                                </li>
+                                <li class="fragment">Programmierfehler:
+                                    <ul>
+                                        <li>Zugriff auf undefinierte Variable, Funktion, ...</li>
+                                        <li>Zugriff auf undefinierten Eintrag in Liste, Dict, ...</li>
+                                        <li>Falsche Syntax (z.B. Einrückung)</li>
+                                    </ul>
+                                </li>
+                                <li class="fragment">"Fehler" aus dem Betriebssystem:
+                                    <ul>
+                                        <li>Die Festplatte oder der Arbeitsspeicher ist voll.</li>
+                                        <li>Das Netzwerkkabel wurde gezogen.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="fragment">Behandlung</h3>
+                            <ul>
+                                <li class="fragment">Ein Programm sollte nicht bei jedem Fehler einfach abstürzen.
+                                    <ul>
+                                        <li class="fragment">Fehleingaben vom Benutzer sollten zu aussagekräftigen Fehlermeldungen führen.</li>
+                                        <li class="fragment">Ein Absturz bei einem Fehler in der Programmierung ist meistens nicht vermeidbar.</li>
+                                        <li class="fragment">Bei "Fehlern" aus dem Betriebssystem:
+                                            <ul>
+                                                <li>Mit vollem Arbeitsspeicher sinnvoll umzugehen ist schwierig</li>
+                                                <li>Ein Ausfall des Netzwerks ist hingegen behandelbar</li>
+                                            </ul>
+                                    </ul>
+                                </li>
+                                <li class="fragment">Ein Programm muss nicht bei jedem Fehler beenden. Ein interaktives Programm kann
+                                    <ul>
+                                        <li>den Benutzer erneut zu einer Eingabe auffordern</li>
+                                        <li>auf Wiederherstellen der Netzwerkverbindung warten</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section style="font-size: 30px">
+                    <h1>Fehlerbehandlung in Python</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%">
+                        <div>
+                            Beispiel: <br>
+                            ```data-ns=ex cols=15 rows=2 br
+                            int('eins')
+                            ```
+                        </div>
+                        <ul>
+                            <li class="fragment">Fehler behandelt man mit `try`-`except`:<br>
+                            ```cols=30 rows=5 br
+                            try:
+                                x = int('eins')
+                            except ValueError:
+                                print('Fehler. x = 0')
+                                x = 0
+                            print(x)
+                            ```</li>
+                        </ul>
+                    </div>
+                    <br>
+                    <ul>
+                        <li class="fragment">Passiert in dem `try`-Block kein Fehler, läuft er ganz normal durch und der `except`-Block wird nicht ausgeführt.</li>
+                        <li class="fragment">Passiert in dem `try`-Block ein `ValueError`, springt das Programm zu dem `except`-Block.</li>
+                        <li class="fragment">Passiert ein anderer Fehler, stürzt das Programm wie gehabt ab.</li>
+                    </ul>
+                </section>
+
+                <section style="font-size: 30px">
+                    <h1>Standardfehler</h1>
+                    <ul>
+                        <li>`ValueError`: Ein Parameter hatte einen Wert, der nicht verarbeitet werden konnte, z.B. die eingabe von `int` war keine Zahl.</li>
+                        <li class="fragment">`TypeError`: Ein Parameter hatte einen unpassenden Typ, z.B. wurden probiert einen String und eine Zahl zu addieren.</li>
+                        <li class="fragment">`NameError`: Es wurde auf eine Variable zugegriffen, die nicht existiert.</li>
+                        <li class="fragment">`IndexError`: Es wurde auf einen Eintrag in einer Liste oder einem Tupel zugegriffen, der nicht existiert.</li>
+                        <li class="fragment">`KeyError`: Es wurde auf einen Eintrag in einem Dictionary zugegriffen, der nicht existiert.</li>
+                        <li class="fragment">`FileNotFoundError`: Eine Datei konnte nicht gefunden werden.</li>
+                        <li class="fragment">`IndentationError`: Die Einrückung ist falsch.</li>
+                        <li class="fragment">`SyntaxError`: Die Syntax ist aus anderen Gründen falsch.</li>
+                        <li class="fragment"><a href="https://docs.python.org/3/library/exceptions.html#concrete-exceptions" target="_blank">[mehr]</a></li>
+                    </ul>
+                </section>
+
+                <section style="font-size: 35px">
+                    <h1>Fehler in Python signallisieren</h1>
+                    <ul>
+                        <li>Möchte man selber einen Fehler signallisieren, kann man `raise` verwenden:<br>
+                        ```cols=40 rows=5 br
+                        age = 13
+                        if age < 18:
+                            raise ValueError('Nicht volljährig')
+                        print('Volljährig')
+                        ```</li>
+                        <li class="fragment">Diese Fehler können dann ebenso mit `try`-`except` behandelt werden.</li>
+                        <li class="fragment">Mann kann eigenen Fehlerklassen definieren, indem man von `Exception` erbt. Vererbung behandeln wir später.</li>
+                    </ul>
+                </section>
+
+                <section style="font-size: 32px">
+                    <h1>Werfen vs. geben</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 45% 53%">
+                        ```cols=28 br
+                        def inner():
+                            raise ValueError('oof')
+
+                        def outer():
+                            print('outer start')
+                            inner()
+                            print('outer done')
+                            return 1
+
+                        try:
+                            print(outer())
+                        except ValueError:
+                            print('error')
+                        ```
+                        <ul>
+                            <li class="fragment">In diesem Beispiel überspringt der Fehler die `outer` Funktion und wird direkt in der `try`-`except`-Anweisung behandelt.</li>
+                            <li class="fragment">Dies ist grundsätzlich für alle Fehler so: sie springen immer direkt bis zu der `try`-`except`-Anweisung, die sie behandelt.</li>
+                            <li class="fragment">Dies ist ein Unterschied zu Rückgabewerten, die nur direkt an die aufrufende Stelle gegeben werden.</li>
+                            <li class="fragment">Deshalb spricht man auch von Fehler "werfen" und "fangen". Die Worte `throw` und `catch` werden in vielen Programmiersprachen statt `raise` und `except` verwendet.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section style="font-size: 29px">
+                    <h1>Stack traces</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%">
+                        ```cols=28 br
+                        def inner():
+                            raise ValueError('oof')
+
+                        def outer():
+                            inner()
+
+                        outer()
+                        ```
+                        <ul>
+                            <li class="fragment">Wenn mehrere Funktionen einander aufrufen, sehen wir eine Spur in der Fehlermeldung, aufgrund der wir nachvollziehen können, wie die fehlerhafte Stelle aufgerufen wurde.</li>
+                            <li class="fragment">Diese Spur wird <em>Stack trace</em> genannt.</li>
+                            <li class="fragment">Die letzte Zeile ist die Stelle, an der der Fehler aufgetreten ist - hier die Funktion `inner`.</li>
+                            <li class="fragment">Die erste Zeile ist die Stelle, an der das Programm gestartet wurde - hier einfach Zeile 7.</li>
+                            <li class="fragment">In Thonny sehen Stack traces etwas ausführlicher als auf den Slides hier aus und dort können Sie auf die blau unterstrichenen Zeilen im Stack trace klicken, um direkt an die entsprechene Stelle im Code zu springen.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section style="font-size: 33px">
+                    <h1>Aufräumen</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%">
+                        ```cols=28 br
+                        try:
+                            print('vor raise')
+                            raise ValueError('oof')
+                            print('nach raise')
+                        except ValueError:
+                            print('except')
+                        finally:
+                            print('finally')
+                        ```
+                        <ul>
+                            <li class="fragment">Ein `finally`-Block wird immer ausgeführt, egal ob ein Fehler aufgetreten ist oder nicht.</li>
+                            <li class="fragment">Dies ist nützlich um aufzuräumen, z.B. Resourcen wie Dateien oder Datenbankverbindungen wieder freizugeben.</li>
+                            <li class="fragment">Ein `finally`-Block kann auch ohne `except` verwendet werden.</li>
+                        </ul>
+                </section>
+
+                <section style="font-size: 32px">
+                    <h1>Aufräumen in Standardfällen</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 44% 54%">
+                        <ul>
+                            <li>Folgender Code ist sehr üblich:<br>
+                            <p-in cols=25>
+                            f = open('Notes.txt')
+                            try:
+                                tu_etwas_mit(f)
+                            finally:
+                                f.close()
+                            </p-in></li>
+                            <li>Dateien müssen nach der Benutzung wieder geschlossen werden, damit das Betriebssystem anderen Programmen den Zugriff gewähren kann.</li>
+                        </ul>
+                        <ul>
+                            <li class="fragment">Dies ist so üblich, dass es eine kürzere Schreibweise gibt:<br>
+                            <p-in cols=30>
+                            with open('Notes.txt') as f:
+                                tu_etwas_mit(f)
+                            <p-in></li>
+                            <li class="fragment">Die Datei wird automatisch geschlossen, wenn der `with`-Block verlassen wird.</li>
+                            <li class="fragment">Dies funktioniert mit den meisten Objekten, die auf eine ähnliche Weise aufgeräumt werden müssen.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section class="center" style="text-align: center;">Platz für Fragen</section>
+
+                <!-- SECTION: UEBUNG -->
+
+                <section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
+                    <h3 style="margin-top: 200px">Übung</h3>
+                </section>
+        </div>
+
+        <script src="dist/reveal.js"></script>
+        <script src="plugin/highlight/highlight.js"></script>
+        <script src="highlighted-code.js"></script>
+        <script>
+            let pdf = new URLSearchParams(window.location.search).get('print-pdf') !== null
+            for (e of document.getElementsByClassName("pdf-only")) {
+                e.style.visibility = pdf ? "visible" : "hidden"
+            }
+
+            // <p-il> tag for quick inline Python highlighting
+            class PythonInline extends HTMLElement {
+                constructor() {
+                    super();
+                    this.go();
+                }
+
+                go() {
+                    let code = this.code ? this.code : this.innerText
+                    this.innerHTML = `<code class="language-python hljs">${RevealHighlight().hljs.highlight(code, { language: 'python' }).value}</code>`
+                }
+            }
+            customElements.define("p-il", PythonInline);
+
+            // <p-in> tag for quick python input
+            class PythonInput extends HTMLElement {
+                constructor() {
+                    super();
+                    this.go();
+                }
+
+                go() {
+                    let code = removeLeadingWhitespace(this.code ? this.code : this.innerText)
+                    let ns = this.getAttribute("data-ns") !== null ? `data-ns="${this.getAttribute("data-ns")}"` : "data-ns"
+                    if(this.getAttribute("hidden") !== null) {
+                        this.innerHTML = `<textarea style="display: none" ${ns}>${code}</textarea>`
+                    } else {
+                        let autoHeight = this.getAttribute("auto-height") !== null ? "auto-height" : ""
+                        let rows = this.getAttribute("rows") !== null ? `rows="${this.getAttribute("rows")}"` : `rows="${code.split('\n').length}"`
+                        let cols = this.getAttribute("cols") !== null ? `cols="${this.getAttribute("cols")}"` : ""
+                        this.innerHTML = `<textarea is="highlighted-code" language="python" tab-size="2" ${autoHeight} ${rows} ${cols} ${ns} spellcheck="false">${code}</textarea>`
+                    }
+                }
+            }
+            customElements.define("p-in", PythonInput);
+
+            // <p-out> tag for quick python output
+            class PythonOutput extends HTMLElement {
+                constructor() {
+                    super();
+                }
+            }
+            customElements.define("p-out", PythonOutput);
+
+            // <p-ex> tag for quick python example (combined input-output)
+            // ``` is a shortcut for this tag. You can put attributes after, ex:
+            // ```cols=15
+            // print('123')
+            // ```
+            class PythonExample extends HTMLElement {
+                constructor() {
+                    super();
+                    this.go();
+                }
+
+                go() {
+                    let code = removeLeadingWhitespace(this.code ? this.code : this.innerText)
+                    let cols = this.getAttribute("cols") !== null ? `cols="${this.getAttribute("cols")}"` : ""
+                    let ns = this.getAttribute("data-ns") !== null ? `data-ns="${this.getAttribute("data-ns")}"` : "data-ns"
+                    let rows = `rows="${code.split('\n').length}"`
+                    let br = this.getAttribute("br") !== null ? "<br>" : ""
+                    this.innerHTML = `<textarea is="highlighted-code" language="python" tab-size="2" auto-height ${rows} ${cols} ${ns} spellcheck="false">${code}</textarea>`
+                        + `${br}<p-out ${ns}></p-out>`
+                }
+            }
+            customElements.define("p-ex", PythonExample);
+
+            function removeLeadingWhitespace(text) {
+                let lines = text.split("\n")
+                while (lines.length > 1 && !lines[0].trim()) {
+                    lines.shift()
+                }
+                while (lines.length > 1 && !lines[lines.length - 1].trim()) {
+                    lines.pop()
+                }
+                let ws = lines[0].match(/^\s*/)[0]
+                return lines.map(l => l.replace(ws, "")).join("\n")
+            }
+
+            function replaceBackticks() {
+                for (n of document.body.querySelectorAll(`section *`)) {
+                    if (n.tagName == "TEXTAREA" || n.tagName.startsWith("P-")) {
+                        continue
+                    }
+                    do {
+                        replaced = false
+                        for (e of n.childNodes) {
+                            if (e.nodeType == Node.TEXT_NODE) {
+                                if (replaceBackticksInText(e)) {
+                                    n.removeChild(e)
+                                    replaced = true
+                                    break
+                                }
+                            }
+                        }
+                    } while(replaced)
+                }
+            }
+            function replaceBackticksInText(textNode) {
+                if (textNode.textContent.indexOf("`") < 0) {
+                    return
+                }
+                let chunks = textNode.textContent.split("```");
+                for (i in chunks) {
+                    if (parseInt(i) % 2 == 0) {
+                        replaceSingleBackticksInText(textNode, chunks[i])
+                    } else {
+                        let ex = new PythonExample()
+                        let lines = chunks[i].trimEnd().split("\n")
+                        attributes = lines[0].split(" ")
+                        // if attributes contain hidden, do a p-in instead
+                        if(attributes.includes("hidden")) {
+                            ex = new PythonInput()
+                        }
+                        setAttributes(ex, lines[0])
+                        ex.code = lines.splice(1).join("\n")
+                        ex.go()
+                        textNode.parentElement.insertBefore(ex, textNode)
+                    }
+                }
+                return true
+            }
+            function replaceSingleBackticksInText(textNode, text) {
+                let chunks = text.split("`");
+                for (i in chunks) {
+                    if (parseInt(i) % 2 == 0) {
+                        textNode.parentElement.insertBefore(document.createTextNode(chunks[i]), textNode);
+                    } else {
+                        let ex = new PythonInline()
+                        ex.code = chunks[i]
+                        ex.go()
+                        textNode.parentElement.insertBefore(ex, textNode)
+                    }
+                }
+            }
+            function setAttributes(elem, s) {
+                if (!s.trim()) {
+                    return
+                }
+                for (c of s.split(" ")) {
+                    let p = c.split("=", 2)
+                    elem.setAttribute(p[0], p[1] ? p[1] : "")
+                }
+            }
+            replaceBackticks()
+
+            let out = [ ]
+            let skipPython = false
+            async function init() {
+                if (skipPython) {
+                    return
+                }
+                console.log('loading Pyodide')
+                const { loadPyodide } = await import("https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.mjs");
+                let p = await loadPyodide({
+                    stdout: x => out.push(x),
+                    stderr: x => out.push(x)
+                });
+
+                console.log('importing repr_shorten')
+                let namespace = p.globals.get("dict")();
+                p.runPython('from pyodide.console import repr_shorten', { globals: namespace })
+                return { p: p, repr_shorten: namespace.get("repr_shorten"), n: p.globals.get("dict")() }
+            }
+            let pyodide = init()
+
+            function getParentSlide(elem) {
+                while (elem && elem.tagName != "SECTION") {
+                    elem = elem.parentElement
+                }
+                return elem
+            }
+
+            async function fillOutput(elem) {
+                // we only take code on current slide
+                slide = getParentSlide(elem)
+                // namespace can be undefined or empty!
+                let ns = elem.dataset.ns
+
+                // we separate by outputs so that we can isolate the print/return for exactly the last box
+                var code = [ [ ] ]
+                if (ns == "test") {
+                    code[0].push(
+`def test_input_expected_pairs(pairs, function):
+    function_name = repr(function).split(" ")[1]
+    print('Testergebnis:')
+    for *i, e in d:
+        try:
+            a = function(*i)
+        except Exception as ex:
+            print('Fehler beim Ausführen von')
+            print(function_name, '(', sep="", end="")
+            print(*[repr(x) for x in i], sep=", ", end=")\\n")
+            raise ex
+        if a != e:
+            print(function_name, '(', sep="", end="")
+            print(*[repr(x) for x in i], sep=", ", end=")\\n")
+            print("Gibt zurück:", repr(a))
+            print("Erwartet war aber:", repr(e))
+            return
+    print('Alles sieht gut aus!')
+    from pyodide.code import run_js
+    run_js("report_current_exercise_complete()")`)
+                }
+                for(e of slide.querySelectorAll(`textarea, p-out`)) {
+                    if (e == elem) {
+                        break
+                    }
+                    // ignore namespace entirely if either element's namespace is empty or undefined
+                    if ((ns || e.dataset.ns) && e.dataset.ns != ns) {
+                        continue
+                    }
+                    if (e.tagName == "P-OUT") {
+                        // introduce new code group to make sure that outputs are neatly separated
+                        code.push([ ])
+                    } else {
+                        code.slice(-1)[0].push(c = e.value || e.innerText.trim() || e.innerHTML.trim())
+                    }
+                }
+                // console.log('running code', code, 'in', ns)
+                await runCode(code, elem)
+            }
+
+            async function runCode(code, elem) {
+                // see here: https://github.com/pyodide/pyodide/blob/main/src/templates/console.html
+
+                elem.innerText = "..."
+                p = (await pyodide)
+                p.n.clear() // clear the namespace
+                var result = undefined
+                let error = [ ]
+                areas: for (cs of code) {
+                    out.length = 0
+                    for (c of cs) {
+                        try {
+                            result = p.p.runPython(c, { globals: p.n })
+                        } catch (e) {
+                            if (e.constructor.name === "PythonError") {
+                                lines = e.message.trim().split('\n')
+                                ours = -1
+                                for(l in lines) {
+                                    if(lines[l].startsWith('  File "<exec>", ')) {
+                                        if (ours < 0) {
+                                            ours = l
+                                        }
+                                        lines[l] = "  " + lines[l].substr(17);
+                                    }
+                                    if(lines[l].endsWith(', in <module>')) {
+                                        lines[l] = lines[l].substr(0, lines[l].indexOf(', in <module>'));
+                                    }
+                                }
+                                error.push(lines[0] + "\n" + lines.slice(ours < 0 ? 1 : ours).join("\n"));
+                                break areas;
+                            } else {
+                                throw e;
+                            }
+                        }
+                    }
+                }
+
+                elem.innerText = out.join("\n")
+                html = elem.innerHTML
+                if (error.length > 0) {
+                    elem.innerText = error.join("\n")
+                    elem.innerHTML = (html ? html + "<br>" : "") + `<span class="error">${elem.innerHTML}</code>`
+                } else if (result !== undefined) {
+                    elem.innerText = p.repr_shorten.callKwargs(result, {
+                        separator: "\n<long output truncated>\n",
+                    });
+                    elem.innerHTML = (html ? html + "<br>" : "") + `<code class="language-python">${elem.innerHTML}</code>`
+                }
+                // console.log('result:', elem.innerHTML)
+
+                elem.style.display = elem.innerHTML.indexOf("<br") >= 0 ? "inline-block" : "inline";
+
+                if (Reveal.getPlugin && elem.lastChild && elem.lastChild.tagName == "CODE") {
+                    // cheap way of preventing crashes before initialized
+                    Reveal.getPlugin('highlight').highlightBlock(elem.lastChild)
+                }
+                if (Reveal.layout) {
+                    // so that highlights move with their textareas
+                    Reveal.dispatchEvent({type: 'resize', data: {}})
+                }
+            }
+
+            async function runAllCode() {
+                if (skipPython) {
+                    return
+                }
+                for (const elem of document.querySelectorAll('p-out')) {
+                    // put the little arrow before
+                    a = document.createElement("a")
+                    a.className = "runCode"
+                    a.onclick = () => fillOutput(elem);
+                    elem.parentElement.insertBefore(a, elem)
+                    await fillOutput(elem)
+                }
+            }
+
+            let allCodeInserted = pyodide.then(runAllCode).then(() => {
+                console.log('initializing Reveal')
+                let cbPath = 'ext/chalkboard/'
+                Reveal.initialize({
+                    width: 1280,
+                    height: 720,
+                    margin: 0.07,
+
+                    controls: new URLSearchParams(window.location.search).get('withControls') !== null,
+                    progress: false,
+                    center: false,
+                    hash: true,
+                    fragments: new URLSearchParams(window.location.search).get('noFragments') === null,
+                    pdfSeparateFragments: false,
+                    backgroundTransition: 'slide',
+                    slideNumber: 'c',
+
+                    // Learn about plugins: https://revealjs.com/plugins/
+                    plugins: [ RevealHighlight, RevealChalkboard, RevealCustomControls ],
+
+                    chalkboard: {
+                        background: [ 'rgba(127,127,127,0)' , path + 'img/blackboard.png' ],
+                        boardmarkers : [
+                                { color: 'rgba(180,20,60,1)', cursor: 'url(' + cbPath + 'img/boardmarker-red.png), auto'},
+                                { color: 'rgba(100,100,100,1)', cursor: 'url(' + cbPath + 'img/boardmarker-black.png), auto'},
+                                { color: 'rgba(30,144,255, 1)', cursor: 'url(' + cbPath + 'img/boardmarker-blue.png), auto'},
+                                { color: 'rgba(50,205,50,1)', cursor: 'url(' + cbPath + 'img/boardmarker-green.png), auto'},
+                                { color: 'rgba(255,140,0,1)', cursor: 'url(' + cbPath + 'img/boardmarker-orange.png), auto'},
+                                { color: 'rgba(150,0,20150,1)', cursor: 'url(' + cbPath + 'img/boardmarker-purple.png), auto'},
+                                { color: 'rgba(255,220,0,1)', cursor: 'url(' + cbPath + 'img/boardmarker-yellow.png), auto'},
+                        ],
+                    },
+                });
+
+                var ready = false
+                let autoscale = () => {
+                    if (Reveal.isOverview()) {
+                        return;
+                    }
+                    var scaled = false
+                    if (document.querySelectorAll('section').length == 0) {
+                        // this is for print stuff
+                        return
+                    }
+                    const s = getComputedStyle(document.body).getPropertyValue('--slide-scale') || 1;
+                    const h = parseInt(getComputedStyle(document.body).getPropertyValue('--slide-height')) * s
+                    document.querySelectorAll('section[data-autoscale]').forEach(elem => {
+                        if(elem.dataset.autoscale == "done" || elem.getBoundingClientRect().height == 0) {
+                            return
+                        }
+                        if(elem.getBoundingClientRect().height > h) {
+                            let fs = getComputedStyle(elem).fontSize
+                            if (!fs.endsWith('px')) {
+                                return;
+                            }
+                            elem.style.fontSize = (parseInt(fs) - 1) + 'px';
+                            scaled = true
+                        } else {
+                            elem.dataset.autoscale = "done"
+                        }
+                    });
+                    if (scaled) {
+                        Reveal.dispatchEvent({type: 'resize', data: {}})
+                    }
+                }
+
+                Reveal.on('ready', event => {
+                    console.log('reveal.js ready')
+                    document.querySelectorAll('p-out code').forEach(elem => {
+                        Reveal.getPlugin('highlight').highlightBlock(elem)
+                    });
+                    autoscale()
+                })
+
+                Reveal.on('resize', event => {
+                    console.log('reveal.js resize')
+                    autoscale()
+                })
+
+                Reveal.on('slidechanged', event => {
+                    let s = Reveal.getSlidePastCount() + 1
+                    sendSlideChange(s)
+                    autoscale()
+                    Reveal.dispatchEvent({type: 'resize', data: {}})
+                })
+
+                Reveal.on('overviewshown', event => {
+                    Reveal.dispatchEvent({type: 'resize', data: {}})
+                })
+
+                Reveal.on('overviewhidden', event => {
+                    Reveal.dispatchEvent({type: 'resize', data: {}})
+                })
+            })
+
+            function report_current_exercise_complete() {
+                let s = Reveal.getSlidePastCount() + 1
+                sendExerciseComplete(s)
+            }
+        </script>
+
+    </body>
+</html>
