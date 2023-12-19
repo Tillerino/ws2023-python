@@ -54,6 +54,11 @@
 
             .reveal table { margin: 0px; }
             td { vertical-align: top; }
+            .thonny-repl { background-color: #eee; padding: .2em; padding-top: .0em; display: inline-block; }
+            .thonny-repl-tag { background-color: white; padding-left: 0.4em; padding-right: 0.4em; font-size: 0.8em; border: solid 1px #ccc; border-bottom: none; position: relative; top: 1px; }
+            .thonny-repl-content { display: inline-block; font-family: monospace; background-color: white; padding: 0.5em;
+                border: solid 1px #ccc; }
+            .thonny-input { color: blue; }
         </style>
     </head>
 
@@ -89,6 +94,17 @@
                     </ul>
                     <br><br>
                     <iframe src="https://adventofcode.com" width="100%" height="200"></iframe>
+                </section>
+
+                <section class="center" style="text-align: center;">
+                    <ul>
+                        <li>Slides vs. Thonny<br>```br
+                        [1, 2, 3]
+                        ```
+                        </li>
+                        <li>`return` vs `print`</li>
+                        <li>Seiteneffekte vs. `return`</li>
+                    </ul>
                 </section>
 
                 <section style="font-size: 25px;">
@@ -424,6 +440,149 @@
                 <section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
                     <h3 style="margin-top: 200px">Übung</h3>
                 </section>
+
+                <section style="font-size: 30px;">
+                    <h1>Übung I: Crash</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                        <ul>
+                            <li>Oh nein! Das Programm crasht! Hier war wohl jemand nicht vorsichtig genug.</li>
+                            <li>Rechts sehen Sie eine Funktion, die überprüfen soll, ob der Nutzer volljährig ist.</li>
+                            <li>Entziffern Sie den Fehler und reparieren Sie das Programm.</li>
+                        </ul>
+                        <div>
+                            <p-in cols=30 rows=5 data-ns=test>
+                            def is_adult(age):
+                                if age >= 18:
+                                    return True
+                                return False
+                            </p-in><br>
+                            ```hidden data-ns=test
+                            d = [
+                                ("18", True),
+                                ("17", False),
+                                ("110", True),
+                                ("2", False),
+                                ("0", False),
+                                ("-1", False),
+                            ]
+                            test_input_expected_pairs(d, is_adult)
+                            ```
+                            <p-out data-ns=test></p-out>
+                        </div>
+                    </div>
+                </section>
+
+                <section style="font-size: 30px;">
+                    <h1>Übung II: Crash</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                        <ul>
+                            <li>Oh nein! Dieses Programm crasht auch!</li>
+                            <li>Rechts sehen Sie eine Funktion, die überprüfen soll, ob ein String mit "go" anfängt.</li>
+                            <li>In dem Fall soll sie den verbleibenden String zurückgeben, sonst `None`.</li>
+                            <li>Entziffern Sie den Fehler und reparieren Sie das Programm.</li>
+                        </ul>
+                        <div>
+                            <p-in cols=30 rows=5 data-ns=test>
+                            def starts_with_go(s):
+                                if s[0:2] == go:
+                                    return s[2:]
+                                return None
+                            </p-in><br>
+                            ```hidden data-ns=test
+                            d = [
+                                ("go", ""),
+                                ("goback", "back"),
+                                ("goon", "on"),
+                                ("gogo", "go"),
+                                ("og", None),
+                                ("nowgo", None),
+                            ]
+                            test_input_expected_pairs(d, starts_with_go)
+                            ```
+                            <p-out data-ns=test></p-out>
+                    </div>
+                </section>
+
+                <section style="font-size: 28px;">
+                    <h1>Übung X: Robuster Taschenrechner</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 47% 24% 27%;">
+                        <ul>
+                            <li>Sie haben bereits in Lektion 02 einen Taschenrechner implementiert. Die Musterlösung davon können Sie von der nächsten Folie kopieren.</li> 
+                            <li>Erweitern Sie den Taschenrechner so, dass er nicht bei jeder Fehleingabe abstürzt.
+                                <ol>
+                                    <li>Wenn der Benutzer eine ungültige Zahl eingibt, soll die Eingabe wiederholt werden, bis sie gültig ist. Setzen Sie dies mit `try`-`except` um.</li>
+                                    <li>Wenn der Benutzer eine ungültige Operation eingibt, soll die Eingabe ebenso wiederholt werden.</li>
+                                    <li>Lassen Sie den Taschenrechner eins durch null Teilen. Identifizieren Sie den Fehler und fangen Sie ihn mit `try`-`except` ab.</li>
+                                </ol>
+                            </li>
+                            <li>Rechts sind einige Beispiele von Ein- und Ausgaben.</li>
+                        </ul>
+                        <div style="font-size: 0.6em">
+                            <span class="thonny-repl">
+                                Erster Operand: <span class="thonny-input">1</span><br>
+                                Operator: <span class="thonny-input">+</span><br>
+                                Zweiter Operand: <span class="thonny-input">2</span><br>
+                                1 + 2 = 3
+                            </span><br><br>
+                            <span class="thonny-repl">
+                                Erster Operand: <span class="thonny-input">eins</span><br>
+                                Ungültige Zahl.<br>
+                                Erster Operand: <span class="thonny-input">1</span><br>
+                                Operator: <span class="thonny-input">plus</span><br>
+                                Ungültige Wahl.<br>
+                                Operator: <span class="thonny-input">-</span><br>
+                                Zweiter Operand: <span class="thonny-input">2</span><br>
+                                1 - 2 = -1
+                            </span><br><br>
+                            <span class="thonny-repl">
+                                Erster Operand: <span class="thonny-input">1</span><br>
+                                Operator: <span class="thonny-input">/</span><br>
+                                Zweiter Operand: <span class="thonny-input">0</span><br>
+                                (Division durch null)
+                            </span>
+                        </div>
+                        <div style="font-size: 0.6em">
+                            <span class="thonny-repl">
+                                Erster Operand: <span class="thonny-input">eins</span><br>
+                                Ungültige Zahl.<br>
+                                Erster Operand: <span class="thonny-input">Eins</span><br>
+                                Ungültige Zahl.<br>
+                                Erster Operand: <span class="thonny-input">EINS</span><br>
+                                Ungültige Zahl.<br>
+                                Erster Operand: <span class="thonny-input">EEEEEINS!!!</span><br>
+                                Ungültige Zahl.<br>
+                                Erster Operand: <span class="thonny-input">,lki0l8xde</span><br>
+                                Ungültige Zahl.<br>
+                                Erster Operand: <span class="thonny-input">1</span><br>
+                                Operator: <span class="thonny-input">+</span><br>
+                                Zweiter Operand: <span class="thonny-input">2</span><br>
+                                1 + 2 = 3
+                            </span>
+                        </div>
+                    </div>
+                </section>
+
+                <section style="font-size: 28px;">
+                    <h1>(Musterlösung von Lektion 2 - Taschenrechner)</h1>
+                    <p-in cols=50 rows=16>
+                        x = int(input('Erster Operand: '))
+                        o = input('Operator: ')
+                        y = int(input('Zweiter Operand: '))
+
+                        if o == '+':
+                            print(x, o, y, '=', x + y)
+                        elif o == '-':
+                            print(x, o, y, '=', x - y)
+                        elif o == '*':
+                            print(x, o, y, '=', x * y)
+                        elif o == '/':
+                            if x % y == 0:
+                                print(x, o, y, '=', x // y)
+                            else:
+                                print(x, o, y, '=', x // y, "Rest", x % y)
+                    </p-in>
+                </section>
+            </div>
         </div>
 
         <script src="dist/reveal.js"></script>
@@ -501,6 +660,12 @@
                 }
             }
             customElements.define("p-ex", PythonExample);
+
+            document.querySelectorAll(".thonny-repl").forEach(e => {
+                let html = e.innerHTML
+                e.innerHTML = `<span class="thonny-repl-tag">Kommandozeile&nbsp;&nbsp;×</span><br><span class="thonny-repl-content"><span class="hljs-keyword">>>></span>
+                    <span class="hljs-comment">%Run -c $EDITOR_CONTENT</span><br>${html}</span>`
+            })
 
             function removeLeadingWhitespace(text) {
                 let lines = text.split("\n")
@@ -617,7 +782,7 @@
                 // we separate by outputs so that we can isolate the print/return for exactly the last box
                 var code = [ [ ] ]
                 if (ns == "test") {
-                    code[0].push(
+                    code[0].push({ text:
 `def test_input_expected_pairs(pairs, function):
     function_name = repr(function).split(" ")[1]
     print('Testergebnis:')
@@ -637,7 +802,7 @@
             return
     print('Alles sieht gut aus!')
     from pyodide.code import run_js
-    run_js("report_current_exercise_complete()")`)
+    run_js("report_current_exercise_complete()")`, filename: "<hidden>" })
                 }
                 for(e of slide.querySelectorAll(`textarea, p-out`)) {
                     if (e == elem) {
@@ -651,7 +816,7 @@
                         // introduce new code group to make sure that outputs are neatly separated
                         code.push([ ])
                     } else {
-                        code.slice(-1)[0].push(c = e.value || e.innerText.trim() || e.innerHTML.trim())
+                        code.slice(-1)[0].push({ text: e.value || e.innerText.trim() || e.innerHTML.trim(), filename: e.style.display == 'none' ? "<hidden>" : "<stdin>" })
                     }
                 }
                 // console.log('running code', code, 'in', ns)
@@ -670,23 +835,19 @@
                     out.length = 0
                     for (c of cs) {
                         try {
-                            result = p.p.runPython(c, { globals: p.n })
+                            result = p.p.runPython(c.text, { globals: p.n, filename: c.filename })
                         } catch (e) {
                             if (e.constructor.name === "PythonError") {
                                 lines = e.message.trim().split('\n')
-                                ours = -1
+                                filteredLines = [ ]
                                 for(l in lines) {
-                                    if(lines[l].startsWith('  File "<exec>", ')) {
-                                        if (ours < 0) {
-                                            ours = l
-                                        }
-                                        lines[l] = "  " + lines[l].substr(17);
-                                    }
-                                    if(lines[l].endsWith(', in <module>')) {
-                                        lines[l] = lines[l].substr(0, lines[l].indexOf(', in <module>'));
+                                    if(lines[l].startsWith('  File "<stdin>", ')) {
+                                        filteredLines.push("  " + lines[l].substr(18));
+                                    } else if(!lines[l].startsWith('  ') && lines) {
+                                        filteredLines.push(lines[l]);
                                     }
                                 }
-                                error.push(lines[0] + "\n" + lines.slice(ours < 0 ? 1 : ours).join("\n"));
+                                error.push(filteredLines.join("\n"));
                                 break areas;
                             } else {
                                 throw e;
