@@ -503,14 +503,142 @@
                     </div>
                 </section>
 
+                <section style="font-size: 30px;">
+                    <h1>Übung III: Crash</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                        <ul>
+                            <li>Oh nein! Dieses Programm crasht auch!</li>
+                            <li>Rechts sehen Sie eine Funktion, die das Maximum von zwei Zahlen berechnen soll.</li>
+                            <li>Entziffern Sie den Fehler und reparieren Sie das Programm.</li>
+                        </ul>
+                        <div>
+                            <p-in cols=30 rows=5 data-ns=test>
+                            def maxi(x, y):
+                                if X >= y:
+                                    return x
+                                 else:
+                                     return y
+                            </p-in><br>
+                            ```hidden data-ns=test
+                            d = [
+                                (1, 2, 2),
+                                (2, 1, 2),
+                                (1, 1, 1),
+                                (0, 0, 0),
+                                (-1, 1, 1),
+                                (1, -1, 1),
+                            ]
+                            test_input_expected_pairs(d, maxi)
+                            ```
+                            <p-out data-ns=test></p-out>
+                </section>
+
+                <section style="font-size: 30px;">
+                    <h1>Übung IV: Crash</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 31% 67%;">
+                        <ul>
+                            <li>Oh nein! Dieses Programm crasht auch!</li>
+                            <li>Rechts sehen Sie eine Funktion, die bestimmen soll, ob ein Zeichen eine Ziffer ist.</li>
+                            <li>Entziffern Sie den Fehler und reparieren Sie das Programm.</li>
+                        </ul>
+                        <div>
+                            <p-in cols=45 rows=5 data-ns=test>
+                            def is_digit(c):
+                            return length(c) == 1 and 0 <= c <= 9
+                            </p-in><br>
+                            ```hidden data-ns=test
+                            d = [
+                                ('0', True),
+                                ('1', True),
+                                ('2', True),
+                                ('3', True),
+                                ('4', True),
+                                ('5', True),
+                                ('6', True),
+                                ('7', True),
+                                ('8', True),
+                                ('9', True),
+                                ('', False),
+                                ('a', False),
+                                ('z', False),
+                                ('A', False),
+                                ('Z', False),
+                                ('123', False),
+                                (' ', False),
+                            ]
+                            test_input_expected_pairs(d, is_digit)
+                            ```
+                            <p-out data-ns=test></p-out>
+                        </div>
+                    </div>
+                </section>
+
+                <section style="font-size: 30px;">
+                    <h1>Übung V: Crash</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 36% 63%;">
+                        <ul>
+                            <li>Oh nein! Dieses Programm crasht auch!</li>
+                            <li>Rechts sehen Sie eine Funktion, die aus einer Liste von Zahlen die Veränderungen zwischen den Elementen berechnet.</li>
+                            <li>Entziffern Sie den Fehler und reparieren Sie das Programm.</li>
+                        </ul>
+                        <div>
+                            <p-in cols=42 rows=6 data-ns=test>
+                            def with_changes(l):
+                                result = []
+                                for i in range(0, len(l)):
+                                    result.append(l[i + 1] - l[i])
+                                return result
+                            </p-in><br>
+                            ```hidden data-ns=test
+                            d = [
+                                ([3, 4, 2], [1, -2]),
+                                ([1, 2, 3], [1, 1]),
+                                ([1, 1, 1], [0, 0]),
+                                ([1, 2, 1], [1, -1]),
+                                ([1, 10], [9]),
+                                ([1], []),
+                                ([], []),
+                            ]
+                            test_input_expected_pairs(d, with_changes)
+                            ```
+                            <p-out data-ns=test></p-out>
+                        </div>
+                    </div>
+                </section>
+
+                <section style="font-size: 30px;">
+                    <h1>Übung VI: Robuste Eingabe</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 46% 52%;">
+                        <ul>
+                            <li>Rechts sehen Sie die Definition einer Funktion `input_int`.</li>
+                            <li>Die Funktion soll eine Zahl vom Benutzer einlesen und zurückgeben.</li>
+                            <li>Die Funktion bekommt einen Parameter `prompt`, der die Eingabeaufforderung enthält.</li>
+                            <li>Das Problem: Wenn der Benutzer keine gültige Zahl eingibt, crasht das Programm.</li>
+                            <li>Modifizieren Sie die Funktion so, dass das Programm nicht mehr crasht.</li>
+                            <li>Stattdessen soll die Eingabe so lange wiederholt werden, bis sie gültig ist. Setzen Sie dies mit `try`-`except` um.</li>
+                        </ul>
+                        <div>
+                            <p-in cols=30 rows=5>
+                            def input_int(prompt):
+                                return int(input(prompt))
+                            </p-in><br>
+                            <ul>
+                                <li>Kopieren Sie zunächst die Funktion nach Thonny und führen folgendes aus:<br>
+                                `print(input_int('Zahl Bitte: '))`</li>
+                                <li>Geben Sie eine gültige Zahl ein.</li>
+                                <li>Führen Sie das gleiche aus und geben ungültige Zahl ein. Nun können Sie beginnen zu reparieren.</li>
+                            </ul>
+                        </div>
+                </section>
+
                 <section style="font-size: 28px;">
-                    <h1>Übung X: Robuster Taschenrechner</h1>
+                    <h1>Übung VII: Robuster Taschenrechner</h1>
                     <div style="display: grid; column-gap: 2%; grid-template-columns: 47% 24% 27%;">
                         <ul>
                             <li>Sie haben bereits in Lektion 02 einen Taschenrechner implementiert. Die Musterlösung davon können Sie von der nächsten Folie kopieren.</li> 
                             <li>Erweitern Sie den Taschenrechner so, dass er nicht bei jeder Fehleingabe abstürzt.
                                 <ol>
-                                    <li>Wenn der Benutzer eine ungültige Zahl eingibt, soll die Eingabe wiederholt werden, bis sie gültig ist. Setzen Sie dies mit `try`-`except` um.</li>
+                                    <li>Wenn der Benutzer eine ungültige Zahl eingibt, soll die Eingabe wiederholt werden, bis sie gültig ist. Nutzen Sie dazu die Funktion `input_int` von eben.</li>
                                     <li>Wenn der Benutzer eine ungültige Operation eingibt, soll die Eingabe ebenso wiederholt werden.</li>
                                     <li>Lassen Sie den Taschenrechner eins durch null Teilen. Identifizieren Sie den Fehler und fangen Sie ihn mit `try`-`except` ab.</li>
                                 </ol>
@@ -582,7 +710,65 @@
                                 print(x, o, y, '=', x // y, "Rest", x % y)
                     </p-in>
                 </section>
-            </div>
+
+                <section style="font-size: 30px;">
+                    <h1>Übung VIII: Palindrom</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                        <ul>
+                            <li>Ein Palindrom ist ein Wort, das rückwärts gelesen das gleiche Wort ist. Beispiele: Bob, nennen, Ehe, Radar, Rentner, stets, Reittier.</li>
+                            <li>Groß- und Kleinschreibung wird dabei nicht beachtet.</li>
+                            <li>Implementieren Sie eine Funktion `palindrome`, die überprüft, ob ein Wort ein Palindrom ist. Beispiele:<br>
+                                ```hidden
+                                def palindrome(a):
+                                    return list(a.lower()) == list(reversed(a.lower()))
+                                ```
+                                ```cols=21
+                                    palindrome('Bob')
+                                ```<br>
+                                ```cols=21
+                                    palindrome('Rentner')
+                                ```<br>
+                                ```cols=21
+                                    palindrome('Rente')
+                                ```<br>
+                                ```cols=21
+                                    palindrome('Saft')
+                                ```
+                            </li>
+                        </ul>
+                        <div>
+                            Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:<br>
+                            <p-in cols=35 rows=5 data-ns=test>
+                                def palindrome(a):
+                                    return 'ich bin nicht fertig'
+                            </p-in><br>
+                            ```hidden data-ns=test
+                                d = [
+                                    ('Bob', True),
+                                    ('Rentner', True),
+                                    ('Rente', False),
+                                    ('Saft', False),
+                                    ('', True),
+                                    ('a', True),
+                                    ('aa', True),
+                                    ('ab', False),
+                                    ('aba', True),
+                                    ('abba', True),
+                                    ('abca', False),
+                                    ('abcba', True),
+                                    ('abcde', False),
+                                    ('abcdedcba', True),
+                                    ('abcdedcbaa', False),
+                                ]
+
+                                test_input_expected_pairs(d, palindrome)
+                            ```
+                            <p-out data-ns=test></p-out>
+                        </div>
+                    </div>
+                </section>
+
+             </div>
         </div>
 
         <script src="dist/reveal.js"></script>
