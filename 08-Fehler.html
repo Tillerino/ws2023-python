@@ -107,9 +107,94 @@
                     </ul>
                 </section>
 
-                <section style="font-size: 25px;">
-                    <h1>(letzte) Übung</h1>
+                <section style="font-size: 24px">
+                    <h1>(letztes Mal) Warm-Up: Anagramme</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%">
+                        <ul>
+                            <li>Ein Anagramm ist ein Wort, das aus den Buchstaben eines anderen Wortes durch Umordnen gebildet werden kann.</li>
+                            <li>Beispiel: "Ergbut" ist ein Anagramm von "Betrug".</li>
+                            <li>Die Groß- und Kleinschreibung wird dabei verworfen, also "bEtrug" ist gleich wie "Betrug".</li>
+                            <li>Wichtig: die Häufigkeit der Buchstaben muss dabei erhalten bleiben.</li>
+                            <li>"Saft" und "fasst" sind also keine Anagramme.</li>
+                            <li>Schreiben Sie eine Funktion `anagramm(a, b)`, die `True` zurückgibt, falls `a` und `b` Anagramme sind und `False` sonst. Beispiele:<br>
+                            ```hidden
+                            def anagramm(a, b):
+                                return sorted(a.lower()) == sorted(b.lower())
+                            ```
+                            ```cols=29
+                                anagramm('Erbgut', 'Betrug')
+                            ```<br>
+                            ```cols=29
+                                anagramm('Saft', 'fast')
+                            ```<br>
+                            ```cols=29
+                                anagramm('Saft', 'fasst')
+                            ```</li>
+                            <li>Zur Erinnerung: ```cols=13
+                                'Abc'.lower()
+                            ```</li>
+                            <li>Tipp: Auf der letzten Folie der Übersicht stand etwas von Sortieren 🤔.</li> 
+                        </ul>
+                        <div>
+                            Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:<br>
+                            <p-in cols=35 rows=10 data-ns=test>
+                                def anagramm(a, b):
+                                    return 'ich bin nicht fertig'
+                            </p-in><br>
+                            ```hidden data-ns=test
+                                d = [
+                                    ('Erbgut', 'Betrug', True),
+                                    ('Saft', 'fast', True),
+                                    ('Saft', 'fasst', False),
+                                    ('', '', True),
+                                    ('x', 'X', True),
+                                    ('x', 'xx', False),
+                                    ('xxyy', 'xxxy', False),
+                                ]
+
+                                test_input_expected_pairs(d, anagramm)
+                            ```
+                            <p-out data-ns=test></p-out>
+                        </div>
+                    </div>
                 </section>
+
+                <section style="font-size: 26px">
+                    <h1>(letzte) Übung I: Anagramme</h1>
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%">
+                        <ul>
+                            <li>Laden Sie die Datei <a href="https://codeberg.org/davidak/wortliste/raw/branch/master/wortliste.txt">wortliste.txt</a> herunter.</li>
+                            <li>Quelle: <a href="https://codeberg.org/davidak/wortliste">User davidak auf Codeberg</a></li>
+                            <li>Finden Sie die größten Anagramm-Gruppe in der Liste!</li>
+                            <li>Beispiel: 'urban', 'braun', 'unbar' sind eine Anagramm-Gruppe der Größe 3.</li>
+                            <li>Im Warm-Up haben Sie eine Funktion geschrieben, die prüft, ob zwei Wörter Anagramme voneinanders sind.
+                                Diese Funktion können Sie hier nicht verwenden, da Sie alle Wörter der Liste mit allen anderen vergleichen müssen.
+                                Dies wären etwa 239.000² ~ 57 Milliarden Vergleiche.
+                                Dies würde sehr lange dauern.</li>
+                            <li>Versuchen Sie stattdessen das Prinzip der `anagramm` Funktion mit einer geeigneten Collection zu verbinden.
+                                Ein entsprechendes Programm sollte innerhalb von wenigen Sekunden die Antwort finden können.</li>
+                        </ul>
+                        <div>
+                            Um Ihre Lösung zu testen, setzen Sie die Menge `gruppe` entsprechend und klicken den Pfeil:<br>
+                            <p-in cols=35 rows=5 data-ns=test>
+                                gruppe = {'die', 'gruppe', 'ist', \
+                                          'nicht', 'fertig'}
+                            </p-in><br>
+                            ```hidden data-ns=test
+                                def richtige_gruppe(s):
+                                    return s == {'Reines', 'seiner', 'riesen', 'Serien', 'Nieser', 'Reisen', 'Seiner', 'Einser', 'eisern', 'reisen', 'Sirene', 'Eisner', 'reines', 'Riesen'}
+
+                                d = [
+                                    (gruppe, True),
+                                ]
+
+                                test_input_expected_pairs(d, richtige_gruppe)
+                            ```
+                            <p-out data-ns=test></p-out>
+                        </div>
+                    </div>
+                </section>
+
 
                 <section style="font-size: 28px;">
                     <h1>Werkzeuge</h1>
@@ -213,13 +298,6 @@
 
                 <section class="center" style="text-align: center;">Platz für Fragen</section>
 
-                <section style="font-size: 35px;">
-                    <h1>Heute</h1>
-                    <ul>
-                        <li>...</li>
-                    </ul>
-                </section>
-
                 <!--  SECTION: FEHLER -->
 
                 <section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
@@ -312,8 +390,8 @@
                     <h1>Standardfehler</h1>
                     <ul>
                         <li>`ValueError`: Ein Parameter hatte einen Wert, der nicht verarbeitet werden konnte, z.B. die eingabe von `int` war keine Zahl.</li>
-                        <li class="fragment">`TypeError`: Ein Parameter hatte einen unpassenden Typ, z.B. wurden probiert einen String und eine Zahl zu addieren.</li>
-                        <li class="fragment">`NameError`: Es wurde auf eine Variable zugegriffen, die nicht existiert.</li>
+                        <li class="fragment">`TypeError`: Ein Parameter hatte einen unpassenden Typ, z.B. wurde probiert einen String und eine Zahl zu addieren.</li>
+                        <li class="fragment">`NameError`: Es wurde auf eine Variable, Funktion o.Ä. zugegriffen, die nicht existiert.</li>
                         <li class="fragment">`IndexError`: Es wurde auf einen Eintrag in einer Liste oder einem Tupel zugegriffen, der nicht existiert.</li>
                         <li class="fragment">`KeyError`: Es wurde auf einen Eintrag in einem Dictionary zugegriffen, der nicht existiert.</li>
                         <li class="fragment">`FileNotFoundError`: Eine Datei konnte nicht gefunden werden.</li>
@@ -443,13 +521,14 @@
 
                 <section style="font-size: 30px;">
                     <h1>Übung I: Crash</h1>
-                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 39% 59%;">
                         <ul>
                             <li>Oh nein! Das Programm crasht! Hier war wohl jemand nicht vorsichtig genug.</li>
                             <li>Rechts sehen Sie eine Funktion, die überprüfen soll, ob der Nutzer volljährig ist.</li>
                             <li>Entziffern Sie den Fehler und reparieren Sie das Programm.</li>
                         </ul>
                         <div>
+                            Wie immer können Sie Ihre Lösung testen, indem Sie auf den Pfeil unten klicken:<br>
                             <p-in cols=30 rows=5 data-ns=test>
                             def is_adult(age):
                                 if age >= 18:
@@ -474,7 +553,7 @@
 
                 <section style="font-size: 30px;">
                     <h1>Übung II: Crash</h1>
-                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 39% 59%;">
                         <ul>
                             <li>Oh nein! Dieses Programm crasht auch!</li>
                             <li>Rechts sehen Sie eine Funktion, die überprüfen soll, ob ein String mit "go" anfängt.</li>
@@ -482,6 +561,7 @@
                             <li>Entziffern Sie den Fehler und reparieren Sie das Programm.</li>
                         </ul>
                         <div>
+                            Wie immer können Sie Ihre Lösung testen, indem Sie auf den Pfeil unten klicken:<br>
                             <p-in cols=30 rows=5 data-ns=test>
                             def starts_with_go(s):
                                 if s[0:2] == go:
@@ -505,13 +585,14 @@
 
                 <section style="font-size: 30px;">
                     <h1>Übung III: Crash</h1>
-                    <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <div style="display: grid; column-gap: 2%; grid-template-columns: 39% 59%;">
                         <ul>
                             <li>Oh nein! Dieses Programm crasht auch!</li>
                             <li>Rechts sehen Sie eine Funktion, die das Maximum von zwei Zahlen berechnen soll.</li>
                             <li>Entziffern Sie den Fehler und reparieren Sie das Programm.</li>
                         </ul>
                         <div>
+                            Wie immer können Sie Ihre Lösung testen, indem Sie auf den Pfeil unten klicken:<br>
                             <p-in cols=30 rows=5 data-ns=test>
                             def maxi(x, y):
                                 if X >= y:
@@ -542,6 +623,7 @@
                             <li>Entziffern Sie den Fehler und reparieren Sie das Programm.</li>
                         </ul>
                         <div>
+                            Wie immer können Sie Ihre Lösung testen, indem Sie auf den Pfeil unten klicken:<br>
                             <p-in cols=45 rows=5 data-ns=test>
                             def is_digit(c):
                             return length(c) == 1 and 0 <= c <= 9
@@ -578,12 +660,13 @@
                     <div style="display: grid; column-gap: 2%; grid-template-columns: 36% 63%;">
                         <ul>
                             <li>Oh nein! Dieses Programm crasht auch!</li>
-                            <li>Rechts sehen Sie eine Funktion, die aus einer Liste von Zahlen die Veränderungen zwischen den Elementen berechnet.</li>
+                            <li>Rechts sehen Sie eine Funktion, die aus einer Liste von Zahlen die Veränderungen zwischen aufeinander folgenden Elementen berechnet.</li>
                             <li>Entziffern Sie den Fehler und reparieren Sie das Programm.</li>
                         </ul>
                         <div>
+                            Wie immer können Sie Ihre Lösung testen, indem Sie auf den Pfeil unten klicken:<br>
                             <p-in cols=42 rows=6 data-ns=test>
-                            def with_changes(l):
+                            def changes(l):
                                 result = []
                                 for i in range(0, len(l)):
                                     result.append(l[i + 1] - l[i])
@@ -599,7 +682,7 @@
                                 ([1], []),
                                 ([], []),
                             ]
-                            test_input_expected_pairs(d, with_changes)
+                            test_input_expected_pairs(d, changes)
                             ```
                             <p-out data-ns=test></p-out>
                         </div>
