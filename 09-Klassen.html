@@ -1,0 +1,1307 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>09 - Klassen (Pythonkurs für Anfänger WS2023)</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="thonny.css">
+
+    <!-- Font awesome is required for the chalkboard plugin -->
+    <link rel="stylesheet" href="ext/font-awesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="ext/font-awesome/css/solid.min.css">
+    <!-- Custom controls plugin is used to for opening and closing annotation modes. -->
+    <script src="ext/customcontrols/plugin.js"></script>
+    <link rel="stylesheet" href="ext/customcontrols/style.css">
+    <!-- Chalkboard plugin -->
+    <script src="ext/chalkboard/plugin.js"></script>
+    <link rel="stylesheet" href="ext/chalkboard/style.css">
+
+    <script src="reconnecting-websocket.js"></script>
+    <script src="ws.js"></script>
+
+    <style>
+        .reveal textarea, .reveal pre { font-size: 1em; }
+
+        .reveal .slides { text-align: left; }
+        :root { --r-heading-text-transform: none; --r-heading-font-weight: 200; }
+
+        html.reveal-print .reveal .slides section.title,
+        section.title { padding-top: 200px !important; }
+
+        a.runCode { padding-left: 0.5em; padding-right: 0.5em; color: black; }
+        a.runCode:hover { color: red; }
+        .runCode::before { content: '➧' }
+
+        p-out { padding-left: 0.2em; padding-right: 0.2em; font-family: monospace; background-color: #eee; white-space: pre-wrap; }
+        p-out .error { color: #cc0000; }
+        p-il { padding-left: 0.1em; padding-right: 0.1em; font-family: monospace; background-color: #eee; text-wrap: nowrap; }
+
+        .no-background span[data-inline-python], .no-background .hljs { background: none; }
+
+        textarea[is='highlighted-code'] { position: relative; top: .3em; }
+
+        .reveal pre { box-shadow: .05em .05em 0.1em rgba(0, 0, 0, 0.15); }
+
+        li { margin-top: .1em; margin-bottom: .1em }
+        ul ul, ul ol, ol ul, ol ol { font-size: .85em; }
+
+        .reveal table { margin: 0px; }
+
+        td { vertical-align: top; }
+
+        .thonny-repl { background-color: #eee; padding: .2em; padding-top: .0em; display: inline-block; }
+        .thonny-repl-tag { background-color: white; padding-left: 0.4em; padding-right: 0.4em; font-size: 0.8em; border: solid 1px #ccc; border-bottom: none; position: relative; top: 1px; }
+        .thonny-repl-content { display: inline-block; font-family: monospace; background-color: white; padding: 0.5em; border: solid 1px #ccc; }
+        .thonny-input { color: blue; }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+
+        <div class="slides">
+            <section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title"
+                style="font-size: 35px;">
+                <h1 style="font-size: 100px;">Pythonkurs für Anfänger</h1>
+
+                <h2 style="padding-top: 40px;">Einheit 09: Klassen</h2>
+
+                <a id="switch-to-interactive" class="pdf-only">Zu den interaktiven Folien</a>
+                <script>
+                    let elem = document.getElementById("switch-to-interactive")
+                    let file = window.location.pathname.substr(window.location.pathname.lastIndexOf('/'))
+                    elem.href = "https://tillerino.github.io/ws2023-python" + file + "?noFragments&withControls"
+                </script>
+
+                <div style="padding-top: 65px;">Tillmann Gaida</div>
+                <div style="padding-top: 20px;">Software and Computational System Lab</div>
+            </section>
+
+            <section style="font-size: 38px;">
+                <h1>Advent of Code</h1>
+                <ul>
+                    <li>Jedes Jahr gibt es den <a href="https://adventofcode.com" target="_blank">Advent of Code</a>:
+                        einen Adventskalender an Programmieraufgaben.</li>
+                    <li>Die erste Aufgabe gibt es am 1. Dezember und die letzte am 25. Dezember.</li>
+                    <li>Die Aufgaben fangen einfach an und werden immer schwieriger.</li>
+                    <li><a href="https://adventofcode.com/2023/leaderboard/private/view/2278782">Leaderboard</a>:
+                        <code>2278782-ab82d160</code><br>
+                        ([Log in], [Leaderboard], [Private Leaderboard], code eingeben)
+                    </li>
+                </ul>
+                <br><br>
+                <iframe src="https://adventofcode.com" width="100%" height="200"></iframe>
+            </section>
+
+            <section style="font-size: 30px;">
+                <h1>(letzte) Übung VI: Robuste Eingabe</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 46% 52%;">
+                    <ul>
+                        <li>Rechts sehen Sie die Definition einer Funktion `input_int`.</li>
+                        <li>Die Funktion soll eine Zahl vom Benutzer einlesen und zurückgeben.</li>
+                        <li>Die Funktion bekommt einen Parameter `prompt`, der die Eingabeaufforderung enthält.</li>
+                        <li>Das Problem: Wenn der Benutzer keine gültige Zahl eingibt, crasht das Programm.</li>
+                        <li>Modifizieren Sie die Funktion so, dass das Programm nicht mehr crasht.</li>
+                        <li>Stattdessen soll die Eingabe so lange wiederholt werden, bis sie gültig ist. Setzen Sie dies mit `try`-`except` um.</li>
+                    </ul>
+                    <div>
+                        <p-in cols=30 rows=5>
+                        def input_int(prompt):
+                            return int(input(prompt))
+                        </p-in><br>
+                        <ul>
+                            <li>Kopieren Sie zunächst die Funktion nach Thonny und führen folgendes aus:<br>
+                            `print(input_int('Zahl Bitte: '))`</li>
+                            <li>Geben Sie eine gültige Zahl ein.</li>
+                            <li>Führen Sie das gleiche aus und geben ungültige Zahl ein. Nun können Sie beginnen zu reparieren.</li>
+                        </ul>
+                    </div>
+            </section>
+
+            <section style="font-size: 30px;">
+                <h1>Übung VIII: Palindrom</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <ul>
+                        <li>Ein Palindrom ist ein Wort, das rückwärts gelesen das gleiche Wort ist. Beispiele: Bob, nennen, Ehe, Radar, Rentner, stets, Reittier.</li>
+                        <li>Groß- und Kleinschreibung wird dabei nicht beachtet.</li>
+                        <li>Implementieren Sie eine Funktion `palindrome`, die überprüft, ob ein Wort ein Palindrom ist. Beispiele:<br>
+                            ```hidden
+                            def palindrome(a):
+                                return list(a.lower()) == list(reversed(a.lower()))
+                            ```
+                            ```cols=21
+                                palindrome('Bob')
+                            ```<br>
+                            ```cols=21
+                                palindrome('Rentner')
+                            ```<br>
+                            ```cols=21
+                                palindrome('Rente')
+                            ```<br>
+                            ```cols=21
+                                palindrome('Saft')
+                            ```
+                        </li>
+                    </ul>
+                    <div>
+                        Um Ihre eigene Lösung zu testen, fügen Sie sie hier ein und klicken den Pfeil:<br>
+                        <p-in cols=35 rows=5 data-ns=test>
+                            def palindrome(a):
+                                return 'ich bin nicht fertig'
+                        </p-in><br>
+                        ```hidden data-ns=test
+                            d = [
+                                ('Bob', True),
+                                ('Rentner', True),
+                                ('Rente', False),
+                                ('Saft', False),
+                                ('', True),
+                                ('a', True),
+                                ('aa', True),
+                                ('ab', False),
+                                ('aba', True),
+                                ('abba', True),
+                                ('abca', False),
+                                ('abcba', True),
+                                ('abcde', False),
+                                ('abcdedcba', True),
+                                ('abcdedcbaa', False),
+                            ]
+
+                            test_input_expected_pairs(d, palindrome)
+                        ```
+                        <p-out data-ns=test></p-out>
+                    </div>
+                </div>
+            </section>
+
+            <section style="font-size: 28px;">
+                <h1>Werkzeuge</h1>
+                <div style="display: grid; column-gap: .5em; grid-template-columns: 60% 40%;">
+                    <div style="border-right: solid 1px black; padding-bottom: .5em; padding-right: .5em;">
+                        <h3>Syntax</h3>
+                        `fun(x)`,
+                        `x`,
+                        `'abc'`,
+                        `123`,
+                        `=`,
+                        `if`,
+                        `elif`,
+                        `else`,
+                        `while`,
+                        `continue`,
+                        `break`,
+                        `in`,
+                        `for i in l`,
+                        `[a, b, c]`,
+                        `l[i]`,
+                        `l[i:j]`,
+                        `{a: b, c: d}`,
+                        `(a, b, c)`,
+                        `{a, b, c}`,
+                        `a, *b = ...`,
+                        `raise`,
+                        `try`,
+                        `except`,
+                        `finally`,
+                        `with`,
+                        Einrückung
+                        <ul>
+                            <li>Operatoren:
+                                `+`,
+                                `-`,
+                                `*`,
+                                `/`,
+                                `//`,
+                                `%`,
+                                `**`,
+                                `==`,
+                                `!=`,
+                                `&lt;`,
+                                `&gt;`,
+                                `&lt;=`,
+                                `&gt;=`,
+                                `and`,
+                                `or`,
+                                `not`
+                            </li>
+                        </ul>
+                        `def`,
+                        `return`,
+                        `fun(..., k=v)`
+                    </div>
+                    <div style="padding-bottom: .5em;">
+                        <h3>Algorithmik:</h3>
+                        Fallunterscheidung,
+                        Laufvariable,
+                        Iterieren (über Zeilen einer Datei),
+                        Deduplizieren,
+                        Sortieren (als Anwendung)
+                    </div>
+                </div>
+                <div
+                    style="display: grid; column-gap: .5em; grid-template-columns: 60% 40%; border-top: solid black 1px">
+                    <div style="border-right: solid 1px black; padding-top: .5em; padding-right: .5em;">
+                        <h3>Vokabular</h3>
+                        `print`,
+                        `input`,
+                        `int`,
+                        `str`,
+                        `list`,
+                        `tuple`,
+                        `set`,
+                        `dict`,
+                        `len`,
+                        `split`,
+                        `open`,
+                        `rstrip`,
+                        `min`
+                        `max`,
+                        `sum`,
+                        `append`,
+                        `extend`,
+                        `pop`,
+                        `insert`,
+                        `index`,
+                        `range`,
+                        `items`,
+                        `popitem`,
+                        `add`,
+                        `update`,
+                        `remove`,
+                        `sort`,
+                        `sorted`,
+                        `reverse`,
+                        `reversed`
+                    </div>
+                    <div style="padding-top: .5em;">
+                        <h3>Architektur</h3>
+                        Funktionen, Fehler
+                    </div>
+                </div>
+            </section>
+
+            <section class="center" style="text-align: center;">Platz für Fragen</section>
+
+            <section>
+                <h1>Heute</h1>
+                <div>
+                    Was ist eigentlich mit dem Punkt in `'ABC'.lower()` los?<br>
+                    Warum schreiben wir nicht `lower('ABC')`?<br>
+                    Wir schreiben schließlich `len('ABC')`, nicht `'ABC'.len()`!
+                </div>
+            </section>
+
+            <!--  SECTION: FEHLER -->
+
+            <section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
+                <h3 style="margin-top: 200px">Klassen</h3>
+                und Objekte
+            </section>
+
+            <section style="font-size: 31px">
+                <h1>Motivation</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 52% 46%">
+                    <ul>
+                        <li>Zunächst müssen wir uns vorstellen, dass die Programme, die wir schreiben, wesentlich größer
+                            sind als die, die wir bisher geschrieben haben.</li>
+                        <li class="fragment">Dies bedeutet, dass wir nicht von zig Zeilen Code ausgehen, sondern von
+                            zigtausend Zeilen. Programme können sogar zig Millionen Zeilen Code haben.</li>
+                        <li class="fragment">In dieser Dimension wird die Organisation des Codes ein großes Problem.
+                        </li>
+                        <li class="fragment">Üblicherweise arbeiten an Code dieser Größe viele Programmierer
+                            gleichzeitig, was seine eigene Herausforderung ist.</li>
+                    </ul>
+                    <ul>
+                        <li class="fragment">Funktionen sind ein fundamentales Werkzeug, um Code zu organisieren.</li>
+                        <li class="fragment">Wie man Code in mehrere Dateien aufteilt, werden wir später sehen.</li>
+                        <li class="fragment">Wir werden uns heute anschauen, wie man Daten organisiert und mit Code
+                            verbindet.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section style="font-size: 31px">
+                <h1>Beispiel</h1>
+                <ul>
+                    <li>Wir programmieren ein Telefonbuch. Das Telefonbuch hat eine Suchfunktion, die alle Felder
+                        gleichzeitig durchsucht.</li>
+                    <li class="fragment">Seien folgende Daten aus einem Schleifendurchlauf über alle Einträge:<br>
+                        ```cols=40 rows=4 no-out
+                        search_term = 'Max'
+                        first_name = 'Max'
+                        last_name = 'Mustermann'
+                        address = 'Musterstraße 1'
+                        ```
+                    </li>
+                    <li class="fragment">Die Suche wird wie folgt ausgeführt:<br>
+                        ```cols=40 rows=3 no-out
+                        does_match = search_term in first_name \
+                          or search_term in last_name \
+                          or search_term in address
+                        ```<br>
+                        ```
+                        does_match```
+                    </li>
+                </ul>
+            </section>
+
+            <section style="font-size: 31px">
+                <h1>Schritt 1: Funktion</h1>
+                <ul>
+                    <li>Da die Suche an mehreren Stellen ausgeführt wird, lagern wir sie in eine Funktion aus.<br>
+                        ```cols=60 rows=5 no-out
+                        def does_match(search_term, first_name, last_name, address):
+                          return search_term in first_name \
+                            or search_term in last_name \
+                            or search_term in address
+                        ```<br>
+                        ```cols=60 rows=2
+                        does_match('Max', 'Max', 'Mustermann', 'Müllerstraße 1')
+                        ```
+                    </li>
+                    <li class="fragment">So können wir die Suchfunktion später verbessern, ohne dass wir alle Stellen,
+                        an denen sie verwendet wird, ändern müssen.</li>
+                    <li class="fragment">Beispiele: Wir wollen Groß- und Kleinschreibung ignorieren. Wir wollen mit
+                        einem String z.B. "Max Müller" gleichzeitig den Vornamen und die Straße finden. Wir wollen, dass
+                        ein leerer String nicht alle Einträge findet 🤦.</li>
+            </section>
+
+            <section style="font-size: 31px">
+                <h1>Schritt 2: Daten bündeln</h1>
+                <ul>
+                    <li>Wir können mithilfe der Funktion an einer einzigen Stelle verändern, wie die Suche im gesamten
+                        Programm ausgeführt wird. 👌</li>
+                    <li class="fragment">Was, wenn wir Notizen im Adressbuch hinzufügen, die jetzt auch durchsucht werden sollen? Wir
+                        müssen alle Stellen ändern, an denen die Funktion aufgerufen wird. 🤦</li>
+                    <li class="fragment">Kein Problem: Wir fassen die Daten einfach zusammen:<br>
+                        ```cols=60 rows=5 no-out
+                        def does_match(search_term, entry):
+                          return search_term in entry['first_name'] \
+                            or search_term in entry['last_name'] \
+                            or search_term in entry['address']
+                        ```<br>
+                        ```cols=60 rows=2
+                        entry = {'first_name': 'Max', 'last_name': 'Mustermann', \
+                                 'address': 'Müllerstraße 1'}
+                        does_match('Max', entry)
+                        ```
+                    </li>
+            </section>
+
+
+            <section style="font-size: 31px">
+                <h1>Schritt 3: Daten und Funktion zusammenfassen</h1>
+                <ul>
+                    <li>Mithilfe der Funktion und des Dictionaries sind wir nun an einen Punkt, wo wir die Suche
+                        vollkommen unabhängig von dem Rest des Programms verändern können. 👌</li>
+                    <li>Es bleiben aber ein paar Probleme:
+                        <ul>
+                            <li class="fragment">Wir haben keine Übersicht, welche Funktionen es gibt, die für einen Telefonbucheintrag
+                                geschrieben wurden.
+                                Die Gefahr ist Hoch, dass jemand eine zweite, inkonsistente Version der Suche
+                                programmiert.</li>
+                            <li class="fragment">Wir haben keine Garantie, dass in die Funktion ein passendes Dictionary übergeben wird:
+                                Sind alle Einträge vorhanden? Sind die Einträge gültig? (z.B. Format Telefonnummer).
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="fragment">Wir bräuchten:
+                        <ol>
+                            <li>Eine Garantie, dass nur ein gültiges Dictionary übergeben wird.</li>
+                            <li>Eine Möglichkeit, gültige Dictionaries zu erzeugen und gegen ungültige Veränderungen zu
+                                schützen.</li>
+                            <li>Eine Möglichkeit, alle Funktionen, die für einen Telefonbucheintrag geschrieben wurden,
+                                zu sammeln.</li>
+                        </ol>
+                    </li>
+                    <li class="fragment">Dies erreichen wir, indem wir Daten und Funktionen mit Klassen zusammenfassen.</li>
+                </ul>
+            </section>
+
+            <section style="font-size: 31px">
+                <h1>Eine tote Klasse</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 39% 59%;">
+                    <ul>
+                        <li class="fragment" data-fragment-index=1>Mit `class` können wir etwas Dictionary-ähnliches erzeugen, auf dessen Einträge wir <b>mit
+                                einem Punkt</b> zugreifen können.</li>
+                        <li class="fragment" data-fragment-index=2>Diese Einträge heißen <em>Attribute</em> oder <em>Felder</em>.</li>
+                        <li class="fragment" data-fragment-index=3>Abgesehen von der Notation ist das Ergebnis aber das gleiche wie bei einem Dictionary:
+                            Wir können die Attribute wieder lesen.</li>
+                        <li class="fragment">`Entry` ist eine <em>Klasse</em>. `e` ist ein Objekt dieser Klasse.</li>
+                    </ul>
+                    <div>
+                        ```cols=35 rows=10 br
+                        class Entry:
+                          # darf nicht leer sein
+                          pass
+
+                        e = Entry()
+                        e.first_name = 'Max'
+                        e.last_name = 'Mustermann'
+                        e.address = 'Müllerstraße 1'
+
+                        print(e.first_name)
+                        ```
+                    </div>
+                </div>
+                <ul>
+            </section>
+
+            <section style="font-size: 30px;">
+                <h1>Eine Methode</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 33% 65%;">
+                    <ul>
+                        <li>Interessant wird es, wenn wir Funktionen in Klassen packen.</li>
+                        <li class="fragment">Diese Funktionen heißen <em>Methoden</em>.</li>
+                        <li class="fragment">Im Gegensatz zu normalen Funktionen werden sie mit einem Punkt aufgerufen und bekommen als
+                            ersten Parameter das Objekt, auf dem sie aufgerufen werden.</li>
+                        <li class="fragment">Den ersten Parameter nennen wir üblicherweise `self`.</li>
+                    </ul>
+                    <div>
+                        ```cols=43 rows=10 br
+                        class Entry:
+                          def does_match(self, search_term):
+                            return search_term in self.first_name \
+                              or search_term in self.last_name \
+                              or search_term in self.address
+
+                        e = Entry()
+                        e.first_name = 'Max'
+                        e.last_name = 'Mustermann'
+                        e.address = 'Müllerstraße 1'
+
+                        print(e.does_match('Max'))
+                        ```
+                    </div>
+                </div>
+            </section>
+
+            <section style="font-size: 28px;">
+                <h1>Der Konstruktor</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 33% 65%;">
+                    <ul>
+                        <li>Es gibt eine spezielle Methode mit dem Namen `__init__`.</li>
+                        <li class="fragment">Diese heißt <em>Konstruktor</em> und wird aufgerufen, wenn ein Objekt erzeugt wird.</li>
+                        <li class="fragment">Der erste Parameter ist das Objekt, das erzeugt wird. Die weiteren Parameter sind die
+                            Parameter, die der Konstruktor aufgerufen bekommt.</li>
+                        <li class="fragment">Der Konstruktor wird aufgerufen, wenn der Klassenname mit Klammern aufgerufen wird.
+                            Er muss `self` nicht extra zurückgeben.</li>
+                    </ul>
+                    <div>
+                        ```cols=46 rows=13 br
+                        class Entry:
+                          def __init__(self, first_name, last_name, \
+                                       address):
+                            self.first_name = first_name
+                            self.last_name = last_name
+                            self.address = address
+
+                          def does_match(self, search_term):
+                            return search_term in self.first_name \
+                              or search_term in self.last_name \
+                              or search_term in self.address
+
+                        e = Entry('Max', 'Mustermann', \
+                                  'Müllerstraße 1')
+
+                        print(e.does_match('Max'))
+                        ```
+                    </div>
+                </div>
+            </section>
+
+            <section style="font-size: 27px;">
+                <h1>Kapselung ("Encapsulation")</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 44% 54%;">
+                    <ul>
+                        <li>Häufig ist die Modifikation von Attributen, sodass das Objekt gültig bleibt, komplex.</li>
+                        <li class="fragment">Aus diesem Grund ist es üblich, dass Attribute nur von Methoden derselben
+                            Klasse verändert werden können.</li>
+                        <li class="fragment">Wir nennen dies <em>Kapselung</em> ("Encapsulation").</li>
+                        <li class="fragment">In den meisten Programmiersprachen kann man Attribute als <em>private</em>
+                            deklarieren, sodass sie nur von Methoden derselben Klasse gelesen und geschrieben werden
+                            können.</li>
+                        <li class="fragment">In Python ist dies nicht möglich. Stattdessen gilt die Konvention:
+                            Attribute, die mit einem Unterstrich anfangen, sollten nicht von außen gelesen oder
+                            geschrieben werden.</li>
+                    </ul>
+                    <div class="fragment">
+                        ```cols=39 rows=18 br no-out
+                        class Account:
+                          def __init__(self):
+                            self._balance = 0
+
+                          def withdraw(self, amount):
+                            if amount <= 0:
+                              raise ValueError('Negativ')
+                            if amount > self._balance:
+                              raise ValueError('Nicht gedeckt')
+                              self._balance -= amount
+
+                          def deposit(self, amount):
+                            if amount <= 0:
+                              raise ValueError('Negativ')
+                            self._balance += amount
+
+                          def get_balance(self):
+                            return self._balance ```
+                    </div>
+                </div>
+            </section>
+
+            <section style="font-size: 32px;">
+                <h1>Objektorientierte Programmierung</h1>
+                Mithilfe von Klassen haben wir unsere Ziele erreicht:
+                <ol>
+                    <li class="fragment">Mit dem Konstruktor (`__init__`) stellen wir sicher, dass nur gültige Objekte
+                        erzeugt werden.</li>
+                    <li class="fragment">Durch Kapselung (Attributnamen mit Unterstrich) stellen wir sicher, dass
+                        Objekte nur auf eine gültige Weise verändert werden.</li>
+                    <li class="fragment">Indem wir Funktionen als Methoden schreiben, stellen wir sicher, dass sie nur
+                        auf gültige Objekte angewendet werden können.</li>
+                    <li class="fragment">Alle Methoden, die für eine Klasse relevant sind, sind in der Klasse
+                        zusammengefasst.</li>
+                </ol>
+                <ul>
+                    <li class="fragment">Klassen sind ein Konzept aus der <em>objektorientierten Programmierung</em>.
+                        In der objektorientierten Programmierung werden Programme als eine Interaktion zwischen
+                        selbstverwalteten Daten modelliert.</li>
+                    <li class="fragment">Die objektorientierte Programmierung ist eines von mehreren architektonischen
+                        Konzepten, die in der Softwareentwicklung verwendet werden.</li>
+                </ul>
+            </section>
+
+            <section style="font-size: 30px;">
+                <h1>Klasse und Objekt</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 66% 32%;">
+                    <ul>
+                        <li class="fragment">Die Klasse (rechts `C`) ist eine Art Bauplan für Objekte. Sie enthält die Methoden, die
+                            Objekte haben sollen (rechts keine).</li>
+                        <li class="fragment">Ein Objekt (rechts `o`) ist eine <em>Instanz</em> einer Klasse. Es besteht aus den konkreten
+                            Werten der Attribute (rechts keine).</li>
+                    </ul>
+                    <div>
+                        ```cols=15 rows=5 br no-out
+                        class C:
+                          # leer
+                          pass
+
+                        o = C()
+                        ```
+                    </div>
+                </div>
+                <ul>
+                    <li class="fragment">Die Klasse selber ist ein Objekt.<br>
+                        ```
+                        print(C)
+                        ```</li>
+                    <li class="fragment">Die Klasse einer Instanz kann man mit der Funktion `type` bekommen.<br>
+                        ```
+                        print(type(o))
+                        ```</li>
+                    <li class="fragment">Diese beiden Ausdrücke sind hier äquivalent:<br>
+                        ```
+                        C == type(o)
+                        ```</li>
+                    <li class="fragment">So kann man z.B. prüfen, ob ein Objekt eine Instanz einer Klasse ist.</li>
+                </ul>
+            </section>
+
+            <section style="font-size: 30px;">
+                <h1>Kleingedrucktes</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 39% 59%;">
+                    <div>
+                        ```cols=26 rows=10 br
+                        class C:
+                          def __init__(self):
+                            self.x = 1
+
+                          def noise(self):
+                            print('noise', self.x)
+
+                        o = C()
+                        o.x = 123
+                        o.noise()
+                        ```
+                    </div>
+                    <ul>
+                        <li class="fragment">Methoden sind eigentlich nur Funktionen im namespace der Klasse.
+                            Durch verwendung des Punktes wird der Ausdruck vor dem Punkt zum ersten Argument des Funktionsaufrufs.
+                            Folgendes ist also äquivalent:<br>```
+                            C.noise(o)
+                            ```
+                        </li>
+                        <li class="fragment">Das erklärt auch, warum wir `self` als ersten Parameter von Methoden brauchen.
+                            Python ist eine sehr kleine Sprache. Ebenso wie mit private feldern, ist hier kein wirkliche Funktionalität, sondern nur eine Konvention.</li>
+                        </li>
+                        <li class="fragment">Wir haben schon gesehen, dass die Klasse über `type` bestimmt werden kann.
+                            Folgendes ist also ebenfalls äquivalent.<br>```
+                            type(o).noise(o)
+                        ```</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section style="font-size: 27px;">
+                <h1>Zusammenfassung</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <ul>
+                        <li>Klassen sind eine Möglichkeit, Daten und Funktionen zusammenzufassen.</li>
+                        <li class="fragment">Die Daten heißen <em>Attribute</em> oder <em>Felder</em>.</li>
+                        <li class="fragment">Die Funktionen heißen <em>Methoden</em>.</li>
+                        <li class="fragment">Klassen werden mit dem `class` Schlüsselwort definiert.</li>
+                        <li class="fragment">Auf Attribute und Methoden wird mit einem Punkt zugegriffen.</li>
+                        <li class="fragment">Methoden bekommen als ersten Parameter das Objekt, auf dem sie aufgerufen
+                            werden. Diesen nennt man per Konvention `self`.</li>
+                        <li class="fragment">Objekte werden mit dem Klassennamen und Klammern erzeugt.</li>
+                        <li class="fragment">Dabei wird eine spezielle Methode mit dem Namen `__init__` aufgerufen.</li>
+                    </ul>
+                    <div>
+                        ```cols=34 rows=13 br no-out
+                        class Account:
+                          def __init__(self, initial=0):
+                            if initial < 0:
+                              raise ValueError('Negativ')
+                            self._balance = initial
+
+                          def deposit(self, amount):
+                            if amount <= 0:
+                              raise ValueError('Negativ')
+                            self._balance += amount
+
+                          def get_balance(self):
+                            return self._balance ```<br>
+                        ```cols=34 rows=3 br
+                            a = Account(50)
+                            a.deposit(100)
+                            a.get_balance()
+                        ```
+                    </div>
+                </div>
+            </section>
+
+            <section class="center" style="text-align: center;">Platz für Fragen</section>
+
+            <section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
+                <h3 style="margin-top: 200px">Fließkommazahlen</h3>
+            </section>
+            
+            <section style="font-size: 27px;">
+                <h1>Fließkommazahlen</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 54% 44%;">
+                    <ul>
+                        <li>Bisher haben wir nur mit ganzen Zahlen gearbeitet.</li>
+                        <li class="fragment">In Python gibt es auch Kommazahlen, genauer: <em>Fließkommazahlen</em> (engl. floating point number, in Python `float`). Das Komma wird englisch notiert, also als Punkt: `1.5`.</li>
+                        <li class="fragment">Sie lassen sich grundsätzlich genau wie ganze Zahlen verwenden:<br>
+                            ```cols=18
+                            1.5 + float('2.3')
+                            ```<br>
+                            ```cols=28 br
+                            1.5 ** 4 / (23.4 - 2.3)
+                            ```
+                        </li>
+                        <li class="fragment">Fließkommazahlen können mit einem Exponenten geschrieben werden - der sogenannten wissenschaftlichen Notation:<br>
+                            ```cols=7
+                            1.5e12
+                            ```<br>
+                            ```cols=7
+                            1.5e-4
+                            ```
+                        </li>
+                    </ul>
+                    <ul>
+                        <li class="fragment">Das Ergebnis einer ganzzahligen Division ist immer eine Fließkommazahl:<br>
+                            ```cols=15
+                            5 / 2
+                            ```<br> im Gegensatz zu der Division mit dem `//` Operator:<br>
+                            ```cols=15
+                            5 // 2
+                            ```.
+                        </li>
+                        <li class="fragment">Operationen, die ganze Zahlen und Fließkommazahlen mischen, geben immer eine Fließkommazahl zurück:<br>
+                            ```cols=15
+                            5.5 / 2.5
+                            ```<br>
+                            ```cols=15
+                            5 + 2.5
+                            ```
+                        </li>
+                        <li class="fragment">Auch, wenn das Ergebnis ganzzahlig Zahl ist:<br>
+                            ```cols=15
+                            5.0 * 2.0
+                            ```<br>```cols=15 br
+                            type(5.0 * 2.0)
+                            ```
+                        </li>
+                    </ul> 
+                </div>
+           </section>
+
+            <section style="font-size: 30px;">
+                <h1>Fließkommazahlen Warnung</h1>
+                <ul>
+                    <li>Wie genau Fließkommazahlen funktionieren, ist kein Thema für diesen Kurs. Sie sollten aber ein paar Beispiele sehen um zu verstehen, dass sie weder reelle noch rationale Zahlen sind:</li>
+                    <li class="fragment">```cols=40 fragment-out
+                        0.1 + 0.2
+                    ```</li>
+                    <li class="fragment">```cols=40 fragment-out
+                        1 + 0.0000000000000001
+                    ```</li>
+                    <li class="fragment">```cols=40 fragment-out
+                        1 - 0.0000000000000001
+                    ```</li>
+                    <li class="fragment">```cols=40 fragment-out
+                        1E308 * 2
+                    ```</li>
+                    <li class="fragment">```cols=40 fragment-out
+                        1E308 * 2 / (1E308 * 2)
+                    ```</li>
+                    <li class="fragment">```cols=40 fragment-out
+                        1E-308 / 2
+                    ```</li>
+                    <li class="fragment">```cols=40 fragment-out
+                        1E-308 * 0.0000000000000001
+                    ```</li>
+                    <li class="fragment">Fließkommazahlen sind nützlich um näherungsweise zu rechnen, aber nicht um exakt zu rechnen.</li>
+                    <li class="fragment">Wenn Sie z.B. mit Geld rechnen, ist es besser in ganzen Cent zu rechnen, als in Euro mit Komma.</li>
+                </ul>
+            </section>
+
+            <section class="center" style="text-align: center;">Platz für Fragen</section>
+
+            <!-- SECTION: UEBUNG -->
+
+            <section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
+                <h3 style="margin-top: 200px">Übung</h3>
+            </section>
+
+            <section style="font-size: 30px;">
+                <h1>Übung I: Zähler</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <ul>
+                        <li>Definieren Sie eine einfache Klasse `Counter`.</li>
+                        <li>Ein Objekt dieser Klasse soll einen Zähler enthalten, der mit 0 initialisiert wird.</li>
+                        <li>Es soll eine Methode `increment` geben, die den Zähler um 1 erhöht.</li>
+                        <li>Es soll eine Methode `get_count` geben, die den aktuellen Wert des Zählers zurückgibt.</li>
+                        <li>Rechts ist ein Beispiel, wie die Klasse sich verhalten würde.</li>
+                    </ul>
+                    <div>
+                        ```hidden
+                            class Counter:
+                              def __init__(self):
+                                self._count = 0
+
+                              def increment(self):
+                                self._count += 1
+
+                              def get_count(self):
+                                return self._count
+                        ```
+                        ```cols=25 rows=3 br
+                            c = Counter()
+                            print('A', c.get_count())
+
+                            c.increment()
+                            print('B', c.get_count())
+                            
+                            c.increment()
+                            c.increment()
+                            print('C', c.get_count())
+                        ```
+                    </div>
+           </section>
+
+           <section style="font-size: 24px;">
+               <h1>Übung II: Auto</h1>
+               <div style="display: grid; column-gap: 2%; grid-template-columns: 62% 36%;">
+                   <ul>
+                       <li>Definieren Sie eine Klasse `Car`.</li>
+                       <li>Objekte dieser Klasse sollen einen Kilometerzähler (in km), einen Tankfüllstand (in l) und einen Verbrauch (in l/100km) enthalten.</li>
+                       <li>Der Kilometerzähler und der Tankfüllstand sollen mit 0 initialisiert werden.
+                           Der Verbrauch soll als Parameter im Konstruktor übergeben werden.</li>
+                       <li>Die Klasse soll eine Methode `report` enthalten, die den Kilometerzähler und den Tankfüllstand ausgibt.</li>
+                       <li>Die Klasse soll eine Methode `drive` enthalten, die einen Parameter `km` bekommt und den Kilometerzähler und den Tankfüllstand entsprechend verändert.
+                           Wenn der Tankfüllstand nicht ausreicht, um die Strecke zu fahren, soll das Auto so weit fahren, wie es kann und dann stehen bleiben. Eine entsprechende Meldung soll ausgeben werden (kein Fehler geworfen).</li>
+                       <li>Letzendlich soll die Klasse eine Methode `refuel` enthalten, die den Tank auffüllt.
+                           Der Parameter ist die Menge (in l), die getankt werden soll.</li>
+                       <li>Beachten Sie, dass Sie beim berechnen des Verbrauchs eine Division verwenden und deshalb eine Fließkommazahl erhalten.
+                           Dies führt dazu, dass der Kilometerzähler und der Tankfüllstand auch Fließkommazahlen werden.
+                           Trotz der vorherigen Warnungen ist dies hier in Ordnung.</li>
+                   </ul>
+                   <div>
+                       ```hidden
+                       class Car:
+                         def __init__(self, consumption):
+                           self._consumption = consumption
+                           self._km = 0
+                           self._fuel = 0
+
+                         def report(self):
+                           print('km:', self._km, 'Tank (l):', self._fuel)
+
+                         def drive(self, km):
+                           fuel_needed = km / 100 * self._consumption
+                           if fuel_needed > self._fuel:
+                             km = self._fuel / self._consumption * 100
+                             self._fuel = 0
+                             print('Tank leer :(')
+                           else:
+                             self._fuel -= fuel_needed
+                           self._km += km
+
+                         def refuel(self, amount):
+                           self._fuel += amount
+                       ```
+                       Hier ist ein Beispiel, wie sich die Klasse verhalten würde:<br>
+                       ```cols=25 rows=10 br
+                       car = Car(5)
+                       car.drive(100)
+                       car.refuel(10)
+                       car.report()
+
+                       car.drive(100)
+                       car.report()
+
+                       car.drive(150)
+                       car.report()
+                       ```
+                   </div>
+               </div>
+           </section>
+        </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="highlighted-code.js"></script>
+    <script>
+        let pdf = new URLSearchParams(window.location.search).get('print-pdf') !== null
+        for (e of document.getElementsByClassName("pdf-only")) {
+            e.style.visibility = pdf ? "visible" : "hidden"
+        }
+
+        // <p-il> tag for quick inline Python highlighting
+        class PythonInline extends HTMLElement {
+            constructor() {
+                super();
+                this.go();
+            }
+
+            go() {
+                let code = this.code ? this.code : this.innerText
+                this.innerHTML = `<code class="language-python hljs">${RevealHighlight().hljs.highlight(code, {language: 'python'}).value}</code>`
+            }
+        }
+        customElements.define("p-il", PythonInline);
+
+        // <p-in> tag for quick python input
+        class PythonInput extends HTMLElement {
+            constructor() {
+                super();
+                this.go();
+            }
+
+            go() {
+                let code = removeLeadingWhitespace(this.code ? this.code : this.innerText)
+                let ns = this.getAttribute("data-ns") !== null ? `data-ns="${this.getAttribute("data-ns")}"` : "data-ns"
+                if (this.getAttribute("hidden") !== null) {
+                    this.innerHTML = `<textarea style="display: none" ${ns}>${code}</textarea>`
+                } else {
+                    let autoHeight = this.getAttribute("auto-height") !== null ? "auto-height" : ""
+                    let rows = this.getAttribute("rows") !== null ? `rows="${this.getAttribute("rows")}"` : `rows="${code.split('\n').length}"`
+                    let cols = this.getAttribute("cols") !== null ? `cols="${this.getAttribute("cols")}"` : ""
+                    this.innerHTML = `<textarea is="highlighted-code" language="python" tab-size="2" ${autoHeight} ${rows} ${cols} ${ns} spellcheck="false">${code}</textarea>`
+                }
+            }
+        }
+        customElements.define("p-in", PythonInput);
+
+        // <p-out> tag for quick python output
+        class PythonOutput extends HTMLElement {
+            constructor() {
+                super();
+            }
+        }
+        customElements.define("p-out", PythonOutput);
+
+        // <p-ex> tag for quick python example (combined input-output)
+        // ``` is a shortcut for this tag. You can put attributes after, ex:
+        // ```cols=15
+        // print('123')
+        // ```
+        class PythonExample extends HTMLElement {
+            constructor() {
+                super();
+                this.go();
+            }
+
+            go() {
+                let code = removeLeadingWhitespace(this.code ? this.code : this.innerText)
+                let cols = this.getAttribute("cols") !== null ? `cols="${this.getAttribute("cols")}"` : ""
+                let ns = this.getAttribute("data-ns") !== null ? `data-ns="${this.getAttribute("data-ns")}"` : "data-ns"
+                let rows = `rows="${code.split('\n').length}"`
+                let br = this.getAttribute("br") !== null ? "<br>" : ""
+                let cls = this.getAttribute("fragment-out") !== null ? 'class="fragment"' : ""
+                this.innerHTML = `<textarea is="highlighted-code" language="python" tab-size="2" auto-height ${rows} ${cols} ${ns} spellcheck="false">${code}</textarea>`
+                    + `${br}<p-out ${ns} ${cls}></p-out>`
+            }
+        }
+        customElements.define("p-ex", PythonExample);
+
+        document.querySelectorAll(".thonny-repl").forEach(e => {
+            let html = e.innerHTML
+            e.innerHTML = `<span class="thonny-repl-tag">Kommandozeile&nbsp;&nbsp;×</span><br><span class="thonny-repl-content"><span class="hljs-keyword">>>></span>
+                    <span class="hljs-comment">%Run -c $EDITOR_CONTENT</span><br>${html}</span>`
+        })
+
+        function removeLeadingWhitespace(text) {
+            let lines = text.split("\n")
+            while (lines.length > 1 && !lines[0].trim()) {
+                lines.shift()
+            }
+            while (lines.length > 1 && !lines[lines.length - 1].trim()) {
+                lines.pop()
+            }
+            let ws = lines[0].match(/^\s*/)[0]
+            return lines.map(l => l.replace(ws, "")).join("\n")
+        }
+
+        function replaceBackticks() {
+            for (n of document.body.querySelectorAll(`section, section *`)) {
+                if (n.tagName == "TEXTAREA" || n.tagName.startsWith("P-")) {
+                    continue
+                }
+                do {
+                    replaced = false
+                    for (e of n.childNodes) {
+                        if (e.nodeType == Node.TEXT_NODE) {
+                            if (replaceBackticksInText(e)) {
+                                n.removeChild(e)
+                                replaced = true
+                                break
+                            }
+                        }
+                    }
+                } while (replaced)
+            }
+        }
+        function replaceBackticksInText(textNode) {
+            if (textNode.textContent.indexOf("`") < 0) {
+                return
+            }
+            let chunks = textNode.textContent.split("```");
+            for (i in chunks) {
+                if (parseInt(i) % 2 == 0) {
+                    replaceSingleBackticksInText(textNode, chunks[i])
+                } else {
+                    let ex = new PythonExample()
+                    let lines = chunks[i].trimEnd().split("\n")
+                    attributes = lines[0].split(" ")
+                    // if attributes contain hidden, do a p-in instead
+                    if (attributes.includes("hidden")) {
+                        ex = new PythonInput()
+                    }
+                    if (attributes.includes("no-out")) {
+                        ex = new PythonInput()
+                    }
+                    setAttributes(ex, lines[0])
+                    ex.code = lines.splice(1).join("\n")
+                    ex.go()
+                    textNode.parentElement.insertBefore(ex, textNode)
+                }
+            }
+            return true
+        }
+        function replaceSingleBackticksInText(textNode, text) {
+            let chunks = text.split("`");
+            for (i in chunks) {
+                if (parseInt(i) % 2 == 0) {
+                    textNode.parentElement.insertBefore(document.createTextNode(chunks[i]), textNode);
+                } else {
+                    let ex = new PythonInline()
+                    ex.code = chunks[i]
+                    ex.go()
+                    textNode.parentElement.insertBefore(ex, textNode)
+                }
+            }
+        }
+        function setAttributes(elem, s) {
+            if (!s.trim()) {
+                return
+            }
+            for (c of s.split(" ")) {
+                let p = c.split("=", 2)
+                elem.setAttribute(p[0], p[1] ? p[1] : "")
+            }
+        }
+        replaceBackticks()
+
+        let out = []
+        let skipPython = false
+        async function init() {
+            if (skipPython) {
+                return
+            }
+            console.log('loading Pyodide')
+            const {loadPyodide} = await import("https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.mjs");
+            let p = await loadPyodide({
+                stdout: x => out.push(x),
+                stderr: x => out.push(x)
+            });
+
+            console.log('importing repr_shorten')
+            let namespace = p.globals.get("dict")();
+            p.runPython('from pyodide.console import repr_shorten', {globals: namespace})
+            return {p: p, repr_shorten: namespace.get("repr_shorten"), n: p.globals.get("dict")()}
+        }
+        let pyodide = init()
+
+        function getParentSlide(elem) {
+            while (elem && elem.tagName != "SECTION") {
+                elem = elem.parentElement
+            }
+            return elem
+        }
+
+        async function fillOutput(elem) {
+            // we only take code on current slide
+            slide = getParentSlide(elem)
+            // namespace can be undefined or empty!
+            let ns = elem.dataset.ns
+
+            // we separate by outputs so that we can isolate the print/return for exactly the last box
+            var code = [[]]
+            if (ns == "test") {
+                code[0].push({
+                    text:
+                        `def test_input_expected_pairs(pairs, function):
+    function_name = repr(function).split(" ")[1]
+    print('Testergebnis:')
+    for *i, e in d:
+        try:
+            a = function(*i)
+        except Exception as ex:
+            print('Fehler beim Ausführen von')
+            print(function_name, '(', sep="", end="")
+            print(*[repr(x) for x in i], sep=", ", end=")\\n")
+            raise ex
+        if a != e:
+            print(function_name, '(', sep="", end="")
+            print(*[repr(x) for x in i], sep=", ", end=")\\n")
+            print("Gibt zurück:", repr(a))
+            print("Erwartet war aber:", repr(e))
+            return
+    print('Alles sieht gut aus!')
+    from pyodide.code import run_js
+    run_js("report_current_exercise_complete()")`, filename: "<hidden>"
+                })
+            }
+            for (e of slide.querySelectorAll(`textarea, p-out`)) {
+                if (e == elem) {
+                    break
+                }
+                // ignore namespace entirely if either element's namespace is empty or undefined
+                if ((ns || e.dataset.ns) && e.dataset.ns != ns) {
+                    continue
+                }
+                if (e.tagName == "P-OUT") {
+                    // introduce new code group to make sure that outputs are neatly separated
+                    code.push([])
+                } else {
+                    code.slice(-1)[0].push({text: e.value || e.innerText.trim() || e.innerHTML.trim(), filename: e.style.display == 'none' ? "<hidden>" : "<stdin>"})
+                }
+            }
+            // console.log('running code', code, 'in', ns)
+            await runCode(code, elem)
+        }
+
+        async function runCode(code, elem) {
+            // see here: https://github.com/pyodide/pyodide/blob/main/src/templates/console.html
+
+            elem.innerText = "..."
+            p = (await pyodide)
+            p.n.clear() // clear the namespace
+            var result = undefined
+            let error = []
+            areas: for (cs of code) {
+                out.length = 0
+                for (c of cs) {
+                    try {
+                        result = p.p.runPython(c.text, {globals: p.n, filename: c.filename})
+                    } catch (e) {
+                        if (e.constructor.name === "PythonError") {
+                            lines = e.message.trim().split('\n')
+                            filteredLines = []
+                            for (l in lines) {
+                                if (lines[l].startsWith('  File "<stdin>", ')) {
+                                    filteredLines.push("  " + lines[l].substr(18));
+                                } else if (!lines[l].startsWith('  ') && lines) {
+                                    filteredLines.push(lines[l]);
+                                }
+                            }
+                            error.push(filteredLines.join("\n"));
+                            break areas;
+                        } else {
+                            throw e;
+                        }
+                    }
+                }
+            }
+
+            elem.innerText = out.join("\n")
+            html = elem.innerHTML
+            if (error.length > 0) {
+                elem.innerText = error.join("\n")
+                elem.innerHTML = (html ? html + "<br>" : "") + `<span class="error">${elem.innerHTML}</code>`
+            } else if (result !== undefined) {
+                elem.innerText = p.repr_shorten.callKwargs(result, {
+                    separator: "\n<long output truncated>\n",
+                });
+                elem.innerHTML = (html ? html + "<br>" : "") + `<code class="language-python">${elem.innerHTML}</code>`
+            }
+            // console.log('result:', elem.innerHTML)
+
+            elem.style.display = elem.innerHTML.indexOf("<br") >= 0 ? "inline-block" : "inline";
+
+            if (Reveal.getPlugin && elem.lastChild && elem.lastChild.tagName == "CODE") {
+                // cheap way of preventing crashes before initialized
+                Reveal.getPlugin('highlight').highlightBlock(elem.lastChild)
+            }
+            if (Reveal.layout) {
+                // so that highlights move with their textareas
+                Reveal.dispatchEvent({type: 'resize', data: {}})
+            }
+        }
+
+        async function runAllCode() {
+            if (skipPython) {
+                return
+            }
+            for (const elem of document.querySelectorAll('p-out')) {
+                // put the little arrow before
+                a = document.createElement("a")
+                a.className = "runCode"
+                a.onclick = () => fillOutput(elem);
+                elem.parentElement.insertBefore(a, elem)
+                await fillOutput(elem)
+            }
+        }
+
+        let allCodeInserted = pyodide.then(runAllCode).then(() => {
+            console.log('initializing Reveal')
+            let cbPath = 'ext/chalkboard/'
+            Reveal.initialize({
+                width: 1280,
+                height: 720,
+                margin: 0.07,
+
+                controls: new URLSearchParams(window.location.search).get('withControls') !== null,
+                progress: false,
+                center: false,
+                hash: true,
+                fragments: new URLSearchParams(window.location.search).get('noFragments') === null,
+                pdfSeparateFragments: false,
+                backgroundTransition: 'slide',
+                slideNumber: 'c',
+
+                // Learn about plugins: https://revealjs.com/plugins/
+                plugins: [RevealHighlight, RevealChalkboard, RevealCustomControls],
+
+                chalkboard: {
+                    background: ['rgba(127,127,127,0)', path + 'img/blackboard.png'],
+                    boardmarkers: [
+                        {color: 'rgba(180,20,60,1)', cursor: 'url(' + cbPath + 'img/boardmarker-red.png), auto'},
+                        {color: 'rgba(100,100,100,1)', cursor: 'url(' + cbPath + 'img/boardmarker-black.png), auto'},
+                        {color: 'rgba(30,144,255, 1)', cursor: 'url(' + cbPath + 'img/boardmarker-blue.png), auto'},
+                        {color: 'rgba(50,205,50,1)', cursor: 'url(' + cbPath + 'img/boardmarker-green.png), auto'},
+                        {color: 'rgba(255,140,0,1)', cursor: 'url(' + cbPath + 'img/boardmarker-orange.png), auto'},
+                        {color: 'rgba(150,0,20150,1)', cursor: 'url(' + cbPath + 'img/boardmarker-purple.png), auto'},
+                        {color: 'rgba(255,220,0,1)', cursor: 'url(' + cbPath + 'img/boardmarker-yellow.png), auto'},
+                    ],
+                },
+            });
+
+            var ready = false
+            let autoscale = () => {
+                if (Reveal.isOverview()) {
+                    return;
+                }
+                var scaled = false
+                if (document.querySelectorAll('section').length == 0) {
+                    // this is for print stuff
+                    return
+                }
+                const s = getComputedStyle(document.body).getPropertyValue('--slide-scale') || 1;
+                const h = parseInt(getComputedStyle(document.body).getPropertyValue('--slide-height')) * s
+                document.querySelectorAll('section[data-autoscale]').forEach(elem => {
+                    if (elem.dataset.autoscale == "done" || elem.getBoundingClientRect().height == 0) {
+                        return
+                    }
+                    if (elem.getBoundingClientRect().height > h) {
+                        let fs = getComputedStyle(elem).fontSize
+                        if (!fs.endsWith('px')) {
+                            return;
+                        }
+                        elem.style.fontSize = (parseInt(fs) - 1) + 'px';
+                        scaled = true
+                    } else {
+                        elem.dataset.autoscale = "done"
+                    }
+                });
+                if (scaled) {
+                    Reveal.dispatchEvent({type: 'resize', data: {}})
+                }
+            }
+
+            Reveal.on('ready', event => {
+                console.log('reveal.js ready')
+                document.querySelectorAll('p-out code').forEach(elem => {
+                    Reveal.getPlugin('highlight').highlightBlock(elem)
+                });
+                autoscale()
+            })
+
+            Reveal.on('resize', event => {
+                console.log('reveal.js resize')
+                autoscale()
+            })
+
+            Reveal.on('slidechanged', event => {
+                let s = Reveal.getSlidePastCount() + 1
+                sendSlideChange(s)
+                autoscale()
+                Reveal.dispatchEvent({type: 'resize', data: {}})
+            })
+
+            Reveal.on('overviewshown', event => {
+                Reveal.dispatchEvent({type: 'resize', data: {}})
+            })
+
+            Reveal.on('overviewhidden', event => {
+                Reveal.dispatchEvent({type: 'resize', data: {}})
+            })
+        })
+
+        function report_current_exercise_complete() {
+            let s = Reveal.getSlidePastCount() + 1
+            sendExerciseComplete(s)
+        }
+    </script>
+
+</body>
+
+</html>
