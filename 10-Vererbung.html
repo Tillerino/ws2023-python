@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>10 - Vererbung (Pythonkurs für Anfänger WS2023)</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="thonny.css">
+
+    <!-- Font awesome is required for the chalkboard plugin -->
+    <link rel="stylesheet" href="ext/font-awesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="ext/font-awesome/css/solid.min.css">
+    <!-- Custom controls plugin is used to for opening and closing annotation modes. -->
+    <script src="ext/customcontrols/plugin.js"></script>
+    <link rel="stylesheet" href="ext/customcontrols/style.css">
+    <!-- Chalkboard plugin -->
+    <script src="ext/chalkboard/plugin.js"></script>
+    <link rel="stylesheet" href="ext/chalkboard/style.css">
+
+    <script src="reconnecting-websocket.js"></script>
+    <script src="ws.js"></script>
+
+    <script src="plugin/pointer/pointer.js"></script>
+    <link rel="stylesheet" href="plugin/pointer/pointer.css" />
+
+    <style>
+        .reveal textarea, .reveal pre { font-size: 1em; }
+
+        .reveal .slides { text-align: left; }
+        :root { --r-heading-text-transform: none; --r-heading-font-weight: 200; }
+
+        html.reveal-print .reveal .slides section.title,
+        section.title { padding-top: 200px !important; }
+
+        a.runCode { padding-left: 0.5em; padding-right: 0.5em; color: black; }
+        a.runCode:hover { color: red; }
+        .runCode::before { content: '➧' }
+
+        p-out { padding-left: 0.2em; padding-right: 0.2em; font-family: monospace; background-color: #eee; white-space: pre-wrap; }
+        p-out .error { color: #cc0000; }
+        p-il { padding-left: 0.1em; padding-right: 0.1em; font-family: monospace; background-color: #eee; text-wrap: nowrap; }
+
+        .no-background span[data-inline-python], .no-background .hljs { background: none; }
+
+        textarea[is='highlighted-code'] { position: relative; top: .3em; }
+
+        .reveal pre { box-shadow: .05em .05em 0.1em rgba(0, 0, 0, 0.15); }
+
+        li { margin-top: .1em; margin-bottom: .1em }
+        ul ul, ul ol, ol ul, ol ol { font-size: .85em; }
+
+        .reveal table { margin: 0px; }
+
+        td { vertical-align: top; }
+
+        .thonny-repl { background-color: #eee; padding: .2em; padding-top: .0em; display: inline-block; }
+        .thonny-repl-tag { background-color: white; padding-left: 0.4em; padding-right: 0.4em; font-size: 0.8em; border: solid 1px #ccc; border-bottom: none; position: relative; top: 1px; }
+        .thonny-repl-content { display: inline-block; font-family: monospace; background-color: white; padding: 0.5em; border: solid 1px #ccc; }
+        .thonny-input { color: blue; }
+
+        .file { display: inline-block; border: solid 1px #ccc; padding: .5em; margin-top: .5em; margin-bottom: .5em; background-color: #f8f8f8; }
+        .filename { font-family: monospace; font-weight: bold; }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+
+        <div class="slides">
+            <section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title"
+                style="font-size: 35px;">
+                <h1 style="font-size: 100px;">Pythonkurs für Anfänger</h1>
+
+                <h2 style="padding-top: 40px;">Einheit 10: Vererbung</h2>
+
+                <a id="switch-to-interactive" class="pdf-only">Zu den interaktiven Folien</a>
+                <script>
+                    let elem = document.getElementById("switch-to-interactive")
+                    let file = window.location.pathname.substr(window.location.pathname.lastIndexOf('/'))
+                    elem.href = "https://tillerino.github.io/ws2023-python" + file + "?noFragments&withControls"
+                </script>
+
+                <div style="padding-top: 65px;">Tillmann Gaida</div>
+                <div style="padding-top: 20px;">Software and Computational System Lab</div>
+            </section>
+
+            <section style="font-size: 33px;">
+                <h1>Ablauf des Semesterende</h1>
+                <ul>
+                    <li>Heute: Einheit 10 - Vererbung</li>
+                    <li>24.01.: Einheit 11 - Grafische Oberflächen I</li>
+                    <li>31.01.: Einheit 12 - Grafische Oberflächen II<br>
+                        Die <b>Probe</b>-Online-Hausarbeit wird in Moodle für alle veröffentlicht.
+                    </li>
+                    <li>07.02.: Letzter Termin - Besprechung der Übung, der <b>Probe</b>-Online-Hausarbeit, Hinweise zur Korrektur, Abschluss der Veranstaltung.<br>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <b>Falls Sie die Credits für diesen Kurs wollen</b> müssen Sie sich bis zu diesem Termin zu einer von zwei Prüfungen angemeldet haben:
+                        <ol>
+                            <li>"Anwesenheit", falls Sie durch ihre Anwesenheit Credits bekommen.</li>
+                            <li>"Online-Hausarbeit", falls Sie der Anwesenheitspflicht nicht nachkommen konnten.</li>
+                        </ol>
+                        Direkt im Anschluss: Angabe der Online-Hausarbeit wird in Moodle for alle veröffentlicht, die zur Prüfung "Online-Hausarbeit" angemeldet sind.
+                    </li>
+                    <li>14.02.: Abgabefrist für die Online-Hausarbeit.</li>
+                </ul>
+            </section>
+
+            <section style="font-size: 27px;">
+                <h1>(Letztes Mal) Klassen</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <ul>
+                        <li>Klassen sind eine Möglichkeit, Daten und Funktionen zusammenzufassen.</li>
+                        <li class="fragment">Die Daten heißen <em>Attribute</em> oder <em>Felder</em>.</li>
+                        <li class="fragment">Die Funktionen heißen <em>Methoden</em>.</li>
+                        <li class="fragment">Klassen werden mit dem `class` Schlüsselwort definiert.</li>
+                        <li class="fragment">Auf Attribute und Methoden wird mit einem Punkt zugegriffen.</li>
+                        <li class="fragment">Methoden bekommen als ersten Parameter das Objekt, auf dem sie aufgerufen
+                            werden. Diesen nennt man per Konvention `self`.</li>
+                        <li class="fragment">Objekte werden mit dem Klassennamen und Klammern erzeugt.</li>
+                        <li class="fragment">Dabei wird eine spezielle Methode mit dem Namen `__init__` aufgerufen.</li>
+                    </ul>
+                    <div>
+                        ```cols=34 rows=13 br no-out
+                        class Account:
+                          def __init__(self, initial=0):
+                            if initial < 0:
+                              raise ValueError('Negativ')
+                            self._balance = initial
+
+                          def deposit(self, amount):
+                            if amount <= 0:
+                              raise ValueError('Negativ')
+                            self._balance += amount
+
+                          def get_balance(self):
+                            return self._balance ```<br>
+                        ```cols=34 rows=3 br
+                            a = Account(50)
+                            a.deposit(100)
+                            a.get_balance()
+                        ```
+                    </div>
+                </div>
+            </section>
+            
+            <section style="font-size: 24px;">
+                <h1>Übung II: Auto</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 62% 36%;">
+                   <ul>
+                       <li>Definieren Sie eine Klasse `Car`.</li>
+                       <li>Objekte dieser Klasse sollen einen Kilometerzähler (in km), einen Tankfüllstand (in l) und einen Verbrauch (in l/100km) enthalten.</li>
+                       <li>Der Kilometerzähler und der Tankfüllstand sollen mit 0 initialisiert werden.
+                           Der Verbrauch soll als Parameter im Konstruktor übergeben werden.</li>
+                       <li>Die Klasse soll eine Methode `report` enthalten, die den Kilometerzähler und den Tankfüllstand ausgibt.</li>
+                       <li>Die Klasse soll eine Methode `drive` enthalten, die einen Parameter `km` bekommt und den Kilometerzähler und den Tankfüllstand entsprechend verändert.
+                           Wenn der Tankfüllstand nicht ausreicht, um die Strecke zu fahren, soll das Auto so weit fahren, wie es kann und dann stehen bleiben. Eine entsprechende Meldung soll ausgeben werden (kein Fehler geworfen).</li>
+                       <li>Letzendlich soll die Klasse eine Methode `refuel` enthalten, die den Tank auffüllt.
+                           Der Parameter ist die Menge (in l), die getankt werden soll.</li>
+                       <li>Beachten Sie, dass Sie beim berechnen des Verbrauchs eine Division verwenden und deshalb eine Fließkommazahl erhalten.
+                           Dies führt dazu, dass der Kilometerzähler und der Tankfüllstand auch Fließkommazahlen werden.
+                           Trotz der vorherigen Warnungen ist dies hier in Ordnung.</li>
+                   </ul>
+                   <div>
+                       ```hidden
+                       class Car:
+                         def __init__(self, consumption):
+                           self._consumption = consumption
+                           self._km = 0
+                           self._fuel = 0
+
+                         def report(self):
+                           print('km:', self._km, 'Tank (l):', self._fuel)
+
+                         def drive(self, km):
+                           fuel_needed = km / 100 * self._consumption
+                           if fuel_needed > self._fuel:
+                             km = self._fuel / self._consumption * 100
+                             self._fuel = 0
+                             print('Tank leer :(')
+                           else:
+                             self._fuel -= fuel_needed
+                           self._km += km
+
+                         def refuel(self, amount):
+                           self._fuel += amount
+                       ```
+                       Hier ist ein Beispiel, wie sich die Klasse verhalten würde:<br>
+                       ```cols=25 rows=10 br
+                       car = Car(5)
+                       car.drive(100)
+                       car.refuel(10)
+                       car.report()
+
+                       car.drive(100)
+                       car.report()
+
+                       car.drive(150)
+                       car.report()
+                       ```
+                   </div>
+               </div>
+            </section>
+ 
+            <section style="font-size: 28px;">
+                <h1>Werkzeuge</h1>
+                <div style="display: grid; column-gap: .5em; grid-template-columns: 62% 38%;">
+                    <div style="border-right: solid 1px black; padding-bottom: .5em; padding-right: .5em;">
+                        <h3>Syntax</h3>
+                        `fun(x)`,
+                        `x`,
+                        `'abc'`,
+                        `123`,
+                        `=`,
+                        `if`,
+                        `elif`,
+                        `else`,
+                        `while`,
+                        `continue`,
+                        `break`,
+                        `in`,
+                        `for i in l`,
+                        `[a, b, c]`,
+                        `l[i]`,
+                        `l[i:j]`,
+                        `{a: b, c: d}`,
+                        `(a, b, c)`,
+                        `{a, b, c}`,
+                        `a, *b = ...`,
+                        `raise`,
+                        `try`,
+                        `except`,
+                        `finally`,
+                        `with`,
+                        Einrückung
+                        <ul>
+                            <li>Operatoren:
+                                `+`,
+                                `-`,
+                                `*`,
+                                `/`,
+                                `//`,
+                                `%`,
+                                `**`,
+                                `==`,
+                                `!=`,
+                                `&lt;`,
+                                `&gt;`,
+                                `&lt;=`,
+                                `&gt;=`,
+                                `and`,
+                                `or`,
+                                `not`
+                            </li>
+                        </ul>
+                        `def`,
+                        `return`,
+                        `fun(..., k=v)`,
+                        `class`
+                    </div>
+                    <div style="padding-bottom: .5em;">
+                        <h3>Algorithmik:</h3>
+                        Fallunterscheidung,
+                        Laufvariable,
+                        Iterieren (über Zeilen einer Datei),
+                        Deduplizieren,
+                        Sortieren (als Anwendung)
+                    </div>
+                </div>
+                <div
+                    style="display: grid; column-gap: .5em; grid-template-columns: 62% 38%; border-top: solid black 1px">
+                    <div style="border-right: solid 1px black; padding-top: .5em; padding-right: .5em;">
+                        <h3>Vokabular</h3>
+                        `print`,
+                        `input`,
+                        `int`,
+                        `str`,
+                        `list`,
+                        `tuple`,
+                        `set`,
+                        `dict`,
+                        `len`,
+                        `split`,
+                        `open`,
+                        `rstrip`,
+                        `min`
+                        `max`,
+                        `sum`,
+                        `append`,
+                        `extend`,
+                        `pop`,
+                        `insert`,
+                        `index`,
+                        `range`,
+                        `items`,
+                        `popitem`,
+                        `add`,
+                        `update`,
+                        `remove`,
+                        `sort`,
+                        `sorted`,
+                        `reverse`,
+                        `reversed`,
+                        `type`
+                    </div>
+                    <div style="padding-top: .5em;">
+                        <h3>Architektur</h3>
+                        Funktionen, Fehler, Klassen
+                    </div>
+                </div>
+            </section>
+
+            <section class="center" style="text-align: center;">Platz für Fragen</section>
+
+            <section>
+                <h1>Heute</h1>
+                <ol>
+                    <li>Imports: Code in mehrere Dateien aufteilen.</li>
+                    <li>Vererbung: Klassen aus Klassen machen.</li>
+                </ol>
+            </section>
+
+            <!--  SECTION: IMPORTS -->
+
+            <section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
+                <h3 style="margin-top: 200px">Imports</h3>
+            </section>
+
+            <section style="font-size: 31px">
+                <h1>Imports</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 52% 46%">
+                    <ul>
+                        <li>Das letzte Mal haben wir schon Klassen als Mittel eingeführt, um mit größeren Mengen Code strukturiert umzugehen.</li>
+                        <li>Ein weiteres Mittel, das uns zur verfügung steht, ist Code in mehrere Dateien aufzuteilen.</li>
+                        <li class="fragment" data-fragment-index="1">Um aus einer Datei auf Code aus einer anderen Datei zuzugreifen, können wir `import` verwenden.</li>
+                        <li class="fragment" data-fragment-index="3">Nach dem `import` Schlüsselwort folgt der Name der Datei ohne `.py` am Ende.</li>
+                        <li class="fragment" data-fragment-index="4">Danach steht die Datei unter dem entsprechenden Namen zur Verfügung. Auf Elemente in der Datei kann man mit einem Punkt nach dem Namen zugreifen.</li>
+                    </ul>
+                    <div class="fragment" data-fragment-index="2">
+                        ```data-file=a.py cols=25
+                        def fun():
+                          print('Hallo aus a.py')
+                        ```<br>
+                        ```br
+                        import a
+
+                        a.fun()
+                        ```
+
+                    </div>
+                </div>
+            </section>
+
+            <section style="font-size: 30px;">
+                <h1>Alternative Imports</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <div>Für Imports gibt es eine Reihe an Variationen:</div>
+                    ```data-file=a.py cols=25
+                    def fun():
+                      print('Hallo aus a.py')
+                    ```
+                </div>
+                <ul class="fragment">
+                    <li><div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                        <div>Man kann einen alternative Namen für das Importierte mit `as` angeben.</div>
+                        ```br cols=25
+                        import a as alt
+                        alt.fun()
+                        ```
+                    </div></li>
+                </ul>
+                <ul class="fragment">
+                    <li><div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                        <div>Um ein Element aus der Datei direkt referenzieren zu können, kann man `from ... import` verwenden.</div>
+                        ```br cols=25
+                        from a import fun
+                        fun()
+                        ```
+                    </div>
+                </ul>
+                <ul class="fragment">
+                    <li><div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                        <div>Beides kann man kombinieren mit `from ... import ... as`</div>
+                        ```br cols=25
+                        from a import fun as alt
+                        alt()
+                        ```
+                    </div>
+                </ul>
+            </section>
+
+            <section style="font-size: 30px;">
+                <h1>Imports führen aus</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <ul>
+                        <li><i class="fa-solid fa-triangle-exclamation"></i> Beim Importieren wird der Code in der zu importierenden Datei ausgeführt.<br>
+                        ```data-file=b.py cols=25
+                        print('Hallo aus b.py')
+                        ```<br>
+                        ```br cols=25
+                        import b
+
+                        print('Hallo von hier')
+                        ```</li>
+                    </ul>
+                    <ul>
+                        <li>Deshalb findet man häufig folgendes Stück Code am Ende einer Datei:<br>
+                        ```cols=30 no-out
+                            if __name__ == '__main__':
+                              do_something()
+                            ```
+                        </li>
+                        <li>In `__name__` steht immer der Name des aktuellen Moduls. Wenn die Aktuelle Datei der <em>Einstieg</em> in das Programm ist, ist der Name `'__main__'`.</li>
+                        <li>So kann man dafür sorgen, das bestimmter Code nicht ausgeführt wird, wenn die Datei als Import in einem anderen Programm verwendet wird.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section style="font-size: 27px;">
+                <h1>Was kann man importieren?</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <div>
+                        ```data-file=c.py cols=25
+                        def fun():
+                          print('Hallo aus c.py')
+                        ```<br>
+                        ```data-file=ext.py cols=30
+                        import c
+
+                        def fun():
+                            print('Hallo aus ext.py')
+
+                        class K:
+                            def laut(self):
+                                print('Hallo von K')
+
+                        x = 123
+                        ```<br>
+                    </div>
+                    <ul>
+                        <li>Bei einem Import kann man auf alles zugreifen, worauf man in der importierten Datei zugreifen könnte.</li>
+                        <li>Wie wir schon gesehen haben Funktionen:<br>
+                        ```br cols=25
+                        import ext
+
+                        ext.fun()
+                        ```</li>
+                        <li>Klassen:
+                        ```br cols=20
+                        ext.K().laut()
+                        ```</li>
+                        <li>Variablen:
+                        ```br cols=20
+                        print(ext.x)
+                        ```</li>
+                        <li>Sogar Imports:
+                        ```br cols=20
+                        ext.c.fun()
+                        ```</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section style="font-size: 30px;">
+                <h1>Mehr über Imports</h1>
+                <ul>
+                    <li>Liegen Dateien in (Unter-)ordnern kann man sie mir `import ordner.unterordner.datei` importieren.</li>
+                    <li>Ein Sammlung an Code, das eine spezialisierte Funktionalität wiederverwendbar bereitstellt, nennt man ein <em>Paket</em> oder eine <em>Bibliothek</em>.</li>
+                    <li>Python-Pakete gibt es im Internet viele, sowie viele weisen diese lokal zu verwalten.</li>
+                    <li>Im einfachsten Fall genügt ein `pip install numpy` auf der Kommandozeile und ein `import numpy as np`.</li>
+                    <li><a href="https://pypi.org/project/pip/">pip</a> ist der Paket-Manager, der typischerweise schon bei Python dabei ist.
+                        Er lädt Pakete dann von <a href="https://pypi.org/">PyPI</a> herunter.</li>
+                    <li>Im Kurs beschränken wir uns auf Pakete, die schon bei Python dabei ist.</li>
+                    <li><i class="fa-solid fa-triangle-exclamation"></i> Wenn Sie in Thonny etwas aus einer selbstgeschriebenen Datei importieren wollen:
+                        <ul>
+                            <li>Falls die aktuelle Code abgespeichert ist, sucht Thonny im selben Verzeichnis nach imports.</li>
+                            <li>Falls die aktuelle Code nicht abgespeichert ist, sucht Thonny im aktuellen Arbeitsverzeichnis nach imports.
+                                Das Arbeitsverzeichnis bestimmen Sie, indem Sie in der <em>Dateien</em>-Ansicht navigieren.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="center" style="text-align: center;">Platz für Fragen</section>
+
+            <!-- SECTION: VERERBUNG -->
+
+            <section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
+                <h3 style="margin-top: 200px">Vererbung</h3>
+            </section>
+
+            <section style="font-size: 30px;">
+                <h1>Vererbung</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <ul>
+                        <li>Während Klassen Vorlagen für Objekte sind, können Klassen auch Vorlagen für andere Klassen sein.</li>
+                        <li>Diese Mechanismus nennt man <em>Vererbung</em>. Dabei <em>erbt</em> die <em>Kindesklasse</em> alle Methoden der <em>Elternklasse</em>.</li>
+                        <li data-fragment-index="2" class="fragment">Man erbt von einer Klasse, indem man sie in der Klassendefinition in Klammern hinter dem Klassennamen angibt.</li>
+                        <li data-fragment-index="3" class="fragment">Eine Kindesklasse kann mehrere Elternklassen haben. Sie werden einfach mit Kommas getrennt.</li>
+                    </ul>
+                    ```cols=30 rows=10 br class=fragment data-fragment-index=2
+                    class A:
+                        def fun(self):
+                            print('Hallo aus A')
+
+                    class B(A):
+                        def fun2(self):
+                            print('Hallo aus B')
+
+                    b = B()
+                    b.fun()
+                    b.fun2()
+                    ```
+                </div>
+            </section>
+
+            <section style="font-size: 30px;">
+                <h1>Was wird vererbt?</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <ul>
+                        <li>Da Attribute keine Eigenschaft der Klasse, sondern des Objekts sind, können Sie nicht vererbt werden.</li>
+                        <li>Attribute werden aber typischerweise von Methoden gesetzt, also werden sie indirekt vererbt.</li>
+                        <li>Methoden werden vererbt, aber gleichnamige Methoden in der Kindesklasse <b>überschreiben</b> die der Elternklasse.</li>
+                    </ul>
+                    ```cols=33 rows=10 br class=fragment
+                    class A:
+                        def fun1(self):
+                            print('Hallo aus A (1)')
+
+                        def fun2(self):
+                            print('Hallo aus A (2)')
+
+                    class B(A):
+                        def fun2(self):
+                            print('Hallo aus B (2)')
+
+                    b = B()
+                    b.fun1()
+                    b.fun2()
+                    ```
+                </div>
+            </section>
+
+            <section style="font-size: 30px;">
+                <h1>Auf Methoden der Elternklasse zugreifen</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 54% 44%;">
+                    <ul>
+                        <li>Gelegentlich muss man eine Methode der Elternklasse ausführen, die überschrieben wurde.</li>
+                        <li>Typischerweise braucht man dies, wenn man die Funktionalität der Elternklasse erweitert: Man möchte den Code der Elternklasse ausführen und dazu noch neuen Code.</li>
+                        <li>Dazu hat man zwei Möglichkeiten:</li>
+                        <li>Man nutzt die Elternklasse statt des Objekts, um auf die Methode zuzugreifen. Dieses hatten wir das letzte Mal gesehen: `C.fun(o)` statt `o.fun()`.</li>
+                        <li>Man nutzt `super()`. Diese Funktion gibt einem innerhalb einer Klasse das eigene Objekt so zurück, als wären Methoden nicht überschrieben worden.</li>
+                    </ul>
+                    ```cols=30 rows=10 br class=fragment
+                    class A:
+                        def fun(self):
+                            print('Hallo aus A')
+
+                    class B(A):
+                        def fun(self):
+                            A.fun(self)
+                            super().fun()
+                            print('Hallo aus B')
+
+                    b = B()
+                    b.fun()
+                    ```
+                </div>
+            </section>
+
+            <section style="font-size: 28px;">
+                <h1>Name Mangling</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 52% 46%;">
+                    <div>
+                        <ul>
+                            <li>Es gibt einen Speziellen Mechanismus, der Attribute und Methoden genau einer Klasse zuordnet.</li>
+                            <li>Beginnt man einen Attribut- oder Feldnamen mit zwei Unterstrichen, so wird er hinter den Kulissen mit dem Namen der deklarierenden Klasse bzw dem Klassennamen des zugreifenden Objekts verbunden.</li>
+                            <li>Diesen Mechanismum nennt man <em>Name Mangling</em>.</li>
+                            <li>Dies führt dazu, dass Attribute und Methoden dieser Art nur genau in der Klasse, in der sie definiert wurden, zugreifbar sind.<br>
+                            ```cols=30 no-out class=fragment
+                            class A:
+                              def __init__(self):
+                                self.__x = 123
+
+                              def printX(self):
+                                print('x ist ', self.__x)
+                            ```</li>
+                        </ul>
+                    </div>
+                    <div>
+                        ```cols=30 class=fragment no-out
+                        class B(A):
+                          def __init__(self):
+                            A.__init__(self)
+                            self.__x = 456
+
+                          def printX(self):
+                            A.printX(self)
+                            print('x ist ', self.__x)
+                        ```<br>
+                        ```br cols=30 class=fragment
+                        b = B()
+                        b.printX()
+                        ```
+                        <ul>
+                            <li class="fragment">Dies macht die Felder per Konvention privat. Sie sind aber trotzdem von außen sichtbar:<br>
+                            ```cols=30 br
+                            print(b._A__x, b._B__x)
+                            ```
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section style="font-size: 28px;">
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <div>
+                        <h1>Die abstrakte Klasse</h1>
+                        <ul>
+                            <li>Wir haben bereits gesehen, wie man die Funktionalität einer Klasse erweitern kann.</li>
+                            <li class="fragment">Eine weiterere, übliche Anwendungs von Vererbung ist das teilweise definieren einer Klasse.
+                                In dieser Klasse wird bewusst ein Loch gelassen, was dann von Kindesklassen ausgefüllt werden muss.</li>
+                            <li class="fragment">So eine Elternklasse nennt man dann eine <em>abstrakte Klasse</em>.</li>
+                            <li class="fragment">Es gibt in Python einen Mechanismus um durchzusetzen, dass Kindesklassen diese Löcher ausfüllen müssen, den besprechen wir hier aber nicht. <a href="https://docs.python.org/3/library/abc.html">(Mehr)</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        ```cols=32 br no-out class=fragment
+                        class AbstractFilter:
+                          def filter(self, ls):
+                            filtered_ls = []
+                            for l in ls:
+                              if self.test(l):
+                                filtered_ls.append(l)
+                            return filtered_ls
+
+                          def test(self):
+                            raise NotImplementedError()
+
+                        class LessFilter(AbstractFilter):
+                          def __init__(self, ceil):
+                            self._ceil = ceil
+                            
+                          def test(self, x):
+                            return x < self._ceil
+                        ```<br>
+                        ```cols=30 br class=fragment
+                        f = LessFilter(5)
+                        ls = [1, 2, 4, 8, 16]
+                        print(f.filter(ls))
+                        ```
+                    </div>
+                </div>
+            </section>
+            
+            <section class="center" style="text-align: center;">Platz für Fragen</section>
+
+            <!-- SECTION: UEBUNG -->
+
+            <section data-background-image="titleslide16-9.svg" data-background-size="contain" class="title">
+                <h3 style="margin-top: 200px">Übung</h3>
+            </section>
+
+            <section style="font-size: 25px;">
+                <h1>Übung I: Vererbung</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <div>
+                        ```cols=36 no-out
+                        class Person:
+                            def __init__(self, name, age):
+                                self._name = name
+                                self._age = age
+                        
+                            def report(self):
+                                print('Name:', self._name)
+                                print('Alter:', self._age)
+                        ```
+                        <ul>
+                            <li>Oben sehen Sie die Klasse `Person`. Diese verhält sich wie folgt:<br>
+                            ```cols=30 br
+                            p = Person('Max', 20)
+                            p.report()
+                            ```
+                            <li>Die Klasse `Person` soll durch Vererbung erweitert werden.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul>
+                            <li>Kopieren Sie die Klasse `Person`. Erstellen Sie eine Klasse `Student`, die von `Person` erbt und zusätzlich das Attribut `student_id` hat.</li>
+                            <li>Das zusätzliche Attribut soll dem Konstruktor von `Student` übergeben und dort gesetzt werden.
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                Achten Sie darauf, dass der Konstruktor der Elternklasse auch mit den entsprechenden Argumenten aufgerufen wird.</li>
+                            <li>Das zusätzliche Attribut soll in der Methode `report` der Klasse `Student` mit ausgegeben werden.
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                Geben Sie in `report` die Attribute von `Person` aus, indem Sie die entsprechende Methode der Elternklasse am Anfang der Methode aufrufen.</li>
+                            <li>Die Klasse verhält sich dann so:<br>
+                            ```hidden
+                            class Student(Person):
+                                def __init__(self, name, age, student_id):
+                                    super().__init__(name, age)
+                                    self._student_id = student_id
+
+                                def report(self):
+                                    super().report()
+                                    print('Matrikelnummer:', self._student_id)
+                            ```
+                            ```cols=30 br
+                            s = Student('Max', 20, 123)
+                            s.report()
+                            ```
+                            </li>
+                        </ul>
+                    </div>
+            </section>
+
+            <section style="font-size: 30px;">
+                <h1>Übung II: Schere, Stein, Papier</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <ul>
+                        <li>In Moodle finden Sie in den Materialien zu dieser Übung die Datei `rps.py`. Laden Sie diese herunter.</li>
+                        <li>In der Datei ist das Spiel <em>Schere, Stein, Papier</em> implementiert: Der Computer ("ich") spielt dabei gegen einen Menschen ("du").
+                            Es werden unendlich viele Runden nacheinander gespielt und nach jeder der aktuelle Spielstand angezeigt.</li>
+                        <li>Führen Sie die Datei aus und machen Sie sich mit der Implementierung vertraut.</li>
+                        <li><i class="fa-solid fa-triangle-exclamation"></i>Verändern Sie die Datei nicht. Die Übung ist darauf ausgelegt, dass Sie die Klasse `Rps` importieren und vererben.</li>
+                    </ul>
+                    <ul>
+                        <li>Erstellen Sie eine neue Datei `rps_three.py` im selben Verzeichnis.
+                            <ul>
+                                <li>Importieren Sie in dieser Datei die Klasse `Rps` aus der ersten `rps.py`.</li>
+                                <li>Erstellen Sie eine Klasse `ThreeWinsRps`, die von `Rps` erbt.</li>
+                                <li>Überschreiben Sie in `ThreeWinsRps` die Methode `should_continue`, sodass das Spiel nur so viele Runden läuft bis entweder der Computer oder der Mensch drei Runden gewonnen hat.</li>
+                                <li>Führen Sie das Spiel mit `ThreeWinsRps().play()` aus und prüfen Sie, ob dies korrekt klappt.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section style="font-size: 25px;">
+                <h1>Übung II (weiter)</h1>
+                <div style="display: grid; column-gap: 2%; grid-template-columns: 49% 49%;">
+                    <div>
+                        <ul>
+                            <li>Im Folgenden sehen Sie weitere Möglichkeiten, `Rps` zu modifizieren. Erstellen Sie jeweils eine neue Datei/Klasse, die die Modifikation mit Vererbung/Überschreiben umsetzt und testen Sie diese. Bearbeiten Sie mindestens zwei Modifikationen. Sie sind etwa nach Schwierigkeit sortiert.</li>
+                        </ul>
+                        <ol>
+                            <li>Der Computer spielt immer unentschieden.</li>
+                            <li>Der Computer gewinnt immer.</li>
+                            <li>Der Computer spielt nie unentschieden, gewinnt aber trotzdem mit 50% Wahrscheinlichkeit.</li>
+                            <li>Der Computer kommt nie in Rückstand: falls der Computer und der Mensch bisher gleichviel Runden gewonnen haben, gewinnt der Computer die Runde.</li>
+                            <li>Statt "Schere, Stein, Papier" wird <a href="https://bigbangtheory.fandom.com/wiki/Rock,_Paper,_Scissors,_Lizard,_Spock">"Rock, Paper, Scissors, Lizard, Spock"</a> gespielt.</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <ul>
+                            <li>Die folgenden Modifikationen sind etwas komplizierter. Vererben Sie zunächst eine Klasse `StatRps` von `Rps`, sodass immer 10000 Runden gespielt werden,
+                                die Wahl des Menschen zufällig getroffen wird, pro Runde kein Zwischenstand ausgegeben wird, und nach dem Spiel das Gesamtergebnis in Prozent angegeben wird.
+                                Wenn Sie nun von `StatRps` statt von `Rps` erben, können Sie ganz schnell die folgenden Modifikationen testen.
+                            </li>
+                        </ul>
+                        <ol start=6>
+                            <li>Der Computer gewinnt mit 50% Wahrscheinlichkeit, spielt mit 25% Wahrscheinlichkeit unentschieden und verliert mit 25% Wahrscheinlichkeit.</li>
+                            <li>Der Computer spielt mit 1/3 Wahrscheinlichkeit unentschieden, hat aber eine leicht höherer Chance zu gewinnen als zu verlieren - ideal für einen Spielautomaten.</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="highlighted-code.js"></script>
+    <script>
+        let pdf = new URLSearchParams(window.location.search).get('print-pdf') !== null
+        for (e of document.getElementsByClassName("pdf-only")) {
+            e.style.visibility = pdf ? "visible" : "hidden"
+        }
+
+        // <p-il> tag for quick inline Python highlighting
+        class PythonInline extends HTMLElement {
+            constructor() {
+                super();
+                this.go();
+            }
+
+            go() {
+                let code = this.code ? this.code : this.innerText
+                this.innerHTML = `<code class="language-python hljs">${RevealHighlight().hljs.highlight(code, {language: 'python'}).value}</code>`
+            }
+        }
+        customElements.define("p-il", PythonInline);
+
+        // <p-in> tag for quick python input
+        class PythonInput extends HTMLElement {
+            constructor() {
+                super();
+                this.go();
+            }
+
+            go() {
+                let code = removeLeadingWhitespace(this.code ? this.code : this.innerText)
+                let ns = this.getAttribute("data-ns") !== null ? `data-ns="${this.getAttribute("data-ns")}"` : "data-ns"
+                let file = this.getAttribute("data-file") !== null ? `data-file="${this.getAttribute("data-file")}"` : ""
+                if (this.getAttribute("hidden") !== null) {
+                    this.innerHTML = `<textarea style="display: none" ${ns}>${code}</textarea>`
+                } else {
+                    let rows = this.getAttribute("rows") !== null ? `rows="${this.getAttribute("rows")}"` : `rows="${code.split('\n').length}"`
+                    let cols = this.getAttribute("cols") !== null ? `cols="${this.getAttribute("cols")}"` : ""
+                    this.innerHTML = `<textarea is="highlighted-code" language="python" tab-size="2" auto-height ${rows} ${cols} ${ns} ${file} spellcheck="false">${code}</textarea>`
+                    let filePre = file ? `<div class="file"><span class="filename">${this.getAttribute("data-file")}</span>` : ""
+                    let filePost = file ? `</div>` : ""
+                    if(file) {
+                        this.innerHTML = `<div class="file"><i class="fa-solid fa-file"></i>&nbsp;<span class="filename">${this.getAttribute("data-file")}</span><br>${this.innerHTML}</div>`
+                    }
+                }
+            }
+        }
+        customElements.define("p-in", PythonInput);
+
+        // <p-out> tag for quick python output
+        class PythonOutput extends HTMLElement {
+            constructor() {
+                super();
+            }
+        }
+        customElements.define("p-out", PythonOutput);
+
+        // <p-ex> tag for quick python example (combined input-output)
+        // ``` is a shortcut for this tag. You can put attributes after, ex:
+        // ```cols=15
+        // print('123')
+        // ```
+        class PythonExample extends HTMLElement {
+            constructor() {
+                super();
+                this.go();
+            }
+
+            go() {
+                let code = removeLeadingWhitespace(this.code ? this.code : this.innerText)
+                let cols = this.getAttribute("cols") !== null ? `cols="${this.getAttribute("cols")}"` : ""
+                let ns = this.getAttribute("data-ns") !== null ? `data-ns="${this.getAttribute("data-ns")}"` : "data-ns"
+                let rows = `rows="${code.split('\n').length}"`
+                let br = this.getAttribute("br") !== null ? "<br>" : ""
+                let cls = this.getAttribute("fragment-out") !== null ? 'class="fragment"' : ""
+                this.innerHTML = `<textarea is="highlighted-code" language="python" tab-size="2" auto-height ${rows} ${cols} ${ns} spellcheck="false">${code}</textarea>`
+                    + `${br}<p-out ${ns} ${cls}></p-out>`
+            }
+        }
+        customElements.define("p-ex", PythonExample);
+
+        document.querySelectorAll(".thonny-repl").forEach(e => {
+            let html = e.innerHTML
+            e.innerHTML = `<span class="thonny-repl-tag">Kommandozeile&nbsp;&nbsp;×</span><br><span class="thonny-repl-content"><span class="hljs-keyword">>>></span>
+                    <span class="hljs-comment">%Run -c $EDITOR_CONTENT</span><br>${html}</span>`
+        })
+
+        function removeLeadingWhitespace(text) {
+            let lines = text.split("\n")
+            while (lines.length > 1 && !lines[0].trim()) {
+                lines.shift()
+            }
+            while (lines.length > 1 && !lines[lines.length - 1].trim()) {
+                lines.pop()
+            }
+            let ws = lines[0].match(/^\s*/)[0]
+            return lines.map(l => l.replace(ws, "")).join("\n")
+        }
+
+        function replaceBackticks() {
+            for (n of document.body.querySelectorAll(`section, section *`)) {
+                if (n.tagName == "TEXTAREA" || n.tagName.startsWith("P-")) {
+                    continue
+                }
+                do {
+                    replaced = false
+                    for (e of n.childNodes) {
+                        if (e.nodeType == Node.TEXT_NODE) {
+                            if (replaceBackticksInText(e)) {
+                                n.removeChild(e)
+                                replaced = true
+                                break
+                            }
+                        }
+                    }
+                } while (replaced)
+            }
+        }
+        function replaceBackticksInText(textNode) {
+            if (textNode.textContent.indexOf("`") < 0) {
+                return
+            }
+            let chunks = textNode.textContent.split("```");
+            for (i in chunks) {
+                if (parseInt(i) % 2 == 0) {
+                    replaceSingleBackticksInText(textNode, chunks[i])
+                } else {
+                    let ex = new PythonExample()
+                    let lines = chunks[i].trimEnd().split("\n")
+                    attributes = lines[0].split(" ")
+                    // if attributes contain hidden, do a p-in instead
+                    if (attributes.includes("hidden") || attributes.includes("no-out") || attributes.some(a => a.startsWith("data-file="))) {
+                        ex = new PythonInput()
+                    }
+                    setAttributes(ex, lines[0])
+                    ex.code = lines.splice(1).join("\n")
+                    ex.go()
+                    textNode.parentElement.insertBefore(ex, textNode)
+                }
+            }
+            return true
+        }
+        function replaceSingleBackticksInText(textNode, text) {
+            let chunks = text.split("`");
+            for (i in chunks) {
+                if (parseInt(i) % 2 == 0) {
+                    textNode.parentElement.insertBefore(document.createTextNode(chunks[i]), textNode);
+                } else {
+                    let ex = new PythonInline()
+                    ex.code = chunks[i]
+                    ex.go()
+                    textNode.parentElement.insertBefore(ex, textNode)
+                }
+            }
+        }
+        function setAttributes(elem, s) {
+            if (!s.trim()) {
+                return
+            }
+            for (c of s.split(" ")) {
+                let p = c.split("=", 2)
+                elem.setAttribute(p[0], p[1] ? p[1] : "")
+            }
+        }
+        replaceBackticks()
+
+        let out = []
+        let skipPython = false
+        async function init() {
+            if (skipPython) {
+                return
+            }
+            console.log('loading Pyodide')
+            const {loadPyodide} = await import("https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.mjs");
+            let p = await loadPyodide({
+                stdout: x => out.push(x),
+                stderr: x => out.push(x)
+            });
+
+            console.log('importing repr_shorten')
+            let namespace = p.globals.get("dict")();
+            p.runPython('from pyodide.console import repr_shorten', {globals: namespace})
+            return {p: p, repr_shorten: namespace.get("repr_shorten"), n: p.globals.get("dict")()}
+        }
+        let pyodide = init()
+
+        function getParentSlide(elem) {
+            while (elem && elem.tagName != "SECTION") {
+                elem = elem.parentElement
+            }
+            return elem
+        }
+
+        const removeOurImports = `
+            # Since Pyodide is never restarted, imports are cached.
+            # So to make sure that changes to imported files are picked up,
+            # we try to remove all our own modules each time we run code.
+            import sys
+            
+            our_imports = [ ]
+            for n, m in sys.modules.items():
+                if hasattr(m, '__file__') and m.__file__.startswith('/home'):
+                    our_imports.append(n)
+            for n in our_imports:
+                del sys.modules[n]
+            del our_imports
+        `;
+
+        async function fillOutput(elem) {
+            // we only take code on current slide
+            slide = getParentSlide(elem)
+            // namespace can be undefined or empty!
+            let ns = elem.dataset.ns
+
+            // we separate by outputs so that we can isolate the print/return for exactly the last box
+            var code = [[ { text: removeOurImports, filename: "<hidden>" } ]]
+            if (ns == "test") {
+                code[0].push({
+                    text:
+                        `def test_input_expected_pairs(pairs, function):
+    function_name = repr(function).split(" ")[1]
+    print('Testergebnis:')
+    for *i, e in d:
+        try:
+            a = function(*i)
+        except Exception as ex:
+            print('Fehler beim Ausführen von')
+            print(function_name, '(', sep="", end="")
+            print(*[repr(x) for x in i], sep=", ", end=")\\n")
+            raise ex
+        if a != e:
+            print(function_name, '(', sep="", end="")
+            print(*[repr(x) for x in i], sep=", ", end=")\\n")
+            print("Gibt zurück:", repr(a))
+            print("Erwartet war aber:", repr(e))
+            return
+    print('Alles sieht gut aus!')
+    from pyodide.code import run_js
+    run_js("report_current_exercise_complete()")`, filename: "<hidden>"
+                })
+            }
+            let files = { }
+            for (e of slide.querySelectorAll(`textarea, p-out`)) {
+                if (e == elem) {
+                    break
+                }
+                // ignore namespace entirely if either element's namespace is empty or undefined
+                if ((ns || e.dataset.ns) && e.dataset.ns != ns) {
+                    continue
+                }
+                if (e.tagName == "P-OUT") {
+                    // introduce new code group to make sure that outputs are neatly separated
+                    code.push([])
+                } else {
+                    if(e.dataset.file) {
+                        files[e.dataset.file] = e.value
+                    } else {
+                        code.slice(-1)[0].push({text: e.value || e.innerText.trim() || e.innerHTML.trim(), filename: e.style.display == 'none' ? "<hidden>" : "<stdin>"})
+                    }
+                }
+            }
+            // console.log('running code', code, 'in', ns)
+            await runCode(code, elem, files)
+        }
+
+        async function runCode(code, elem, files) {
+            // see here: https://github.com/pyodide/pyodide/blob/main/src/templates/console.html
+
+            elem.innerText = "..."
+            p = (await pyodide)
+            p.n.clear() // clear the namespace
+            resetFilesTo(p.p.FS, files)
+            var result = undefined
+            let error = []
+            areas: for (cs of code) {
+                out.length = 0
+                for (c of cs) {
+                    try {
+                        result = p.p.runPython(c.text, {globals: p.n, filename: c.filename})
+                    } catch (e) {
+                        if (e.constructor.name === "PythonError") {
+                            console.log(e.message)
+                            lines = e.message.trim().split('\n')
+                            filteredLines = []
+                            for (l in lines) {
+                                if (lines[l].startsWith('  File "<stdin>", ')) {
+                                    filteredLines.push("  " + lines[l].substr(18));
+                                } else if (!lines[l].startsWith('  ') && lines) {
+                                    filteredLines.push(lines[l]);
+                                }
+                            }
+                            error.push(filteredLines.join("\n"));
+                            break areas;
+                        } else {
+                            throw e;
+                        }
+                    }
+                }
+            }
+
+            elem.innerText = out.join("\n")
+            html = elem.innerHTML
+            if (error.length > 0) {
+                elem.innerText = error.join("\n")
+                elem.innerHTML = (html ? html + "<br>" : "") + `<span class="error">${elem.innerHTML}</code>`
+            } else if (result !== undefined) {
+                elem.innerText = p.repr_shorten.callKwargs(result, {
+                    separator: "\n<long output truncated>\n",
+                });
+                elem.innerHTML = (html ? html + "<br>" : "") + `<code class="language-python">${elem.innerHTML}</code>`
+            }
+            // console.log('result:', elem.innerHTML)
+
+            elem.style.display = elem.innerHTML.indexOf("<br") >= 0 ? "inline-block" : "inline";
+
+            if (Reveal.getPlugin && elem.lastChild && elem.lastChild.tagName == "CODE") {
+                // cheap way of preventing crashes before initialized
+                Reveal.getPlugin('highlight').highlightBlock(elem.lastChild)
+            }
+            if (Reveal.layout) {
+                // so that highlights move with their textareas
+                Reveal.dispatchEvent({type: 'resize', data: {}})
+            }
+        }
+
+        function resetFilesTo(FS, files) {
+            for (let f of FS.readdir(FS.cwd())) {
+                if (f != "." && f != "..") {
+                    FS.unlink(f)
+                }
+            }
+            for (let f in files) {
+                FS.writeFile(FS.cwd() + '/' + f, files[f])
+            }
+        }
+
+        async function runAllCode() {
+            if (skipPython) {
+                return
+            }
+            for (const elem of document.querySelectorAll('p-out')) {
+                // put the little arrow before
+                a = document.createElement("a")
+                a.className = "runCode"
+                a.onclick = () => fillOutput(elem);
+                elem.parentElement.insertBefore(a, elem)
+                await fillOutput(elem)
+            }
+        }
+
+        let allCodeInserted = pyodide.then(runAllCode).then(() => {
+            console.log('initializing Reveal')
+            let cbPath = 'ext/chalkboard/'
+            Reveal.initialize({
+                width: 1280,
+                height: 720,
+                margin: 0.07,
+
+                controls: new URLSearchParams(window.location.search).get('withControls') !== null,
+                progress: false,
+                center: false,
+                hash: true,
+                fragments: new URLSearchParams(window.location.search).get('noFragments') === null,
+                pdfSeparateFragments: false,
+                backgroundTransition: 'slide',
+                slideNumber: 'c',
+
+                // Learn about plugins: https://revealjs.com/plugins/
+                plugins: [RevealHighlight, RevealChalkboard, RevealCustomControls, RevealPointer],
+
+                chalkboard: {
+                    background: ['rgba(127,127,127,0)', path + 'img/blackboard.png'],
+                    boardmarkers: [
+                        {color: 'rgba(180,20,60,1)', cursor: 'url(' + cbPath + 'img/boardmarker-red.png), auto'},
+                        {color: 'rgba(100,100,100,1)', cursor: 'url(' + cbPath + 'img/boardmarker-black.png), auto'},
+                        {color: 'rgba(30,144,255, 1)', cursor: 'url(' + cbPath + 'img/boardmarker-blue.png), auto'},
+                        {color: 'rgba(50,205,50,1)', cursor: 'url(' + cbPath + 'img/boardmarker-green.png), auto'},
+                        {color: 'rgba(255,140,0,1)', cursor: 'url(' + cbPath + 'img/boardmarker-orange.png), auto'},
+                        {color: 'rgba(150,0,20150,1)', cursor: 'url(' + cbPath + 'img/boardmarker-purple.png), auto'},
+                        {color: 'rgba(255,220,0,1)', cursor: 'url(' + cbPath + 'img/boardmarker-yellow.png), auto'},
+                    ],
+                },
+            });
+
+            var ready = false
+            let autoscale = () => {
+                if (Reveal.isOverview()) {
+                    return;
+                }
+                var scaled = false
+                if (document.querySelectorAll('section').length == 0) {
+                    // this is for print stuff
+                    return
+                }
+                const s = getComputedStyle(document.body).getPropertyValue('--slide-scale') || 1;
+                const h = parseInt(getComputedStyle(document.body).getPropertyValue('--slide-height')) * s
+                document.querySelectorAll('section[data-autoscale]').forEach(elem => {
+                    if (elem.dataset.autoscale == "done" || elem.getBoundingClientRect().height == 0) {
+                        return
+                    }
+                    if (elem.getBoundingClientRect().height > h) {
+                        let fs = getComputedStyle(elem).fontSize
+                        if (!fs.endsWith('px')) {
+                            return;
+                        }
+                        elem.style.fontSize = (parseInt(fs) - 1) + 'px';
+                        scaled = true
+                    } else {
+                        elem.dataset.autoscale = "done"
+                    }
+                });
+                if (scaled) {
+                    Reveal.dispatchEvent({type: 'resize', data: {}})
+                }
+            }
+
+            Reveal.on('ready', event => {
+                console.log('reveal.js ready')
+                document.querySelectorAll('p-out code').forEach(elem => {
+                    Reveal.getPlugin('highlight').highlightBlock(elem)
+                });
+                autoscale()
+            })
+
+            Reveal.on('resize', event => {
+                console.log('reveal.js resize')
+                autoscale()
+            })
+
+            Reveal.on('slidechanged', event => {
+                let s = Reveal.getSlidePastCount() + 1
+                sendSlideChange(s)
+                autoscale()
+                Reveal.dispatchEvent({type: 'resize', data: {}})
+            })
+
+            Reveal.on('overviewshown', event => {
+                Reveal.dispatchEvent({type: 'resize', data: {}})
+            })
+
+            Reveal.on('overviewhidden', event => {
+                Reveal.dispatchEvent({type: 'resize', data: {}})
+            })
+        })
+
+        function report_current_exercise_complete() {
+            let s = Reveal.getSlidePastCount() + 1
+            sendExerciseComplete(s)
+        }
+    </script>
+
+</body>
+
+</html>
